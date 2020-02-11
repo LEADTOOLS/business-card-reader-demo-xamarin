@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                  x:Class="BCReaderDemo.GeneralSettingsPage"
+                  xmlns:local="clr-namespace:BCReaderDemo"
+                  xmlns:utils="clr-namespace:BCReaderDemo.Utils"
+                  xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+                  BackgroundColor="White"
+                  ios:Page.UseSafeArea="True"
+                  NavigationPage.HasNavigationBar="False"
+                  NavigationPage.HasBackButton="False">
+   <ContentPage.Resources>
+      <ResourceDictionary>
+         <local:NegateBooleanConverter x:Key="BooleanInverter" />
+
+         <DataTemplate x:Key="DefaultItemTemplate">
+            <ViewCell>
+               <StackLayout Orientation="Horizontal">
+                  <Label Text="{Binding FieldName}" TextColor="{x:Static local:CustomColors.SettingsLabelsColor}" LineBreakMode="TailTruncation" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Center" FontSize="Small">
+                     <Label.FontAttributes>
+                        <OnPlatform x:TypeArguments="FontAttributes" iOS="Bold" Android="None"/>
+                     </Label.FontAttributes>
+                  </Label>
+                  <Switch HorizontalOptions="EndAndExpand" VerticalOptions="Center" IsToggled="{Binding FieldValue}" ClassId="{Binding FieldName}" IsEnabled="{Binding FieldEnabled}" InputTransparent="{Binding FieldEnabled, Converter={StaticResource BooleanInverter}}" Toggled="ListViewItemSwitch_Toggled">
+                     <Switch.Scale>
+                        <OnPlatform x:TypeArguments="x:Double" iOS="0.8" Android="0.9"/>
+                     </Switch.Scale>
+                  </Switch>
+               </StackLayout>
+            </ViewCell>
+         </DataTemplate>
+
+         <DataTemplate x:Key="CameraQualityItemTemplate">
+            <ViewCell>
+               <Grid>
+                  <Grid.ColumnDefinitions>
+                     <ColumnDefinition Width="*"/>
+                     <ColumnDefinition Width="Auto"/>
+                  </Grid.ColumnDefinitions>
+
+                  <Label Grid.Column="0" Text="{Binding FieldName}" TextColor="{x:Static local:CustomColors.SettingsLabelsColor}" LineBreakMode="TailTruncation" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" HorizontalOptions="StartAndExpand" VerticalOptions="Center" FontSize="Small">
+                     <Label.FontAttributes>
+                        <OnPlatform x:TypeArguments="FontAttributes" iOS="Bold" Android="None"/>
+                     </Label.FontAttributes>
+                  </Label>
+                  <StackLayout Grid.Column="1" WidthRequest="80" HeightRequest="25" HorizontalOptions="FillAndExpand" VerticalOptions="Center" BackgroundColor="{x:Static local:CustomColors.LightSilverColor}" Padding="1" utils:RoundCornersEffect.CornerRadius="1">
+                     <StackLayout Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="White" Padding="5" utils:RoundCornersEffect.CornerRadius="1">
+                        <Grid>
+                           <Grid.ColumnDefinitions>
+                              <ColumnDefinition Width="*"/>
+                              <ColumnDefinition Width="Auto"/>
+                           </Grid.ColumnDefinitions>
+
+                           <Label Text="{Binding StringValue}" FontSize="{x:Static local:PlatformsConstants.TableViewFieldEntryFontSize}" Grid.Column="0" HorizontalOptions="Start" VerticalOptions="Center" TextColor="{x:Static local:CustomColors.SettingsLabelsColor}"/>
+                           <Image Grid.Column="1" Source="down_arrow.png" Aspect="AspectFit" WidthRequest="15" HeightRequest="15" HorizontalOptions="End" VerticalOptions="Center"/>
+                        </Grid>
+                     </StackLayout>
+
+                     <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="CameraQuality_Tapped"/>
+                     </StackLayout.GestureRecognizers>
+                  </StackLayout>
+               </Grid>
+            </ViewCell>
+         </DataTemplate>
+
+         <local:GeneralSettingsListViewDataTemplateSelector x:Key="generalSettingsListViewDataTemplateSelector"
+                DefaultTemplate="{StaticResource DefaultItemTemplate}"
+                CameraQualityTemplate="{StaticResource CameraQualityItemTemplate}" />
+      </ResourceDictionary>
+   </ContentPage.Resources>
+
+   <Grid x:Name="MainLayout" RowSpacing="0">
+      <Grid.RowDefinitions>
+         <RowDefinition Height="{x:Static local:PlatformsConstants.PagesHeaderTitleRowHeight}"/>
+         <RowDefinition Height="*"/>
+         <RowDefinition Height="Auto"/>
+         <RowDefinition Height="{x:Static local:PlatformsConstants.AdRowHeight}"/>
+      </Grid.RowDefinitions>
+
+      <Grid x:Name="headerGrid" Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="10,0,10,0">
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+         </Grid.ColumnDefinitions>
+
+         <Grid Grid.Column="0" WidthRequest="40" VerticalOptions="FillAndExpand">
+            <Image Source="back.png" WidthRequest="25" HorizontalOptions="Start" VerticalOptions="Center" Aspect="AspectFit"/>
+            <Grid.GestureRecognizers>
+               <TapGestureRecognizer Tapped="BackButton_Tapped"/>
+            </Grid.GestureRecognizers>
+         </Grid>
+
+         <Label Grid.Column="1" Text="GENERAL" TextColor="{x:Static local:CustomColors.SettingsLabelsColor}" FontSize="Small" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+         <BoxView Grid.Column="0" Grid.ColumnSpan="3" HeightRequest="1" BackgroundColor="{x:Static local:CustomColors.SettingsLabelsColor}" HorizontalOptions="FillAndExpand" VerticalOptions="End"/>
+      </Grid>
+
+      <ListView x:Name="generalSettingsListView" 
+                Grid.Row="1" 
+                Margin="10,10,10,0" 
+                SeparatorVisibility="None"
+                RowHeight="{Binding Source={x:Static local:PlatformsConstants.SwitchListViewRowHeight}, Path=Value}" 
+                ItemTemplate="{StaticResource generalSettingsListViewDataTemplateSelector}"/>
+
+      <Image Grid.Row="2" Source="powered_by_left_logo.png" WidthRequest="130" HorizontalOptions="Start" VerticalOptions="End" Aspect="AspectFit" Margin="20,0,0,0"/>
+
+      <utils:AdsLayout x:Name="advertisementLayout" Grid.Row="3"/>
+   </Grid>
+</ContentPage>

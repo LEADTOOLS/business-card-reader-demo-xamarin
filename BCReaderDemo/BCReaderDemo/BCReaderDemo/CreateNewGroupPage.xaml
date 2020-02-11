@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BCReaderDemo.CreateNewGroupPage"
+             xmlns:local="clr-namespace:BCReaderDemo"
+             xmlns:utils="clr-namespace:BCReaderDemo.Utils"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+             ios:Page.UseSafeArea="True"
+             BackgroundColor="{x:Static local:CustomColors.PagesBackgroundColor}"
+             NavigationPage.HasNavigationBar="False"
+             NavigationPage.HasBackButton="False">
+   <ContentPage.Resources>
+      <ResourceDictionary>
+         <DataTemplate x:Key="DefaultItemTemplate">
+            <ViewCell>
+               <ViewCell.ContextActions>
+                  <MenuItem Clicked="DeleteGroupButton_Clicked" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True"/>
+                  <MenuItem Clicked="RenameGroupButton_Clicked" CommandParameter="{Binding .}" Text="Rename"/>
+               </ViewCell.ContextActions>
+               <Grid ColumnSpacing="5" BackgroundColor="White">
+                  <Grid.ColumnDefinitions>
+                     <ColumnDefinition Width="*"/>
+                  </Grid.ColumnDefinitions>
+                  <Grid.RowDefinitions>
+                     <RowDefinition Height="*"/>
+                  </Grid.RowDefinitions>
+
+                  <StackLayout Grid.Column="0" Spacing="5" Orientation="Horizontal" Margin="10,0,0,0">
+                     <Label Text="{Binding GroupName, Mode=OneWay}" TextColor="{x:Static local:CustomColors.DarkSharkonColor}" FontSize="Small" LineBreakMode="TailTruncation" HorizontalOptions="Start" VerticalOptions="Center"/>
+                     <Label Text="{Binding Count, StringFormat='({0})'}" TextColor="{x:Static local:CustomColors.LightBlueColor}" FontSize="Small" HorizontalOptions="Start" VerticalOptions="Center"/>
+                  </StackLayout>
+                  <BoxView x:Name="ListViewItemBottomSeparator" Grid.Row="0" HeightRequest="3" BackgroundColor="{x:Static local:CustomColors.PagesBackgroundColor}" HorizontalOptions="FillAndExpand" VerticalOptions="End"/>
+               </Grid>
+            </ViewCell>
+         </DataTemplate>
+
+         <DataTemplate x:Key="RenameItemTemplate">
+            <ViewCell x:Name="TemplateCell">
+               <Grid ColumnSpacing="5" Margin="0,0,10,0" BackgroundColor="White">
+                  <Grid.ColumnDefinitions>
+                     <ColumnDefinition Width="*"/>
+                     <ColumnDefinition Width="Auto"/>
+                     <ColumnDefinition Width="Auto"/>
+                  </Grid.ColumnDefinitions>
+                  <Grid.RowDefinitions>
+                     <RowDefinition Height="*"/>
+                  </Grid.RowDefinitions>
+
+                  <utils:CustomEntry Grid.Column="0" BindingContext="{Binding .}" Text="{Binding GroupName, Mode=OneWay}" Margin="10,0,0,0" TextColor="{x:Static local:CustomColors.LightSilverColor}" FontSize="Small" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Focused="Entry_Focused" Unfocused="Entry_Unfocused" Completed="Entry_Completed">
+                     <Entry.Triggers>
+                        <DataTrigger TargetType="Entry" Binding="{Binding RenameGroup}" Value="true">
+                           <DataTrigger.EnterActions>
+                              <utils:CallDataMethod Method="Focus"/>
+                           </DataTrigger.EnterActions>
+                        </DataTrigger>
+                     </Entry.Triggers>
+                  </utils:CustomEntry>
+                  <Image Grid.Column="1" Source="accept.png" WidthRequest="30" HeightRequest="30" HorizontalOptions="Center" VerticalOptions="Center" Aspect="AspectFit">
+                     <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="RenameAcceptButton_Tapped"/>
+                     </Image.GestureRecognizers>
+                  </Image>
+                  <Image Grid.Column="2" Source="cancel.png" WidthRequest="30" HeightRequest="30" HorizontalOptions="Center" VerticalOptions="Center" Aspect="AspectFit">
+                     <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="RenameCancelButton_Tapped"/>
+                     </Image.GestureRecognizers>
+                  </Image>
+                  <BoxView x:Name="ListViewItemBottomSeparator" Grid.Row="0" Grid.ColumnSpan="3" HeightRequest="3" BackgroundColor="{x:Static local:CustomColors.PagesBackgroundColor}" HorizontalOptions="FillAndExpand" VerticalOptions="End"/>
+               </Grid>
+            </ViewCell>
+         </DataTemplate>
+         <local:ListViewDataTemplateSelector x:Key="listViewDataTemplateSelector"
+                DefaultTemplate="{StaticResource DefaultItemTemplate}"
+                RenameTemplate="{StaticResource RenameItemTemplate}" />
+      </ResourceDictionary>
+   </ContentPage.Resources>
+   <ContentPage.Padding>
+      <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" Default="0, 0, 0, 0" />
+   </ContentPage.Padding>
+
+   <!-- Page main grid -->
+   <Grid x:Name="mainLayout" BackgroundColor="{x:Static local:CustomColors.PagesBackgroundColor}">
+      <Grid.ColumnDefinitions>
+         <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+         <RowDefinition Height="Auto"/>
+         <RowDefinition Height="*"/>
+         <RowDefinition Height="{x:Static local:PlatformsConstants.AdRowHeight}"/>
+      </Grid.RowDefinitions>
+
+      <!-- Page upper part grid that contains the search and create new groups controls -->
+      <Grid Grid.Row="0" BackgroundColor="White" x:Name="pageUpperControlsGrid">
+         <Grid.RowDefinitions>
+            <RowDefinition Height="{x:Static local:PlatformsConstants.PagesHeaderTitleRowHeight}"/>
+            <RowDefinition Height="{x:Static local:PlatformsConstants.PagesHeaderOtherRowsHeight}"/>
+            <RowDefinition Height="{x:Static local:PlatformsConstants.PagesHeaderOtherRowsHeight}"/>
+            <RowDefinition Height="{x:Static local:PlatformsConstants.PagesHeaderOtherRowsHeight}"/>
+            <RowDefinition Height="5"/>
+         </Grid.RowDefinitions>
+
+         <Grid x:Name="headerGrid" Grid.Row="0" ColumnSpacing="0" VerticalOptions="FillAndExpand">
+            <Grid.ColumnDefinitions>
+               <ColumnDefinition Width="*"/>
+               <ColumnDefinition Width="Auto"/>
+               <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0" WidthRequest="40" VerticalOptions="FillAndExpand">
+               <Image Source="back.png" WidthRequest="25" Margin="10,0,0,0" HorizontalOptions="Start" VerticalOptions="Center" Aspect="AspectFit"/>
+               <Grid.GestureRecognizers>
+                  <TapGestureRecognizer Tapped="BackButton_Tapped"/>
+               </Grid.GestureRecognizers>
+            </Grid>
+            <StackLayout Grid.Column="1" Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center" Spacing="0">
+               <Label Text="Groups " TextColor="{x:Static local:CustomColors.DarkSharkonColor}" FontSize="{x:Static local:PlatformsConstants.PageTitleFontSize}" FontAttributes="Bold"/>
+               <Label x:Name="groupsCount" Text="{Binding Source={x:Reference GroupsListView}, Path=ItemsSource.Count, StringFormat='({0})'}" TextColor="{x:Static local:CustomColors.LightBlueColor}" FontSize="{x:Static local:PlatformsConstants.PageTitleFontSize}" FontAttributes="Bold"/>
+            </StackLayout>
+         </Grid>
+
+         <utils:CustomSearchBar Grid.Row="1" x:Name="mainSearchBar" BackgroundColor="Transparent" Placeholder = "Group Search" Margin="10,0,10,0" HeightRequest="30" VerticalOptions="Center" TextChanged="SearchBarTextChanged"/>
+
+         <utils:CustomSearchBar Grid.Row="2" x:Name="newGroupEntry" BackgroundColor="Transparent" Placeholder = "New Group Name" Margin="10,0,10,0" HeightRequest="30" VerticalOptions="Center" StyleId="EntryStyle"/>
+
+         <Label Grid.Row="3" Text="CREATE" Margin="10,0,10,0" TextColor="White" FontSize="Small" HeightRequest="30" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="Center" utils:RoundCornersEffect.CornerRadius="15" BackgroundColor="{x:Static local:CustomColors.BlueButtonColor}">
+            <Label.GestureRecognizers>
+               <TapGestureRecognizer Tapped="CreateGroupButton_Tapped"/>
+            </Label.GestureRecognizers>
+         </Label>
+      </Grid>
+
+      <!-- Page actual groups list view grid -->
+      <Grid Grid.Row="1">
+         <Grid.RowDefinitions>
+            <RowDefinition Height="40" x:Name="listViewHeaderRow"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="30" x:Name="listViewHintRow"/>
+         </Grid.RowDefinitions>
+
+         <Label Grid.Row="0" Text="My Groups" FontSize="Small" TextColor="{x:Static local:CustomColors.DarkSharkonColor}" HorizontalOptions="Start" VerticalOptions="Center" Margin="10,0,0,0"/>
+
+         <StackLayout Grid.Row="1">
+            <ListView
+               x:Name="GroupsListView"
+               SeparatorVisibility="None"
+               RowHeight="{Binding Source={x:Static local:PlatformsConstants.ListViewRowHeight}, Path=Value}"
+               ItemTemplate="{StaticResource listViewDataTemplateSelector}">
+            </ListView>
+         </StackLayout>
+
+         <Label Grid.Row="2" FontSize="10" TextColor="{x:Static local:CustomColors.SettingsLabelsColor}" LineBreakMode="TailTruncation" HorizontalOptions="Center" VerticalOptions="Center">
+            <Label.Text>
+               <OnPlatform x:TypeArguments="x:String" iOS="Swipe left to Rename or Delete group(s)" Android="Long press to Rename or Delete group(s)"/>
+            </Label.Text>
+            <Label.Triggers>
+               <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference GroupsListView}, Path=ItemsSource.Count}" Value="0">
+                  <Setter Property="IsVisible" Value="False" />
+               </DataTrigger>
+            </Label.Triggers>
+         </Label>
+      </Grid>
+
+      <ContentView x:Name="notificationMessageView" Grid.Row="1" IsVisible="False" BackgroundColor="Gray" Padding="20,5,20,5" VerticalOptions="End" HorizontalOptions="Center" utils:RoundCornersEffect.CornerRadius="10" Margin="0,0,0,10">
+         <Label x:Name="notificationMessageLabel" TextColor="Black" BackgroundColor="Transparent" FontSize="{x:Static local:PlatformsConstants.FontSizeForPhonesOnly}"/>
+      </ContentView>
+
+      <utils:AdsLayout x:Name="advertisementLayout" Grid.Row="2"/>
+   </Grid>
+</ContentPage>

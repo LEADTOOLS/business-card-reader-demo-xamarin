@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                  x:Class="BCReaderDemo.FieldsOfInterestPage"
+                  xmlns:local="clr-namespace:BCReaderDemo"
+                  xmlns:utils="clr-namespace:BCReaderDemo.Utils"
+                  xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+                  BackgroundColor="White"
+                  ios:Page.UseSafeArea="True"
+                  NavigationPage.HasNavigationBar="False"
+                  NavigationPage.HasBackButton="False">
+   <ContentPage.Resources>
+      <ResourceDictionary>
+         <local:NegateBooleanConverter x:Key="BooleanInverter" />
+
+         <DataTemplate x:Key="FieldsOfInterestListViewItemTemplate">
+            <ViewCell>
+               <StackLayout Orientation="Horizontal">
+                  <Label Text="{Binding FieldName}" TextColor="{x:Static local:CustomColors.SettingsLabelsColor}" LineBreakMode="TailTruncation" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" HorizontalOptions="Start" VerticalOptions="Center" FontSize="Small">
+                     <Label.FontAttributes>
+                        <OnPlatform x:TypeArguments="FontAttributes" iOS="Bold" Android="None"/>
+                     </Label.FontAttributes>
+                  </Label>
+                  <Switch HorizontalOptions="EndAndExpand" VerticalOptions="Center" IsToggled="{Binding FieldValue}" ClassId="{Binding FieldName}" IsEnabled="{Binding FieldEnabled}" InputTransparent="{Binding FieldEnabled, Converter={StaticResource BooleanInverter}}" Toggled="ListViewItemSwitch_Toggled">
+                     <Switch.Scale>
+                        <OnPlatform x:TypeArguments="x:Double" iOS="0.8" Android="0.9"/>
+                     </Switch.Scale>
+                  </Switch>
+               </StackLayout>
+            </ViewCell>
+         </DataTemplate>
+      </ResourceDictionary>
+   </ContentPage.Resources>
+
+   <Grid x:Name="MainLayout" RowSpacing="0">
+      <Grid.RowDefinitions>
+         <RowDefinition Height="{x:Static local:PlatformsConstants.PagesHeaderTitleRowHeight}"/>
+         <RowDefinition Height="Auto"/>
+         <RowDefinition Height="Auto"/>
+         <RowDefinition Height="*"/>
+         <RowDefinition Height="{x:Static local:PlatformsConstants.AdRowHeight}"/>
+      </Grid.RowDefinitions>
+
+      <Grid x:Name="headerGrid" Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="10,0,10,0">
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+         </Grid.ColumnDefinitions>
+
+         <Grid Grid.Column="0" WidthRequest="40" VerticalOptions="FillAndExpand">
+            <Image Source="back.png" WidthRequest="25" HorizontalOptions="Start" VerticalOptions="Center" Aspect="AspectFit"/>
+            <Grid.GestureRecognizers>
+               <TapGestureRecognizer Tapped="BackButton_Tapped"/>
+            </Grid.GestureRecognizers>
+         </Grid>
+
+         <Label Grid.Column="1" Text="FIELDS OF INTEREST" TextColor="{x:Static local:CustomColors.SettingsLabelsColor}" FontSize="Small" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+         <BoxView Grid.Column="0" Grid.ColumnSpan="3" HeightRequest="1" BackgroundColor="{x:Static local:CustomColors.SettingsLabelsColor}" HorizontalOptions="FillAndExpand" VerticalOptions="End"/>
+      </Grid>
+
+      <ListView x:Name="fieldsOfInterestListView" 
+                Grid.Row="1" 
+                Margin="10,10,10,0" 
+                SeparatorVisibility="None"
+                RowHeight="{Binding Source={x:Static local:PlatformsConstants.SwitchListViewRowHeight}, Path=Value}" 
+                ItemTemplate="{StaticResource FieldsOfInterestListViewItemTemplate}"/>
+
+      <Grid Grid.Row="2" Margin="10,15,10,15">
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+         </Grid.ColumnDefinitions>
+         <Label Grid.Column="0" x:Name="enableAllButton" Text="Enable All" FontSize="{x:Static local:PlatformsConstants.FontSizeForPhonesOnly}" HeightRequest="30" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="White" BackgroundColor="{x:Static local:CustomColors.BlueButtonColor}" utils:RoundCornersEffect.CornerRadius="15">
+            <Label.GestureRecognizers>
+               <TapGestureRecognizer Tapped="enableAllButton_Tapped"/>
+            </Label.GestureRecognizers>
+         </Label>
+         <Label Grid.Column="1" x:Name="disableAllButton" Text="Disable All" FontSize="{x:Static local:PlatformsConstants.FontSizeForPhonesOnly}" HeightRequest="30" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="White" BackgroundColor="{x:Static local:CustomColors.RedButtonColor}" utils:RoundCornersEffect.CornerRadius="15">
+            <Label.GestureRecognizers>
+               <TapGestureRecognizer Tapped="disableAllButton_Tapped"/>
+            </Label.GestureRecognizers>
+         </Label>
+      </Grid>
+
+      <Image Grid.Row="3" Source="powered_by_left_logo.png" WidthRequest="130" HorizontalOptions="Start" VerticalOptions="End" Aspect="AspectFit" Margin="20,0,0,0"/>
+
+      <utils:AdsLayout x:Name="advertisementLayout" Grid.Row="4"/>
+   </Grid>
+</ContentPage>

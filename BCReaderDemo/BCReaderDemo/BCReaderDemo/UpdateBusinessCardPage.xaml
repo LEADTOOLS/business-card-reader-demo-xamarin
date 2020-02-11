@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BCReaderDemo.UpdateBusinessCardPage"
+             xmlns:local="clr-namespace:BCReaderDemo"
+             xmlns:ext="clr-namespace:BCReaderDemo.Extentions"
+             xmlns:utils="clr-namespace:BCReaderDemo.Utils"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+             ios:Page.UseSafeArea="True"
+             BackgroundColor="{x:Static local:CustomColors.PagesBackgroundColor}"
+             NavigationPage.HasNavigationBar="False"
+             NavigationPage.HasBackButton="False">
+   <ContentPage.Padding>
+      <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" Default="0, 0, 0, 0" />
+   </ContentPage.Padding>
+
+   <Grid x:Name="rootGrid" BackgroundColor="{x:Static local:CustomColors.PagesBackgroundColor}">
+      <Grid x:Name="contentLayout" RowSpacing="0" BackgroundColor="{x:Static local:CustomColors.PagesBackgroundColor}">
+         <Grid.RowDefinitions>
+            <RowDefinition Height="{x:Static local:PlatformsConstants.PagesHeaderTitleRowHeight}"/>
+            <RowDefinition Height="2.5*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="7.5*"/>
+         </Grid.RowDefinitions>
+
+         <Grid x:Name="headerGrid" Grid.Row="0" ColumnSpacing="0" VerticalOptions="FillAndExpand">
+            <Grid.ColumnDefinitions>
+               <ColumnDefinition Width="*"/>
+               <ColumnDefinition Width="*"/>
+               <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0" WidthRequest="{x:Static local:PlatformsConstants.PagesHeaderOtherRowsHeight}" VerticalOptions="FillAndExpand">
+               <Label Text="Cancel" FontSize="{x:Static local:PlatformsConstants.PageTitleFontSize}" TextColor="{x:Static local:CustomColors.PinkButtonColor}" Margin="10,0,0,0" HorizontalOptions="Start" VerticalOptions="Center"/>
+               <Grid.GestureRecognizers>
+                  <TapGestureRecognizer Tapped="BackButton_Tapped"/>
+               </Grid.GestureRecognizers>
+            </Grid>
+            <Grid Grid.Column="1" WidthRequest="{x:Static local:PlatformsConstants.PagesHeaderOtherRowsHeight}" VerticalOptions="FillAndExpand">
+               <Label x:Name="RetakeButton" Text="Retake" HorizontalOptions="Center" VerticalOptions="Center" FontSize="{x:Static local:PlatformsConstants.PageTitleFontSize}" TextColor="{x:Static local:CustomColors.RetakeButtonColor}"/>
+               <Grid.GestureRecognizers>
+                  <TapGestureRecognizer Tapped="RetakeButton_Tapped"/>
+               </Grid.GestureRecognizers>
+            </Grid>
+            <Grid Grid.Column="2" WidthRequest="{x:Static local:PlatformsConstants.PagesHeaderOtherRowsHeight}" VerticalOptions="FillAndExpand">
+               <Label x:Name="SaveButton" Text="Save" HorizontalOptions="End" VerticalOptions="Center" Margin="0,0,10,0" FontSize="{x:Static local:PlatformsConstants.PageTitleFontSize}" TextColor="{x:Static local:CustomColors.BlueButtonColor}"/>
+               <Grid.GestureRecognizers>
+                  <TapGestureRecognizer Tapped="SaveButton_Tapped"/>
+               </Grid.GestureRecognizers>
+            </Grid>
+         </Grid>
+
+         <ContentView Grid.Row="1">
+            <local:MyCarouselViewControl x:Name="carouselView" 
+                                       HorizontalOptions="FillAndExpand" 
+                                       VerticalOptions="FillAndExpand" 
+                                       Orientation="Horizontal"
+                                       ShowIndicators="True"
+                                       AnimateTransition="True"
+                                       IndicatorsTintColor="LightGray"
+                                       CurrentPageIndicatorTintColor="{x:Static local:CustomColors.LinkBlueColor}"
+                                       BackgroundColor="{x:Static local:CustomColors.PagesBackgroundColor}"
+                                       IsSwipeEnabled="True">
+               <local:MyCarouselViewControl.ItemsSource>
+                  <x:Array Type="{x:Type View}">
+                     <Grid x:Name="imageViewerContainer" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="Gray"/>
+                     <Grid>
+                        <Grid x:Name="backImageViewerContainer" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="Gray"/>
+                        <Grid x:Name="addBackImageGrid" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="{x:Static local:CustomColors.PagesBackgroundColor}">
+                           <Grid.RowDefinitions>
+                              <RowDefinition Height="*"/>
+                              <RowDefinition Height="*"/>
+                              <RowDefinition Height="*"/>
+                              <RowDefinition Height="*"/>
+                           </Grid.RowDefinitions>
+                           <Image Grid.Row="0" Grid.RowSpan="2" Aspect="AspectFit" Source="backside.png" HorizontalOptions="Center" VerticalOptions="Center">
+                              <Image.Margin>
+                                 <OnIdiom x:TypeArguments="Thickness" Phone="0" Tablet="15"/>
+                              </Image.Margin>
+                           </Image>
+                           <Label Grid.Row="2" TextColor="{x:Static local:CustomColors.DarkSharkonColor}" Text="Add Backside" FontSize="{x:Static local:PlatformsConstants.FontSizeForPhonesOnly}" HorizontalOptions="Center" VerticalOptions="Start"/>
+                        </Grid>
+                        <Label x:Name="setAsMainLabel" Text="Set as Main" TextColor="{x:Static local:CustomColors.DarkSharkonColor}" FontSize="12" WidthRequest="100" HeightRequest="30" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" HorizontalOptions="End" VerticalOptions="Start" Margin="0,10,10,0" BackgroundColor="White" IsVisible="False" utils:RoundCornersEffect.CornerRadius="15"/>
+                     </Grid>
+                  </x:Array>
+               </local:MyCarouselViewControl.ItemsSource>
+            </local:MyCarouselViewControl>
+         </ContentView>
+
+         <Grid Grid.Column="0" Grid.Row="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+            <Grid.RowDefinitions>
+               <RowDefinition Height="Auto"/>
+               <RowDefinition Height="Auto"/>
+               <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <BoxView Grid.Row="0" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="Start" Margin="0" BackgroundColor="{x:Static local:CustomColors.LightSharkonColor}"/>
+            <StackLayout Grid.Row="1" Orientation="Horizontal" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Margin="15,0,15,0" Padding="0,5,0,5">
+               <Label Text="Save to Contacts Automatically" FontSize="Small" VerticalOptions="Center" HorizontalOptions="StartAndExpand" TextColor="{x:Static local:CustomColors.DarkSharkonColor}"/>
+               <utils:CheckboxImage x:Name="autoSaveCheckbox" VerticalOptions="Center" HorizontalOptions="End" WidthRequest="20" HeightRequest="20" CheckedChanged="CheckboxImage_CheckedChanged"/>
+            </StackLayout>
+            <BoxView Grid.Row="2" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="Start" Margin="0" BackgroundColor="{x:Static local:CustomColors.LightSharkonColor}"/>
+         </Grid>
+
+         <utils:CustomTableView ext:ContactDetailsViewModel.Sections="{Binding Sections}" Grid.Row="3" HasUnevenRows="True" Intent="Form" BackgroundColor="{x:Static local:CustomColors.PagesBackgroundColor}" Margin="0,15,0,0"/>
+         <utils:GradientContentView Grid.Row="3" HeightRequest="150" HorizontalOptions="FillAndExpand" VerticalOptions="End" BackgroundColor="Transparent" InputTransparent="True"/>
+         <ContentView Grid.Row="3" HeightRequest="40" Margin="15,15,15,20" HorizontalOptions="FillAndExpand" VerticalOptions="End" BackgroundColor="{x:Static local:CustomColors.RedButtonColor}" utils:RoundCornersEffect.CornerRadius="20">
+            <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+               <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="9*" />
+                  <ColumnDefinition Width="1*" />
+               </Grid.ColumnDefinitions>
+               <Grid.GestureRecognizers>
+                  <TapGestureRecognizer Tapped="DeleteButton_Tapped"/>
+               </Grid.GestureRecognizers>
+
+               <Label x:Name="DeleteLabel" Grid.Column="0" TextColor="White" FontSize="Small" Text="DELETE BUSINESS CARD" HorizontalOptions="StartAndExpand" VerticalOptions="Center" Margin="20, 0, 0, 0"/>
+               <Image Grid.Column="1" Aspect="AspectFit" WidthRequest="14" HeightRequest="14" Source="close.png" HorizontalOptions="Start" VerticalOptions="Center"/>
+            </Grid>
+         </ContentView>
+
+         <utils:AdsLayout x:Name="advertisementLayout" Grid.Row="3"/>
+      </Grid>
+
+      <Grid x:Name="waitingOverlayView" IsVisible="True" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+         <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="{x:Static local:PlatformsConstants.AdRowHeight}"/>
+         </Grid.RowDefinitions>
+
+         <Grid Grid.Row="1" VerticalOptions="Center" HorizontalOptions="Center">
+            <Grid.RowDefinitions>
+               <RowDefinition Height="Auto"/>
+               <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <ActivityIndicator x:Name="activityIndicator" BackgroundColor="Transparent" IsVisible="false" IsRunning="True" VerticalOptions="Center" HorizontalOptions="Center" Grid.Row="0"/>
+            <Label x:Name="activityIndicatorText"  IsVisible="False" TextColor="{x:Static local:CustomColors.BlueButtonColor}" VerticalOptions="Center" HorizontalOptions="Center" Grid.Row="1"/>
+         </Grid>
+
+         <Grid Grid.Row="2" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <Grid.ColumnDefinitions>
+               <ColumnDefinition Width="2.5*" />
+               <ColumnDefinition Width="5*" />
+               <ColumnDefinition Width="2.5*" />
+            </Grid.ColumnDefinitions>
+
+            <Image Grid.Column="1" Source="powered_by_centered_logo.png" HorizontalOptions="Center" VerticalOptions="Center" Aspect="AspectFit"/>
+         </Grid>
+
+         <utils:AdsLayout x:Name="busyAdvertisementLayout" Grid.Row="3"/>
+      </Grid>
+   </Grid>
+</ContentPage>

@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                  x:Class="BCReaderDemo.SettingsPage"
+                  xmlns:local="clr-namespace:BCReaderDemo"
+                  xmlns:utils="clr-namespace:BCReaderDemo.Utils"
+                  xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+                  BackgroundColor="White"
+                  ios:Page.UseSafeArea="True"
+                  NavigationPage.HasNavigationBar="False"
+                  NavigationPage.HasBackButton="False">
+   <ContentPage.Resources>
+      <ResourceDictionary>
+         <DataTemplate x:Key="SettingsListViewItemTemplate">
+            <ViewCell>
+               <Grid ColumnSpacing="5">
+                  <Grid.ColumnDefinitions>
+                     <ColumnDefinition Width="*"/>
+                     <ColumnDefinition Width="Auto"/>
+                  </Grid.ColumnDefinitions>
+                  <Grid.RowDefinitions>
+                     <RowDefinition Height="*"/>
+                  </Grid.RowDefinitions>
+
+                  <Label Grid.Column="0" Text="{Binding FieldName}" TextColor="{x:Static local:CustomColors.SettingsLabelsColor}" FontSize="Small" LineBreakMode="TailTruncation" HorizontalOptions="Start" VerticalOptions="Center">
+                     <Label.FontAttributes>
+                        <OnPlatform x:TypeArguments="FontAttributes" iOS="Bold" Android="None"/>
+                     </Label.FontAttributes>
+                  </Label>
+                  <Image Grid.Column="1" Source="right_arrow.png" WidthRequest="20"  HeightRequest="20" HorizontalOptions="End" VerticalOptions="Center" Aspect="AspectFit"/>
+               </Grid>
+            </ViewCell>
+         </DataTemplate>
+      </ResourceDictionary>
+   </ContentPage.Resources>
+
+   <Grid x:Name="MainLayout" RowSpacing="0">
+      <Grid.RowDefinitions>
+         <RowDefinition Height="{x:Static local:PlatformsConstants.PagesHeaderTitleRowHeight}"/>
+         <RowDefinition Height="*"/>
+         <RowDefinition Height="Auto"/>
+         <RowDefinition Height="{x:Static local:PlatformsConstants.AdRowHeight}"/>
+      </Grid.RowDefinitions>
+
+      <Grid x:Name="headerGrid" Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="10,0,10,0">
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+         </Grid.ColumnDefinitions>
+
+         <Grid Grid.Column="0" WidthRequest="40" VerticalOptions="FillAndExpand">
+            <Image Source="back.png" WidthRequest="25" HorizontalOptions="Start" VerticalOptions="Center" Aspect="AspectFit"/>
+            <Grid.GestureRecognizers>
+               <TapGestureRecognizer Tapped="BackButton_Tapped"/>
+            </Grid.GestureRecognizers>
+         </Grid>
+
+         <Label Grid.Column="1" Text="SETTINGS" TextColor="{x:Static local:CustomColors.SettingsLabelsColor}" FontSize="Small" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+         <BoxView Grid.Column="0" Grid.ColumnSpan="3" HeightRequest="1" BackgroundColor="{x:Static local:CustomColors.SettingsLabelsColor}" HorizontalOptions="FillAndExpand" VerticalOptions="End"/>
+      </Grid>
+
+      <ListView x:Name="settingsListView" 
+                Grid.Row="1" 
+                Margin="10,10,10,0" 
+                SeparatorColor="{x:Static local:CustomColors.SettingsLabelsColor}" 
+                RowHeight="{Binding Source={x:Static local:PlatformsConstants.ListViewRowHeight}, Path=Value}" 
+                ItemTemplate="{StaticResource SettingsListViewItemTemplate}"
+                ItemTapped="SettingsListView_ItemTapped"/>
+
+      <Image Grid.Row="2" Source="powered_by_left_logo.png" WidthRequest="130" HorizontalOptions="Start" VerticalOptions="End" Aspect="AspectFit" Margin="20,0,0,0"/>
+
+      <utils:AdsLayout x:Name="advertisementLayout" Grid.Row="3"/>
+   </Grid>
+</ContentPage>

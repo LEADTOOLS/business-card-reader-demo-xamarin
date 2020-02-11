@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                  x:Class="BCReaderDemo.HelpPage"
+                  xmlns:local="clr-namespace:BCReaderDemo"
+                  xmlns:utils="clr-namespace:BCReaderDemo.Utils"
+                  xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+                  BackgroundColor="White"
+                  ios:Page.UseSafeArea="True"
+                  NavigationPage.HasNavigationBar="False"
+                  NavigationPage.HasBackButton="False">
+   <Grid x:Name="MainLayout" RowSpacing="0">
+      <Grid.RowDefinitions>
+         <RowDefinition Height="{x:Static local:PlatformsConstants.PagesHeaderTitleRowHeight}"/>
+         <RowDefinition Height="Auto"/>
+         <RowDefinition Height="Auto"/>
+         <RowDefinition Height="Auto"/>
+         <RowDefinition Height="Auto"/>
+         <RowDefinition Height="*"/>
+         <RowDefinition Height="{x:Static local:PlatformsConstants.AdRowHeight}"/>
+      </Grid.RowDefinitions>
+
+      <Grid x:Name="headerGrid" Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="10,0,10,0">
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+         </Grid.ColumnDefinitions>
+
+         <Grid Grid.Column="0" WidthRequest="40" VerticalOptions="FillAndExpand">
+            <Image Source="back.png" WidthRequest="25" HorizontalOptions="Start" VerticalOptions="Center" Aspect="AspectFit"/>
+            <Grid.GestureRecognizers>
+               <TapGestureRecognizer Tapped="BackButton_Tapped"/>
+            </Grid.GestureRecognizers>
+         </Grid>
+
+         <Label Grid.Column="1" Text="HELP" TextColor="{x:Static local:CustomColors.SettingsLabelsColor}" FontSize="Small" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+         <BoxView Grid.Column="0" Grid.ColumnSpan="3" HeightRequest="1" BackgroundColor="{x:Static local:CustomColors.SettingsLabelsColor}" HorizontalOptions="FillAndExpand" VerticalOptions="End"/>
+      </Grid>
+
+      <ContentView Grid.Row="1" HeightRequest="40" Padding="2" Margin="10,40,10,0" HorizontalOptions="FillAndExpand" VerticalOptions="Center" BackgroundColor="{x:Static local:CustomColors.DarkSharkonColor}" utils:RoundCornersEffect.CornerRadius="2">
+         <ContentView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="White">
+            <Label Text="Contact Us" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" HorizontalOptions="Start" VerticalOptions="Center" Margin="10,0,10,0" TextColor="{x:Static local:CustomColors.DarkSharkonColor}"/>
+         </ContentView>
+
+         <ContentView.GestureRecognizers>
+            <TapGestureRecognizer Tapped="ContactUsButton_Tapped"/>
+         </ContentView.GestureRecognizers>
+      </ContentView>
+
+      <ContentView Grid.Row="2" HeightRequest="40" Padding="2" Margin="10,20,10,0" HorizontalOptions="FillAndExpand" VerticalOptions="Center" BackgroundColor="{x:Static local:CustomColors.DarkSharkonColor}" utils:RoundCornersEffect.CornerRadius="2">
+         <ContentView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="White">
+            <Label Text="About" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" HorizontalOptions="Start" VerticalOptions="Center" Margin="10,0,10,0" TextColor="{x:Static local:CustomColors.DarkSharkonColor}"/>
+         </ContentView>
+
+         <ContentView.GestureRecognizers>
+            <TapGestureRecognizer Tapped="AboutButton_Tapped"/>
+         </ContentView.GestureRecognizers>
+      </ContentView>
+
+      <ContentView Grid.Row="3" HeightRequest="40" Padding="2" Margin="10,20,10,0" HorizontalOptions="FillAndExpand" VerticalOptions="Center" BackgroundColor="{x:Static local:CustomColors.DarkSharkonColor}" utils:RoundCornersEffect.CornerRadius="2">
+         <ContentView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="White">
+            <Label Text="Privacy" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" HorizontalOptions="Start" VerticalOptions="Center" Margin="10,0,10,0" TextColor="{x:Static local:CustomColors.DarkSharkonColor}"/>
+         </ContentView>
+
+         <ContentView.GestureRecognizers>
+            <TapGestureRecognizer Tapped="PrivacyButton_Tapped"/>
+         </ContentView.GestureRecognizers>
+      </ContentView>
+
+      <Label Grid.Row="4" Text="© 2019 Business Card Scanner" HorizontalOptions="Center" VerticalOptions="Center" Margin="0,40,0,0" TextColor="{x:Static local:CustomColors.CopyrightTextColor}"/>
+
+      <Image Grid.Row="5" Source="powered_by_left_logo.png" WidthRequest="130" HorizontalOptions="Start" VerticalOptions="End" Aspect="AspectFit" Margin="20,0,0,0"/>
+
+      <utils:AdsLayout x:Name="advertisementLayout" Grid.Row="6"/>
+   </Grid>
+</ContentPage>

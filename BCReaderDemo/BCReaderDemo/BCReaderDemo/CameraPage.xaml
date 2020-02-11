@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:leadtools="clr-namespace:Leadtools.Camera.Xamarin;assembly=Leadtools.Camera.Xamarin"
+             xmlns:local="clr-namespace:BCReaderDemo"
+             x:Class="BCReaderDemo.CameraPage"
+             NavigationPage.HasNavigationBar="False"
+             NavigationPage.HasBackButton="False"
+             BackgroundColor="Black">
+
+   <ContentPage.Content>
+      <!--main grid container for everything-->
+      <Grid x:Name="mainGrid" BackgroundColor="Black">
+         <Grid.RowDefinitions>
+            <RowDefinition x:Name="row0" Height="{x:Static local:PlatformsConstants.PagesHeaderTitleRowHeight}"/>
+            <RowDefinition x:Name="row1" Height="8.5*"/>
+            <RowDefinition x:Name="row2" Height="1.5*"/>
+         </Grid.RowDefinitions>
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition x:Name="c0" Width="*"/>
+            <ColumnDefinition x:Name="c1" Width="*"/>
+            <ColumnDefinition x:Name="c2" Width="*"/>
+            <ColumnDefinition x:Name="c3" Width="*"/>
+            <ColumnDefinition x:Name="c4" Width="*"/>
+            <ColumnDefinition x:Name="c5" Width="*"/>
+            <ColumnDefinition x:Name="c6" Width="*"/>
+            <ColumnDefinition x:Name="c7" Width="*"/>
+            <ColumnDefinition x:Name="c8" Width="*"/>
+         </Grid.ColumnDefinitions>
+
+         <!--lead cam lives in mainGrid it's essentially a background for everything else-->
+         <Grid x:Name="overlayGrid" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="9" Grid.RowSpan="3">
+            <leadtools:CameraView x:Name="leadCamera" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" InputTransparent="True"/>
+            <Grid.GestureRecognizers>
+               <TapGestureRecognizer Tapped="LeadCamera_Tapped"/>
+            </Grid.GestureRecognizers>
+         </Grid>
+
+         <!--upper control panel, where flash and close buttons are-->
+         <Grid  x:Name="upperControlPanel" RowSpacing="0" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="9" >
+            <Grid.ColumnDefinitions>
+               <ColumnDefinition Width="Auto"/>
+               <ColumnDefinition Width="*"/>
+               <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+               <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <BoxView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="Black" Opacity="0.3"/>
+            <Grid Grid.Row="0" Grid.Column="0" WidthRequest="40" VerticalOptions="FillAndExpand">
+               <Image x:Name="closeButton" Source="close.png" WidthRequest="15" HeightRequest="15" HorizontalOptions="Start" VerticalOptions="Center" Margin="15,0,0,0"/>
+               <Grid.GestureRecognizers>
+                  <TapGestureRecognizer Tapped="CloseButton_Tapped"/>
+               </Grid.GestureRecognizers>
+            </Grid>
+            <Grid Grid.Row="0" Grid.Column="2" WidthRequest="40" VerticalOptions="FillAndExpand">
+               <Image x:Name="flashButton" Source="noFlash.png" WidthRequest="20" HeightRequest="20" HorizontalOptions="End" VerticalOptions="Center" Margin="0,0,15,0"/>
+               <Grid.GestureRecognizers>
+                  <TapGestureRecognizer Tapped="FlashButton_Tapped"/>
+               </Grid.GestureRecognizers>
+            </Grid>
+         </Grid>
+
+         <Grid x:Name="autoCaptureGrid" Grid.Row="1"  Grid.Column="0" Grid.ColumnSpan="9" VerticalOptions="Center" HorizontalOptions="Center" InputTransparent="True">
+            <Label x:Name="autoCaptureLabel" Text="Detecting Business Card" FontSize="Large" TextColor="GhostWhite" FontAttributes="Bold" Opacity="0" />
+         </Grid>
+
+         <!-- lower control panel take photo button, control toggle, gallery buttons are here-->
+         <Grid  x:Name="lowerControlPanel" RowSpacing="0" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="9" >
+            <Grid.ColumnDefinitions>
+               <ColumnDefinition Width="*"/>
+               <ColumnDefinition Width="*"/>
+               <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+               <RowDefinition Height="10"/>
+               <RowDefinition Height="1*"/>
+               <RowDefinition Height="8*"/>
+               <RowDefinition Height="1*"/>
+               <RowDefinition Height="10"/>
+            </Grid.RowDefinitions>
+            <BoxView Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="5" BackgroundColor="Black" Opacity="0.3" />
+
+            <Image x:Name="galleryButton"       Grid.Column="0" Grid.Row="2" Source="gallery.png"      HorizontalOptions="Center" VerticalOptions="Center">
+               <Image.GestureRecognizers>
+                  <TapGestureRecognizer Tapped="GalleryButton_Tapped"/>
+               </Image.GestureRecognizers>
+            </Image>
+            <Image x:Name="takePhotoButton"     Grid.Column="1" Grid.Row="1" Source="takePhoto.png"    HorizontalOptions="Center" VerticalOptions="Center" Grid.RowSpan="3">
+               <Image.GestureRecognizers>
+                  <TapGestureRecognizer Tapped="TakePhoto_Tapped"/>
+               </Image.GestureRecognizers>
+            </Image>
+            <Image x:Name="enableBarcodeRecognitionButton"  Grid.Column="2" Grid.Row="2" Source="barcode.png" HorizontalOptions="Center" VerticalOptions="Center">
+               <Image.GestureRecognizers>
+                  <TapGestureRecognizer Tapped="ToggleBarcodeRecognitionButton_Tapped"/>
+               </Image.GestureRecognizers>
+            </Image>
+         </Grid>
+      </Grid>
+   </ContentPage.Content>
+</ContentPage>

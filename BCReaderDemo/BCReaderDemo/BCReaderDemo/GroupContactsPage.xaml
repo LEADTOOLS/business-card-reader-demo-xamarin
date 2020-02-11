@@ -1,0 +1,221 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BCReaderDemo.GroupContactsPage"
+             xmlns:local="clr-namespace:BCReaderDemo"
+             xmlns:utils="clr-namespace:BCReaderDemo.Utils"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+             ios:Page.UseSafeArea="True"
+             BackgroundColor="{x:Static local:CustomColors.PagesBackgroundColor}"
+             NavigationPage.HasNavigationBar="False"
+             NavigationPage.HasBackButton="False">
+   <ContentPage.Padding>
+      <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" Default="0, 0, 0, 0" />
+   </ContentPage.Padding>
+   <ContentPage.Resources>
+      <ResourceDictionary>
+         <local:NullStringConverter x:Key="NullStringConverter" />
+      </ResourceDictionary>
+   </ContentPage.Resources>
+
+   <!-- Page main grid -->
+   <Grid x:Name="mainLayout" BackgroundColor="{x:Static local:CustomColors.PagesBackgroundColor}">
+      <Grid.ColumnDefinitions>
+         <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+         <RowDefinition Height="Auto"/>
+         <RowDefinition Height="9*"/>
+         <RowDefinition Height="15"/>
+         <RowDefinition Height="1*"/>
+         <RowDefinition Height="{x:Static local:PlatformsConstants.AdRowHeight}"/>
+      </Grid.RowDefinitions>
+
+      <!-- Page upper part grid that contains the search and create new groups controls -->
+      <Grid Grid.Row="0" BackgroundColor="White" x:Name="pageUpperControlsGrid">
+         <Grid.RowDefinitions>
+            <RowDefinition Height="{x:Static local:PlatformsConstants.PagesHeaderTitleRowHeight}"/>
+            <RowDefinition Height="{x:Static local:PlatformsConstants.PagesHeaderOtherRowsHeight}"/>
+            <RowDefinition Height="{x:Static local:PlatformsConstants.PagesHeaderOtherRowsHeight}"/>
+            <RowDefinition Height="5"/>
+         </Grid.RowDefinitions>
+         <Grid.GestureRecognizers>
+            <TapGestureRecognizer Tapped="MainGrid_Tapped"/>
+         </Grid.GestureRecognizers>
+
+         <Grid x:Name="headerGrid" Grid.Row="0" ColumnSpacing="0" VerticalOptions="FillAndExpand">
+            <Grid.ColumnDefinitions>
+               <ColumnDefinition Width="*"/>
+               <ColumnDefinition Width="Auto"/>
+               <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0" WidthRequest="40" VerticalOptions="FillAndExpand">
+               <Image Source="back.png" WidthRequest="25" Margin="10,0,0,0" HorizontalOptions="Start" VerticalOptions="Center" Aspect="AspectFit"/>
+               <Grid.GestureRecognizers>
+                  <TapGestureRecognizer Tapped="BackButton_Tapped"/>
+               </Grid.GestureRecognizers>
+            </Grid>
+            <StackLayout Grid.Column="1" Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center" Spacing="0">
+               <Label x:Name="groupTitle" TextColor="{x:Static local:CustomColors.DarkSharkonColor}" FontSize="{x:Static local:PlatformsConstants.PageTitleFontSize}" FontAttributes="Bold"/>
+               <Label x:Name="contactsCount" TextColor="{x:Static local:CustomColors.LightBlueColor}" FontSize="{x:Static local:PlatformsConstants.PageTitleFontSize}" FontAttributes="Bold"/>
+            </StackLayout>
+         </Grid>
+
+         <utils:CustomSearchBar Grid.Row="1" x:Name="mainSearchBar" BackgroundColor="Transparent" Placeholder = "Group Search" Margin="10,0,10,0" HeightRequest="30" VerticalOptions="Center" TextChanged="SearchBarTextChanged" Clicked="MainGrid_Tapped"/>
+
+         <StackLayout Grid.Row="2" Margin="10,0,10,0" Orientation="Horizontal" Spacing="10" HorizontalOptions="Start" VerticalOptions="FillAndExpand">
+            <Image Source="add_group.png" HorizontalOptions="Start" VerticalOptions="Center" HeightRequest="25"/>
+            <Label Text="ADD FROM CARDS-HOLDER" TextColor="{x:Static local:CustomColors.LightBlueColor}" FontSize="12" VerticalOptions="Center"/>
+            <StackLayout.GestureRecognizers>
+               <TapGestureRecognizer Tapped="AddFromCardsHolderButton_Tapped"/>
+            </StackLayout.GestureRecognizers>
+         </StackLayout>
+      </Grid>
+
+      <!-- Page actual contacts list view -->
+      <StackLayout Grid.Row="1" Grid.RowSpan="2" Margin="20,5,0,0">
+         <utils:ListViewWithLongPressGesture
+               x:Name="ContactsList"
+               SeparatorColor="{x:Static local:CustomColors.LightSharkonColor}"
+               SeparatorVisibility="None"
+               IsGroupingEnabled="True"
+               GroupDisplayBinding="{Binding Key}"
+               HasUnevenRows="True"
+               ItemTapped="ContactsList_Tapped"
+               ItemLongPressed="ContactsList_ItemLongPressed"
+               Clicked="ContactsList_Clicked"
+               BackgroundColor="Transparent">
+            <ListView.GroupHeaderTemplate>
+               <DataTemplate>
+                  <ViewCell Height="25">
+                     <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0,5,0,0">
+                        <Label Text="{Binding Key}" TextColor="{x:Static local:CustomColors.SettingsLabelsColor}" FontSize="{x:Static local:PlatformsConstants.ListViewGroupHeaderFontSize}" FontAttributes="Bold" HorizontalOptions="Start" VerticalOptions="Center" Margin="5,0,0,0"/>
+                     </Grid>
+                  </ViewCell>
+               </DataTemplate>
+            </ListView.GroupHeaderTemplate>
+
+            <ListView.ItemTemplate>
+               <DataTemplate>
+                  <ViewCell Height="{x:Static local:PlatformsConstants.CardsPageListViewItemHeight}">
+                     <!-- ListView cell data template main grid -->
+                     <Grid ColumnSpacing="10">
+                        <Grid.ColumnDefinitions>
+                           <ColumnDefinition Width="Auto"/>
+                           <ColumnDefinition Width="*"/>
+                           <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                           <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Image Grid.Column="0" Source="{Binding Thumbnail}" HorizontalOptions="Start" VerticalOptions="Center" Aspect="Fill" WidthRequest="{x:Static local:PlatformsConstants.CardThumbnailWidth}" HeightRequest="{x:Static local:PlatformsConstants.CardThumbnailHeight}" utils:RoundCornersEffect.CornerRadius="3" />
+                        <StackLayout Grid.Column="1" VerticalOptions="Center" Orientation="Vertical" Margin="0,0,20,0">
+                           <Label Text="{Binding Name.Text, Converter={StaticResource NullStringConverter}}" FontSize="{x:Static local:PlatformsConstants.CardHolderNameLabelFontSize}" FontAttributes="Bold" TextColor="{x:Static local:CustomColors.DarkSharkonColor}" LineBreakMode="TailTruncation" VerticalOptions="Start"/>
+                           <Label Text="{Binding Company.Text}" FontSize="{x:Static local:PlatformsConstants.CardHolderCompanyLabelFontSize}" TextColor="{x:Static local:CustomColors.DarkSharkonColor}" LineBreakMode="TailTruncation" VerticalOptions="End"/>
+                        </StackLayout>
+                        <Grid Grid.Column="2" WidthRequest="40" VerticalOptions="FillAndExpand">
+                           <Image Source="quick_actions.png" Margin="0,0,10,0" HorizontalOptions="End" VerticalOptions="FillAndExpand" WidthRequest="20"/>
+                           <Grid.GestureRecognizers>
+                              <TapGestureRecognizer Tapped="CardQuickActionsButton_Tapped"/>
+                           </Grid.GestureRecognizers>
+                        </Grid>
+                        <BoxView x:Name="ListViewItemBottomSeparator" Grid.Row="0" Grid.ColumnSpan="3" HeightRequest="0.5" BackgroundColor="{x:Static local:CustomColors.LightSharkonColor}" HorizontalOptions="FillAndExpand" VerticalOptions="End"/>
+
+                        <!-- ListView Item card actions that will show up when user clicks the item's extra options three dotted button (...) -->
+                        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" IsVisible="{Binding ShowQuickActions}" ColumnSpacing="0" BackgroundColor="Transparent" InputTransparent="False">
+                           <Grid.ColumnDefinitions>
+                              <ColumnDefinition Width="*"/>
+                              <ColumnDefinition Width="Auto"/>
+                           </Grid.ColumnDefinitions>
+                           <Grid.Triggers>
+                              <Trigger TargetType="Grid" Property="Grid.IsVisible" Value="True">
+                                 <Trigger.EnterActions>
+                                    <local:FadeTriggerAction StartsFrom="1"/>
+                                 </Trigger.EnterActions>
+                              </Trigger>
+                           </Grid.Triggers>
+                           <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="{x:Static local:CustomColors.PagesBackgroundColor}" Opacity="0.6"/>
+                           <Grid Grid.Row="0" Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" ColumnSpacing="10" BackgroundColor="Transparent" Margin="0,0,10,0">
+                              <Grid.ColumnDefinitions>
+                                 <ColumnDefinition Width="*"/>
+                                 <ColumnDefinition Width="*"/>
+                                 <ColumnDefinition Width="*"/>
+                                 <ColumnDefinition Width="*"/>
+                              </Grid.ColumnDefinitions>
+
+                              <Image Grid.Column="0" Source="phone.png" HorizontalOptions="Center" VerticalOptions="Center">
+                                 <Image.WidthRequest>
+                                    <OnIdiom x:TypeArguments="x:Double" Phone="30" Tablet="40"/>
+                                 </Image.WidthRequest>
+                                 <Image.HeightRequest>
+                                    <OnIdiom x:TypeArguments="x:Double" Phone="30" Tablet="40"/>
+                                 </Image.HeightRequest>
+                                 <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="PhoneCallQuickActionsButton_Tapped"/>
+                                 </Image.GestureRecognizers>
+                              </Image>
+                              <Image Grid.Column="1" Source="email.png" HorizontalOptions="Center" VerticalOptions="Center">
+                                 <Image.WidthRequest>
+                                    <OnIdiom x:TypeArguments="x:Double" Phone="30" Tablet="40"/>
+                                 </Image.WidthRequest>
+                                 <Image.HeightRequest>
+                                    <OnIdiom x:TypeArguments="x:Double" Phone="30" Tablet="40"/>
+                                 </Image.HeightRequest>
+                                 <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="EmailQuickActionsButton_Tapped"/>
+                                 </Image.GestureRecognizers>
+                              </Image>
+                              <Image Grid.Column="2" Source="share.png" HorizontalOptions="Center" VerticalOptions="Center">
+                                 <Image.WidthRequest>
+                                    <OnIdiom x:TypeArguments="x:Double" Phone="30" Tablet="40"/>
+                                 </Image.WidthRequest>
+                                 <Image.HeightRequest>
+                                    <OnIdiom x:TypeArguments="x:Double" Phone="30" Tablet="40"/>
+                                 </Image.HeightRequest>
+                                 <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="ShareQuickActionsButton_Tapped"/>
+                                 </Image.GestureRecognizers>
+                              </Image>
+                              <Image Grid.Column="3" Source="remove_from_group.png" HorizontalOptions="Center" VerticalOptions="Center">
+                                 <Image.WidthRequest>
+                                    <OnIdiom x:TypeArguments="x:Double" Phone="30" Tablet="40"/>
+                                 </Image.WidthRequest>
+                                 <Image.HeightRequest>
+                                    <OnIdiom x:TypeArguments="x:Double" Phone="30" Tablet="40"/>
+                                 </Image.HeightRequest>
+                                 <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="RemoveFromGroupQuickActionsButton_Tapped"/>
+                                 </Image.GestureRecognizers>
+                              </Image>
+                           </Grid>
+                        </Grid>
+                     </Grid>
+                  </ViewCell>
+               </DataTemplate>
+            </ListView.ItemTemplate>
+         </utils:ListViewWithLongPressGesture>
+      </StackLayout>
+
+      <Grid Grid.Row="2" Grid.RowSpan="2">
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+         </Grid.ColumnDefinitions>
+         <Grid.RowDefinitions>
+            <RowDefinition Height="0.3*"/>
+            <RowDefinition Height="9.4*"/>
+            <RowDefinition Height="0.3*"/>
+         </Grid.RowDefinitions>
+         <Image x:Name="CameraAddButton" Grid.Column="1" Grid.Row="0" Source="camera_add.png" HorizontalOptions="Center" VerticalOptions="Center" BackgroundColor="Transparent" Grid.RowSpan="3">
+            <Image.GestureRecognizers>
+               <TapGestureRecognizer Tapped="CameraAddButton_Tapped"/>
+            </Image.GestureRecognizers>
+         </Image>
+      </Grid>
+
+      <utils:AdsLayout x:Name="advertisementLayout" Grid.Row="4"/>
+   </Grid>
+</ContentPage>

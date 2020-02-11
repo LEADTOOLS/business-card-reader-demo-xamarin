@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<plugin:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                  x:Class="BCReaderDemo.ActionsPage"
+                  xmlns:plugin="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+                  xmlns:local="clr-namespace:BCReaderDemo"
+                  xmlns:utils="clr-namespace:BCReaderDemo.Utils"
+                  HasSystemPadding="True" SystemPaddingSides="Top">
+   <plugin:PopupPage.Animation>
+      <utils:UserAnimation/>
+   </plugin:PopupPage.Animation>
+
+   <Grid x:Name="MainLayout" HorizontalOptions="FillAndExpand" VerticalOptions="End" BackgroundColor="White" utils:RoundCornersEffect.CornerRadius="10">
+      <Grid.Margin>
+         <OnIdiom x:TypeArguments="Thickness" Phone="20,0,20,0" Tablet="150,0,150,0" />
+      </Grid.Margin>
+      <Grid.RowSpacing>
+         <OnIdiom x:TypeArguments="x:Double" Phone="10" Tablet="30" />
+      </Grid.RowSpacing>
+      <Grid.RowDefinitions>
+         <RowDefinition Height="*" />
+         <RowDefinition Height="Auto" />
+         <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+
+      <!-- SORT BY CONTROLS -->
+      <StackLayout Grid.Row="0" Orientation="Vertical">
+         <StackLayout.Margin>
+            <OnIdiom x:TypeArguments="Thickness" Phone="20,20,20,0" Tablet="40,40,40,0" />
+         </StackLayout.Margin>
+         <StackLayout.Spacing>
+            <OnIdiom x:TypeArguments="x:Double" Phone="10" Tablet="20" />
+         </StackLayout.Spacing>
+         <Label Text="SORT BY" FontAttributes="Bold" FontSize="{x:Static local:PlatformsConstants.HeaderTextFontSize}" HorizontalOptions="Start" VerticalOptions="Start" TextColor="{x:Static local:CustomColors.SettingsLabelsColor}"/>
+         <Grid ColumnSpacing="10">
+            <Grid.ColumnDefinitions>
+               <ColumnDefinition Width="*" />
+               <ColumnDefinition Width="*" />
+               <ColumnDefinition Width="*" />
+               <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Image x:Name="dateImage" Grid.Column="0" BackgroundColor="Transparent" Source="date_inactive.png" StyleId="date_inactive">
+               <Image.GestureRecognizers>
+                  <TapGestureRecognizer Tapped="SortButton_Tapped"/>
+               </Image.GestureRecognizers>
+            </Image>
+            <Image x:Name="nameImage" Grid.Column="1" BackgroundColor="Transparent" Source="name_inactive.png" StyleId="name_inactive">
+               <Image.GestureRecognizers>
+                  <TapGestureRecognizer Tapped="SortButton_Tapped"/>
+               </Image.GestureRecognizers>
+            </Image>
+            <Image x:Name="companyImage" Grid.Column="2" BackgroundColor="Transparent" Source="company_inactive.png" StyleId="company_inactive">
+               <Image.GestureRecognizers>
+                  <TapGestureRecognizer Tapped="SortButton_Tapped"/>
+               </Image.GestureRecognizers>
+            </Image>
+            <Image x:Name="mailImage" Grid.Column="3" BackgroundColor="Transparent" Source="email_inactive.png" StyleId="email_inactive">
+               <Image.GestureRecognizers>
+                  <TapGestureRecognizer Tapped="SortButton_Tapped"/>
+               </Image.GestureRecognizers>
+            </Image>
+         </Grid>
+      </StackLayout>
+
+      <!-- SEPARATOR -->
+      <BoxView Grid.Row="1" HeightRequest="1" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" VerticalOptions="Center"/>
+
+      <!-- ACTIONS CONTROLS -->
+      <StackLayout Grid.Row="2" Orientation="Vertical">
+         <StackLayout.Margin>
+            <OnIdiom x:TypeArguments="Thickness" Phone="20,0,20,20" Tablet="40,0,40,40" />
+         </StackLayout.Margin>
+         <StackLayout.Spacing>
+            <OnIdiom x:TypeArguments="x:Double" Phone="10" Tablet="20" />
+         </StackLayout.Spacing>
+         <Label Text="ACTIONS" FontAttributes="Bold" FontSize="{x:Static local:PlatformsConstants.HeaderTextFontSize}" HorizontalOptions="Start" VerticalOptions="Start" TextColor="{x:Static local:CustomColors.SettingsLabelsColor}"/>
+         <Grid ColumnSpacing="10">
+            <Grid.ColumnDefinitions>
+               <ColumnDefinition Width="*" />
+               <ColumnDefinition Width="*" />
+               <ColumnDefinition Width="*" />
+               <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Image Grid.Column="0" BackgroundColor="Transparent" Source="group_action.png" StyleId="group">
+               <Image.GestureRecognizers>
+                  <TapGestureRecognizer Tapped="ActionButton_Tapped"/>
+               </Image.GestureRecognizers>
+            </Image>
+            <Image Grid.Column="1" BackgroundColor="Transparent" Source="share_action.png" StyleId="share">
+               <Image.GestureRecognizers>
+                  <TapGestureRecognizer Tapped="ActionButton_Tapped"/>
+               </Image.GestureRecognizers>
+            </Image>
+            <Image Grid.Column="2" BackgroundColor="Transparent" Source="save_action.png" StyleId="save">
+               <Image.GestureRecognizers>
+                  <TapGestureRecognizer Tapped="ActionButton_Tapped"/>
+               </Image.GestureRecognizers>
+            </Image>
+            <Image Grid.Column="3" BackgroundColor="Transparent" Source="delete_action.png" StyleId="delete">
+               <Image.GestureRecognizers>
+                  <TapGestureRecognizer Tapped="ActionButton_Tapped"/>
+               </Image.GestureRecognizers>
+            </Image>
+         </Grid>
+      </StackLayout>
+   </Grid>
+</plugin:PopupPage>

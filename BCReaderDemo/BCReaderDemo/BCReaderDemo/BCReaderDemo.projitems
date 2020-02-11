@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>{C65D136B-48C3-4338-A544-41D35E96AFEC}</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>BCReaderDemo</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)App.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)AboutPage.xaml.cs">
+      <DependentUpon>AboutPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)CreateNewGroupPage.xaml.cs">
+      <DependentUpon>CreateNewGroupPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)FieldsOfInterestPage.xaml.cs">
+      <DependentUpon>FieldsOfInterestPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)FollowUsPage.xaml.cs">
+      <DependentUpon>FollowUsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)GeneralSettingsPage.xaml.cs">
+      <DependentUpon>GeneralSettingsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)GroupContactsPage.xaml.cs">
+      <DependentUpon>GroupContactsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)HelpPage.xaml.cs">
+      <DependentUpon>HelpPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)ImageViewerPage.xaml.cs">
+      <DependentUpon>ImageViewerPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)IPermissions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RecommendToFriendPage.xaml.cs">
+      <DependentUpon>RecommendToFriendPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)SelectCardsPage.xaml.cs">
+      <DependentUpon>SelectCardsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)GroupsPage.xaml.cs">
+      <DependentUpon>GroupsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)SettingsPage.xaml.cs">
+      <DependentUpon>SettingsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Models\ActionsRow.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)HomePage.xaml.cs">
+      <DependentUpon>HomePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Models\GroupsPageItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\NameRow.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\ButtonRow.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\ContactModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DataService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ActionsPage.xaml.cs">
+      <DependentUpon>ActionsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)PreviewBusinessCardPage.xaml.cs">
+      <DependentUpon>PreviewBusinessCardPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)SelectGroupPage.xaml.cs">
+      <DependentUpon>SelectGroupPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)UpdateBusinessCardPage.xaml.cs">
+      <DependentUpon>UpdateBusinessCardPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Grouping.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\EditorRow.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\ISectionRow.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\NotesRow.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\PickerItems.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\PickerRow.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Section.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\SwitchRow.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Actions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Animations.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\AppData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\CustomClasses.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Effects.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Helpers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\MECardUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\SectionsFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\VCardUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModel\ContactDetailsViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CameraPage.xaml.cs">
+      <DependentUpon>CameraPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\Common\Shared\Utils\RasterImageLoader.cs">
+      <Link>Common\Utils\RasterImageLoader.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)UpdateBusinessCardPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>
+      </Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)HomePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>
+      </Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)GroupsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>
+      </Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)SelectCardsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>
+      </Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)SettingsPage.xaml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)CameraPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)ActionsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>
+      </Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)PreviewBusinessCardPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>
+      </Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)CreateNewGroupPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>
+      </Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)SelectGroupPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>
+      </Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)GroupContactsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>
+      </Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)ImageViewerPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>
+      </Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)GeneralSettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>
+      </Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)FieldsOfInterestPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>
+      </Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)FollowUsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>
+      </Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)RecommendToFriendPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>
+      </Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)HelpPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>
+      </Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)AboutPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>
+      </Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

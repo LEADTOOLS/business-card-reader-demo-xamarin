@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BCReaderDemo.SelectCardsPage"
+             xmlns:local="clr-namespace:BCReaderDemo"
+             xmlns:utils="clr-namespace:BCReaderDemo.Utils"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+             ios:Page.UseSafeArea="True"
+             BackgroundColor="{x:Static local:CustomColors.PagesBackgroundColor}"
+             NavigationPage.HasNavigationBar="False"
+             NavigationPage.HasBackButton="False">
+   <ContentPage.Resources>
+      <ResourceDictionary>
+         <local:NegateBooleanConverter x:Key="BooleanInverter" />
+         <local:StringCaseConverter x:Key="StringCaseConverter" />
+         <local:NullStringConverter x:Key="NullStringConverter" />
+      </ResourceDictionary>
+   </ContentPage.Resources>
+
+   <ContentPage.Padding>
+      <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" Default="0, 0, 0, 0" />
+   </ContentPage.Padding>
+
+   <Grid x:Name="mainLayout" BackgroundColor="{x:Static local:CustomColors.PagesBackgroundColor}">
+      <Grid RowSpacing="0">
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+         </Grid.ColumnDefinitions>
+         <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="8.5*" x:Name="contactsListRow"/>
+            <RowDefinition Height="15"/>
+            <RowDefinition Height="1.5*" x:Name="actionButtonsRow"/>
+            <RowDefinition Height="{x:Static local:PlatformsConstants.AdRowHeight}"/>
+         </Grid.RowDefinitions>
+
+         <Grid x:Name="headerGrid" Grid.Row="0" BackgroundColor="Transparent" ColumnSpacing="0" VerticalOptions="FillAndExpand">
+            <Grid.ColumnDefinitions>
+               <ColumnDefinition Width="*"/>
+               <ColumnDefinition Width="Auto"/>
+               <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0" VerticalOptions="FillAndExpand">
+               <Label Text="Cancel" FontSize="{x:Static local:PlatformsConstants.PageTitleFontSize}" TextColor="{x:Static local:CustomColors.PinkButtonColor}" Margin="10,0,0,0" HorizontalOptions="Start" VerticalOptions="Center"/>
+               <Grid.GestureRecognizers>
+                  <TapGestureRecognizer Tapped="CancelButton_Tapped"/>
+               </Grid.GestureRecognizers>
+            </Grid>
+            <StackLayout Grid.Column="1" Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center" Spacing="0">
+               <Label Text="Selected Cards " TextColor="{x:Static local:CustomColors.DarkSharkonColor}" FontSize="{x:Static local:PlatformsConstants.PageTitleFontSize}" FontAttributes="Bold"/>
+               <Label x:Name="selectedCardsCount" Text="(0)" TextColor="{x:Static local:CustomColors.LightBlueColor}" FontSize="{x:Static local:PlatformsConstants.PageTitleFontSize}" FontAttributes="Bold"/>
+            </StackLayout>
+            <Grid Grid.Column="2" VerticalOptions="FillAndExpand">
+               <Label x:Name="SelectAllButton" Text="Select All" TextColor="{x:Static local:CustomColors.LightBlueColor}" HorizontalOptions="End" VerticalOptions="Center" FontSize="{x:Static local:PlatformsConstants.PageTitleFontSize}" Margin="0,0,10,0"/>
+               <Grid.GestureRecognizers>
+                  <TapGestureRecognizer Tapped="SelectAllButton_Tapped"/>
+               </Grid.GestureRecognizers>
+            </Grid>
+         </Grid>
+
+         <utils:CustomSearchBar Grid.Row="1" x:Name="mainSearchBar" BackgroundColor="Transparent" Placeholder = "Search" HeightRequest="30" Margin="10,0,10,0" VerticalOptions="Center" TextChanged="SearchBarTextChanged"/>
+
+         <StackLayout Grid.Row="2" Grid.RowSpan="2" Margin="20,10,0,0">
+            <ListView
+               x:Name="ContactsList"
+               SeparatorColor="{x:Static local:CustomColors.LightSharkonColor}"
+               SeparatorVisibility="None"
+               IsGroupingEnabled="True"
+               GroupDisplayBinding="{Binding Key}"
+               HasUnevenRows="True"
+               ItemTapped="ContactsList_ItemTapped"
+               BackgroundColor="Transparent">
+               <ListView.GroupHeaderTemplate>
+                  <DataTemplate>
+                     <ViewCell Height="25">
+                        <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0,5,0,0">
+                           <Label Text="{Binding Key}" TextColor="{x:Static local:CustomColors.SettingsLabelsColor}" FontSize="{x:Static local:PlatformsConstants.ListViewGroupHeaderFontSize}" FontAttributes="Bold" HorizontalOptions="Start" VerticalOptions="Center" Margin="5,0,0,0"/>
+                        </Grid>
+                     </ViewCell>
+                  </DataTemplate>
+               </ListView.GroupHeaderTemplate>
+
+               <ListView.ItemTemplate>
+                  <DataTemplate>
+                     <ViewCell Height="{x:Static local:PlatformsConstants.CardsPageListViewItemHeight}">
+                        <!-- ListView cell data template main grid -->
+                        <Grid ColumnSpacing="10">
+                           <Grid.ColumnDefinitions>
+                              <ColumnDefinition Width="Auto"/>
+                              <ColumnDefinition Width="Auto"/>
+                              <ColumnDefinition Width="*"/>
+                           </Grid.ColumnDefinitions>
+                           <Grid.RowDefinitions>
+                              <RowDefinition Height="*"/>
+                           </Grid.RowDefinitions>
+
+                           <Image Grid.Column="0" Source="{Binding Icon}" Margin="0,5,5,5" WidthRequest="20" HeightRequest="20" HorizontalOptions="Center" VerticalOptions="Center" Aspect="AspectFit" />
+                           <Image Grid.Column="1" Source="{Binding Thumbnail}" HorizontalOptions="Start" VerticalOptions="Center" Aspect="Fill" WidthRequest="{x:Static local:PlatformsConstants.CardThumbnailWidth}" HeightRequest="{x:Static local:PlatformsConstants.CardThumbnailHeight}" utils:RoundCornersEffect.CornerRadius="3" />
+                           <StackLayout Grid.Column="2" VerticalOptions="Center" Orientation="Vertical" Margin="0,0,20,0">
+                              <Label Text="{Binding Name.Text, Converter={StaticResource NullStringConverter}}" FontSize="{x:Static local:PlatformsConstants.CardHolderNameLabelFontSize}" FontAttributes="Bold" TextColor="{x:Static local:CustomColors.DarkSharkonColor}" LineBreakMode="TailTruncation" VerticalOptions="Start"/>
+                              <Label Text="{Binding Company.Text}" FontSize="{x:Static local:PlatformsConstants.CardHolderCompanyLabelFontSize}" TextColor="{x:Static local:CustomColors.DarkSharkonColor}" LineBreakMode="TailTruncation" VerticalOptions="End"/>
+                           </StackLayout>
+                           <BoxView x:Name="ListViewItemBottomSeparator" Grid.Row="0" Grid.ColumnSpan="3" HeightRequest="0.5" BackgroundColor="{x:Static local:CustomColors.LightSharkonColor}" HorizontalOptions="FillAndExpand" VerticalOptions="End"/>
+                        </Grid>
+                     </ViewCell>
+                  </DataTemplate>
+               </ListView.ItemTemplate>
+            </ListView>
+         </StackLayout>
+
+         <ContentView x:Name="notificationMessageView" Grid.Row="2" IsVisible="False" BackgroundColor="Gray" Padding="20,5,20,5" VerticalOptions="End" HorizontalOptions="Center" utils:RoundCornersEffect.CornerRadius="10" Margin="0,0,0,10">
+            <Label x:Name="notificationMessageLabel" TextColor="Black" BackgroundColor="Transparent" FontSize="{x:Static local:PlatformsConstants.FontSizeForPhonesOnly}"/>
+         </ContentView>
+
+         <Grid x:Name="actionButtonsGrid" Grid.Row="3" Grid.RowSpan="2" ColumnSpacing="10" Padding="10,15,10,15" BackgroundColor="White" utils:RoundCornersEffect.CornerRadius="15" IsVisible="{Binding IsSingleActionPage, Converter={StaticResource BooleanInverter}}">
+            <Grid.Margin>
+               <OnIdiom x:TypeArguments="Thickness" Phone="20,0,20,0" Tablet="150,0,150,0" />
+            </Grid.Margin>
+            <Grid.ColumnDefinitions>
+               <ColumnDefinition Width="*"/>
+               <ColumnDefinition Width="*"/>
+               <ColumnDefinition Width="*"/>
+               <ColumnDefinition Width="*"/>
+               <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+               <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Image Grid.Column="0" BackgroundColor="Transparent" Source="group_action.png" StyleId="group">
+               <Image.Margin>
+                  <OnIdiom x:TypeArguments="Thickness" Phone="0" Tablet="15"/>
+               </Image.Margin>
+               <Image.GestureRecognizers>
+                  <TapGestureRecognizer Tapped="GroupButton_Tapped"/>
+               </Image.GestureRecognizers>
+            </Image>
+            <Image Grid.Column="1" BackgroundColor="Transparent" Source="share_action.png" StyleId="share">
+               <Image.Margin>
+                  <OnIdiom x:TypeArguments="Thickness" Phone="0" Tablet="15"/>
+               </Image.Margin>
+               <Image.GestureRecognizers>
+                  <TapGestureRecognizer Tapped="ShareButton_Tapped"/>
+               </Image.GestureRecognizers>
+            </Image>
+            <Image Grid.Column="2" BackgroundColor="Transparent" Source="save_action.png" StyleId="save">
+               <Image.Margin>
+                  <OnIdiom x:TypeArguments="Thickness" Phone="0" Tablet="15"/>
+               </Image.Margin>
+               <Image.GestureRecognizers>
+                  <TapGestureRecognizer Tapped="SaveToContactsButton_Tapped"/>
+               </Image.GestureRecognizers>
+            </Image>
+            <Image Grid.Column="3" BackgroundColor="Transparent" Source="delete_action.png" StyleId="delete">
+               <Image.Margin>
+                  <OnIdiom x:TypeArguments="Thickness" Phone="0" Tablet="15"/>
+               </Image.Margin>
+               <Image.GestureRecognizers>
+                  <TapGestureRecognizer Tapped="DeleteCardsButton_Tapped"/>
+               </Image.GestureRecognizers>
+            </Image>
+            <Image x:Name="removeFromGroupActionButton" Grid.Column="4" BackgroundColor="Transparent" Source="remove_from_group_action.png" StyleId="remove_from_group">
+               <Image.Margin>
+                  <OnIdiom x:TypeArguments="Thickness" Phone="0" Tablet="15"/>
+               </Image.Margin>
+               <Image.GestureRecognizers>
+                  <TapGestureRecognizer Tapped="RemoveFromGroupButton_Tapped"/>
+               </Image.GestureRecognizers>
+            </Image>
+         </Grid>
+
+         <Button x:Name="actionButton" Grid.Row="4" Text="{Binding SingleActionName, Converter={StaticResource StringCaseConverter}, ConverterParameter=U}" Margin="10,0,10,0" FontSize="Medium" TextColor="White" BackgroundColor="{x:Static local:CustomColors.LightBlueColor}" HeightRequest="40" VerticalOptions="Center" BorderRadius="20" IsVisible="{Binding IsSingleActionPage}"/>
+
+         <utils:AdsLayout x:Name="advertisementLayout" Grid.Row="5"/>
+      </Grid>
+   </Grid>
+</ContentPage>

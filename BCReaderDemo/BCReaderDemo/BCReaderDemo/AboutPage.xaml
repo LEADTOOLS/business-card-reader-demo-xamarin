@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                  x:Class="BCReaderDemo.AboutPage"
+                  xmlns:local="clr-namespace:BCReaderDemo"
+                  xmlns:utils="clr-namespace:BCReaderDemo.Utils"
+                  xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+                  BackgroundColor="White"
+                  ios:Page.UseSafeArea="True"
+                  NavigationPage.HasNavigationBar="False"
+                  NavigationPage.HasBackButton="False">
+   <Grid x:Name="MainLayout" RowSpacing="0">
+      <Grid.RowDefinitions>
+         <RowDefinition Height="{x:Static local:PlatformsConstants.PagesHeaderTitleRowHeight}"/>
+         <RowDefinition Height="*"/>
+         <RowDefinition Height="Auto"/>
+         <RowDefinition Height="{x:Static local:PlatformsConstants.AdRowHeight}"/>
+      </Grid.RowDefinitions>
+
+      <Grid x:Name="headerGrid" Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="10,0,10,0">
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+         </Grid.ColumnDefinitions>
+
+         <Grid Grid.Column="0" WidthRequest="40" VerticalOptions="FillAndExpand">
+            <Image Source="back.png" WidthRequest="25" HorizontalOptions="Start" VerticalOptions="Center" Aspect="AspectFit"/>
+            <Grid.GestureRecognizers>
+               <TapGestureRecognizer Tapped="BackButton_Tapped"/>
+            </Grid.GestureRecognizers>
+         </Grid>
+
+         <Label Grid.Column="1" Text="ABOUT" TextColor="{x:Static local:CustomColors.SettingsLabelsColor}" FontSize="Small" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+         <BoxView Grid.Column="0" Grid.ColumnSpan="3" HeightRequest="1" BackgroundColor="{x:Static local:CustomColors.SettingsLabelsColor}" HorizontalOptions="FillAndExpand" VerticalOptions="End"/>
+      </Grid>
+
+      <Grid Grid.Row="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="8*"/>
+            <ColumnDefinition Width="1*"/>
+         </Grid.ColumnDefinitions>
+         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+         </Grid.RowDefinitions>
+
+         <Label Grid.Row="0" Grid.Column="1" Text="LEADTOOLS Business Card Scanner" Margin="0,30,0,0" HorizontalOptions="Center" VerticalOptions="Center" LineBreakMode="WordWrap" FontSize="{x:Static local:PlatformsConstants.AboutTextHeaderFontSize}" FontAttributes="Bold" TextColor="{x:Static local:CustomColors.CopyrightTextColor}"/>
+         <ScrollView Grid.Row="1" Grid.Column="1" Margin="0,15,0,0" Padding="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Spacing="10">
+               <Label HorizontalOptions="Start" VerticalOptions="Start" LineBreakMode="WordWrap" FontSize="{x:Static local:PlatformsConstants.AboutTextFontSize}" TextColor="{x:Static local:CustomColors.CopyrightTextColor}">
+                  <Label.Text>
+                     This Business Card Scanner App is powered by LEADTOOLS Recognition SDKs. We designed the app to showcase just part of LEAD's award-winning image processing technology to intelligently identify, recognize, and extract data from any type of picture or scanned image whether it is unstructured or structured.
+
+We developed LEADTOOLS for programmers to easily integrate unparalleled imaging technologies into their applications for all major platforms, including desktop, server, web, and mobile. More than business card processing, LEADTOOLS provides the full gamut of imaging technologies, such as OCR, OMR, MICR, barcode, unstructured/structured forms recognition and processing, PDF, annotation, image viewing, medical imaging, and multimedia. To learn more about LEADTOOLS Imaging SDKs, please visit:
+                  </Label.Text>
+               </Label>
+               <Label HorizontalOptions="Start" VerticalOptions="Start" LineBreakMode="WordWrap" FontSize="{x:Static local:PlatformsConstants.AboutTextFontSize}" TextColor="{x:Static local:CustomColors.LinkBlueColor}">
+                  <Label.Text>https://www.leadtools.com</Label.Text>
+
+                  <Label.GestureRecognizers>
+                     <TapGestureRecognizer Tapped="LeadtoolsWebsiteHyperlink_Tapped"/>
+                  </Label.GestureRecognizers>
+               </Label>
+               <Label HorizontalOptions="Start" VerticalOptions="Start" LineBreakMode="WordWrap" FontSize="{x:Static local:PlatformsConstants.AboutTextFontSize}" TextColor="{x:Static local:CustomColors.CopyrightTextColor}">
+                  <Label.Text>
+Copyright © 1991-2019 LEAD Technologies, Inc.
+All Rights Reserved.
+
+Version 1.0
+                  </Label.Text>
+               </Label>
+            </StackLayout>
+         </ScrollView>
+      </Grid>
+
+      <Image Grid.Row="2" Source="powered_by_left_logo.png" WidthRequest="130" HorizontalOptions="Start" VerticalOptions="End" Aspect="AspectFit" Margin="20,0,0,0"/>
+
+      <utils:AdsLayout x:Name="advertisementLayout" Grid.Row="3"/>
+   </Grid>
+</ContentPage>

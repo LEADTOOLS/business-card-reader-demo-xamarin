@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                  x:Class="BCReaderDemo.RecommendToFriendPage"
+                  xmlns:local="clr-namespace:BCReaderDemo"
+                  xmlns:utils="clr-namespace:BCReaderDemo.Utils"
+                  xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+                  BackgroundColor="White"
+                  ios:Page.UseSafeArea="True"
+                  NavigationPage.HasNavigationBar="False"
+                  NavigationPage.HasBackButton="False">
+   <Grid x:Name="MainLayout" RowSpacing="0">
+      <Grid.RowDefinitions>
+         <RowDefinition Height="{x:Static local:PlatformsConstants.PagesHeaderTitleRowHeight}"/>
+         <RowDefinition Height="1*"/>
+         <RowDefinition Height="Auto"/>
+         <RowDefinition Height="Auto"/>
+         <RowDefinition Height="*"/>
+         <RowDefinition Height="{x:Static local:PlatformsConstants.AdRowHeight}"/>
+      </Grid.RowDefinitions>
+
+      <Grid x:Name="headerGrid" Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="10,0,10,0">
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+         </Grid.ColumnDefinitions>
+
+         <Grid Grid.Column="0" WidthRequest="40" VerticalOptions="FillAndExpand">
+            <Image Source="back.png" WidthRequest="25" HorizontalOptions="Start" VerticalOptions="Center" Aspect="AspectFit"/>
+            <Grid.GestureRecognizers>
+               <TapGestureRecognizer Tapped="BackButton_Tapped"/>
+            </Grid.GestureRecognizers>
+         </Grid>
+
+         <Label Grid.Column="1" Text="RECOMMEND TO A FRIEND" TextColor="{x:Static local:CustomColors.SettingsLabelsColor}" FontSize="Small" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+         <BoxView Grid.Column="0" Grid.ColumnSpan="3" HeightRequest="1" BackgroundColor="{x:Static local:CustomColors.SettingsLabelsColor}" HorizontalOptions="FillAndExpand" VerticalOptions="End"/>
+      </Grid>
+
+      <Grid Grid.Row="1" Margin="0,20,0,20">
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="6*"/>
+            <ColumnDefinition Width="2*"/>
+         </Grid.ColumnDefinitions>
+
+         <Image Grid.Column="1" Source="qr_code.png" HorizontalOptions="Center" VerticalOptions="Center" Aspect="AspectFit"/>
+      </Grid>
+
+      <Label Grid.Row="2" Text="Scan code to install LEADTOOLS BCR" TextColor="{x:Static local:CustomColors.ScanQRLabelTextColor}" FontSize="Small" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Start" Margin="0,0,0,20"/>
+
+      <Grid Grid.Row="3" BackgroundColor="{x:Static local:CustomColors.RecommendToFriendIconsBackgroundColor}" Padding="20,0,20,0" HeightRequest="120">
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+         </Grid.ColumnDefinitions>
+         <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+         </Grid.RowDefinitions>
+
+         <StackLayout Grid.Column="0" Orientation="Vertical" Spacing="10" HorizontalOptions="Center" VerticalOptions="Center">
+            <Image Source="facebook.png" WidthRequest="40" HeightRequest="40" HorizontalOptions="Center" VerticalOptions="Start" Aspect="AspectFit"/>
+            <Label Text="FACEBOOK" TextColor="{x:Static local:CustomColors.FacebookTextColor}" FontSize="12" HorizontalOptions="Center" VerticalOptions="End"/>
+
+            <StackLayout.GestureRecognizers>
+               <TapGestureRecognizer Tapped="FacebookLayout_Tapped"/>
+            </StackLayout.GestureRecognizers>
+         </StackLayout>
+
+         <StackLayout Grid.Column="1" Orientation="Vertical" Spacing="10" HorizontalOptions="Center" VerticalOptions="Center">
+            <Image Source="twitter.png" WidthRequest="40" HeightRequest="40" HorizontalOptions="Center" VerticalOptions="Start" Aspect="AspectFit"/>
+            <Label Text="TWITTER" TextColor="{x:Static local:CustomColors.TwitterTextColor}" FontSize="12" HorizontalOptions="Center" VerticalOptions="End"/>
+
+            <StackLayout.GestureRecognizers>
+               <TapGestureRecognizer Tapped="TwitterLayout_Tapped"/>
+            </StackLayout.GestureRecognizers>
+         </StackLayout>
+
+         <StackLayout Grid.Column="2" Orientation="Vertical" Spacing="10" HorizontalOptions="Center" VerticalOptions="Center">
+            <Image Source="sms_to_friend.png" WidthRequest="40" HeightRequest="40" HorizontalOptions="Center" VerticalOptions="Start" Aspect="AspectFit"/>
+            <Label Text="SMS" TextColor="{x:Static local:CustomColors.SmsTextColor}" FontSize="12" HorizontalOptions="Center" VerticalOptions="End"/>
+
+            <StackLayout.GestureRecognizers>
+               <TapGestureRecognizer Tapped="SmsLayout_Tapped"/>
+            </StackLayout.GestureRecognizers>
+         </StackLayout>
+
+         <StackLayout Grid.Column="3" Orientation="Vertical" Spacing="10" HorizontalOptions="Center" VerticalOptions="Center">
+            <Image Source="email_to_friend.png" WidthRequest="40" HeightRequest="40" HorizontalOptions="Center" VerticalOptions="Start" Aspect="AspectFit"/>
+            <Label Text="EMAIL" TextColor="{x:Static local:CustomColors.EmailTextColor}" FontSize="12" HorizontalOptions="Center" VerticalOptions="End">
+               <Label.FontAttributes>
+                  <OnPlatform x:TypeArguments="FontAttributes" iOS="Bold" Android="None"/>
+               </Label.FontAttributes>
+            </Label>
+
+            <StackLayout.GestureRecognizers>
+               <TapGestureRecognizer Tapped="EmailLayout_Tapped"/>
+            </StackLayout.GestureRecognizers>
+         </StackLayout>
+      </Grid>
+
+      <Image Grid.Row="4" Source="powered_by_left_logo.png" WidthRequest="130" HorizontalOptions="Start" VerticalOptions="End" Aspect="AspectFit" Margin="20,0,0,0"/>
+
+      <utils:AdsLayout x:Name="advertisementLayout" Grid.Row="5"/>
+   </Grid>
+</ContentPage>
