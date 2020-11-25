@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<page:CustomPage xmlns="http://xamarin.com/schemas/2014/forms"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:demos="clr-namespace:Leadtools.Demos"
+                 xmlns:demos_elements="clr-namespace:Leadtools.Demos.UI.Elements"
+                 xmlns:page="clr-namespace:Leadtools.Demos.UI.Page"
+                 xmlns:local="clr-namespace:Leadtools.Demos.UI.Pages.Info"
+                 xmlns:utils="clr-namespace:Leadtools.Demos.Utils"
+                 x:Class="Leadtools.Demos.UI.Pages.Info.AboutPage"
+                 ControlTemplate="{StaticResource CustomPageTemplate}" >
+
+   <page:CustomPage.Resources>
+      <x:String x:Key="BackButtonResourceName">back.svg</x:String>
+   </page:CustomPage.Resources>
+
+   <Grid Margin="0" Padding="{utils:GlobalMargin '1, 0, 1, 1'}" ColumnSpacing="0"
+         RowSpacing="{utils:GlobalMargin 0.75}">
+      <Grid.ColumnDefinitions>
+         <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+         <RowDefinition Height="Auto" />
+         <RowDefinition Height="Auto" />
+         <RowDefinition Height="{utils:GlobalMargin '1.25GL'}" />
+         <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+
+      <!-- Copyright -->
+      <Label x:Name="CopyrightLabel" Grid.Column="0" Grid.Row="0" HeightRequest="{utils:FontSize 4.5}"
+             HorizontalTextAlignment="Start" VerticalTextAlignment="Start"
+             FontFamily="{Static demos:DemoUtilities.FontFamily}"
+             FontSize="{Static utils:FontSizeExtension.SmallFontSize}" Text="{Static local:AboutPage.CopyrightInfo}"
+             TextColor="#57687F"
+             />
+
+      <!-- Separator -->
+      <BoxView Grid.Column="0" Grid.Row="1" Margin="0" HeightRequest="2"
+               VerticalOptions="Center" BackgroundColor="#EEF0F2"
+               />
+
+      <!-- Button -->
+      <demos_elements:RoundImageButton Grid.Column="0" Grid.Row="2" BackgroundColor="#00DCBB"
+                                 CornerRadius="{utils:GlobalMargin '0.75f'}" FontAttributes="Bold"
+                                 FontSize="{Static utils:FontSize.SmallFontSize}" Text="VISIT WEBSITE">
+         <demos_elements:RoundImageButton.GestureRecognizers>
+            <TapGestureRecognizer Tapped="VisitWebsiteButton_Tapped" />
+         </demos_elements:RoundImageButton.GestureRecognizers>
+      </demos_elements:RoundImageButton>
+   </Grid>
+</page:CustomPage>

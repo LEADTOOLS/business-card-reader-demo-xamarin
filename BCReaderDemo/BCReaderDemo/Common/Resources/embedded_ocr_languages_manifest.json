@@ -1,0 +1,361 @@
+{
+  "el": {
+    "LEAD.el.bin": {
+      "FileSize": 2506528
+    }, 
+    "LEAD.el.dic": {
+      "FileSize": 16025937
+    }
+  }, 
+  "en": {
+    "LEAD.en.dic": {
+      "FileSize": 2700280
+    }, 
+    "LEAD.en.bin2": {
+      "FileSize": 343787
+    }, 
+    "LEAD.en.bin": {
+      "FileSize": 1926762
+    }
+  }, 
+  "af": {
+    "LEAD.af.bin": {
+      "FileSize": 2555355
+    }, 
+    "LEAD.af.dic": {
+      "FileSize": 2061420
+    }
+  }, 
+  "zh-Hans": {
+    "LEAD.zh-Hans.bin": {
+      "FileSize": 41427474
+    }
+  }, 
+  "sw": {
+    "LEAD.sw.dic": {
+      "FileSize": 689104
+    }, 
+    "LEAD.sw.bin": {
+      "FileSize": 1793714
+    }
+  }, 
+  "ca": {
+    "LEAD.ca.dic": {
+      "FileSize": 2940879
+    }, 
+    "LEAD.ca.bin": {
+      "FileSize": 2443166
+    }
+  }, 
+  "it": {
+    "LEAD.it.dic": {
+      "FileSize": 1640836
+    }, 
+    "LEAD.it.bin": {
+      "FileSize": 2434628
+    }
+  }, 
+  "zh-Hant": {
+    "LEAD.zh-Hant.bin": {
+      "FileSize": 56148108
+    }
+  }, 
+  "cs": {
+    "LEAD.cs.bin": {
+      "FileSize": 2660774
+    }, 
+    "LEAD.cs.dic": {
+      "FileSize": 5510101
+    }
+  }, 
+  "Version": "1.0", 
+  "eu": {
+    "LEAD.eu.bin": {
+      "FileSize": 2336718
+    }
+  }, 
+  "et": {
+    "LEAD.et.bin": {
+      "FileSize": 2481713
+    }, 
+    "LEAD.et.dic": {
+      "FileSize": 5795027
+    }
+  }, 
+  "gl": {
+    "LEAD.gl.bin": {
+      "FileSize": 2420238
+    }
+  }, 
+  "id": {
+    "LEAD.id.dic": {
+      "FileSize": 330559
+    }, 
+    "LEAD.id.bin": {
+      "FileSize": 2065902
+    }
+  }, 
+  "es": {
+    "LEAD.es.bin": {
+      "FileSize": 2281434
+    }, 
+    "LEAD.es.dic": {
+      "FileSize": 1827685
+    }
+  }, 
+  "ru": {
+    "LEAD.ru.bin": {
+      "FileSize": 2398883
+    }, 
+    "LEAD.ru.dic": {
+      "FileSize": 19614049
+    }
+  }, 
+  "az": {
+    "LEAD.az.bin": {
+      "FileSize": 2201585
+    }
+  }, 
+  "nl": {
+    "LEAD.nl.dic": {
+      "FileSize": 2692014
+    }, 
+    "LEAD.nl.bin": {
+      "FileSize": 2349867
+    }
+  }, 
+  "pt": {
+    "LEAD.pt.bin": {
+      "FileSize": 2287652
+    }, 
+    "LEAD.pt.dic": {
+      "FileSize": 561980
+    }
+  }, 
+  "no": {
+    "LEAD.no.bin": {
+      "FileSize": 2388618
+    }, 
+    "LEAD.no.dic": {
+      "FileSize": 2007515
+    }
+  }, 
+  "tr": {
+    "LEAD.tr.bin": {
+      "FileSize": 2267143
+    }
+  }, 
+  "lv": {
+    "LEAD.lv.bin": {
+      "FileSize": 2521366
+    }, 
+    "LEAD.lv.dic": {
+      "FileSize": 4063214
+    }
+  }, 
+  "lt": {
+    "LEAD.lt.dic": {
+      "FileSize": 1831588
+    }, 
+    "LEAD.lt.bin": {
+      "FileSize": 2561262
+    }
+  }, 
+  "th": {
+    "LEAD.th.bin": {
+      "FileSize": 8580330
+    }, 
+    "LEAD.th.dic": {
+      "FileSize": 1188703
+    }
+  }, 
+  "vi": {
+    "LEAD.vi.bin": {
+      "FileSize": 3668480
+    }, 
+    "LEAD.vi.dic": {
+      "FileSize": 73261
+    }
+  }, 
+  "ro": {
+    "LEAD.ro.dic": {
+      "FileSize": 517294
+    }, 
+    "LEAD.ro.bin": {
+      "FileSize": 2352918
+    }
+  }, 
+  "is": {
+    "LEAD.is.dic": {
+      "FileSize": 3789779
+    }, 
+    "LEAD.is.bin": {
+      "FileSize": 2389388
+    }
+  }, 
+  "pl": {
+    "LEAD.pl.bin": {
+      "FileSize": 2703080
+    }, 
+    "LEAD.pl.dic": {
+      "FileSize": 5102776
+    }
+  }, 
+  "be": {
+    "LEAD.be.bin": {
+      "FileSize": 2409248
+    }, 
+    "LEAD.be.dic": {
+      "FileSize": 1670441
+    }
+  }, 
+  "fr": {
+    "LEAD.fr.dic": {
+      "FileSize": 6599956
+    }, 
+    "LEAD.fr.bin": {
+      "FileSize": 2292872
+    }
+  }, 
+  "bg": {
+    "LEAD.bg.dic": {
+      "FileSize": 1953468
+    }, 
+    "LEAD.bg.bin": {
+      "FileSize": 2262878
+    }
+  }, 
+  "uk": {
+    "LEAD.uk.bin": {
+      "FileSize": 2508079
+    }, 
+    "LEAD.uk.dic": {
+      "FileSize": 2742880
+    }
+  }, 
+  "hr": {
+    "LEAD.hr.bin": {
+      "FileSize": 2422516
+    }, 
+    "LEAD.hr.dic": {
+      "FileSize": 3413380
+    }
+  }, 
+  "de": {
+    "LEAD.de.dic": {
+      "FileSize": 5591438
+    }, 
+    "LEAD.de.bin": {
+      "FileSize": 2395687
+    }
+  }, 
+  "da": {
+    "LEAD.da.bin": {
+      "FileSize": 2406882
+    }, 
+    "LEAD.da.dic": {
+      "FileSize": 3026903
+    }
+  }, 
+  "fi": {
+    "LEAD.fi.bin": {
+      "FileSize": 2519376
+    }
+  }, 
+  "hu": {
+    "LEAD.hu.bin": {
+      "FileSize": 2481034
+    }, 
+    "LEAD.hu.dic": {
+      "FileSize": 2112324
+    }
+  }, 
+  "ja": {
+    "LEAD.ja.bin2": {
+      "FileSize": 18523657
+    }, 
+    "LEAD.ja.bin": {
+      "FileSize": 30716399
+    }
+  }, 
+  "te": {
+    "LEAD.te.bin": {
+      "FileSize": 13013217
+    }
+  }, 
+  "sr": {
+    "LEAD.sr.bin": {
+      "FileSize": 2457384
+    }, 
+    "LEAD.sr.dic": {
+      "FileSize": 4746395
+    }
+  }, 
+  "sq": {
+    "LEAD.sq.dic": {
+      "FileSize": 3370045
+    }, 
+    "LEAD.sq.bin": {
+      "FileSize": 2370391
+    }
+  }, 
+  "ko": {
+    "LEAD.ko.dic": {
+      "FileSize": 22463897
+    }, 
+    "LEAD.ko.bin2": {
+      "FileSize": 5506528
+    }, 
+    "LEAD.ko.bin": {
+      "FileSize": 13602248
+    }
+  }, 
+  "sv": {
+    "LEAD.sv.dic": {
+      "FileSize": 1514614
+    }, 
+    "LEAD.sv.bin": {
+      "FileSize": 2387005
+    }
+  }, 
+  "mk": {
+    "LEAD.mk.bin": {
+      "FileSize": 2132936
+    }, 
+    "LEAD.mk.dic": {
+      "FileSize": 6382315
+    }
+  }, 
+  "sk": {
+    "LEAD.sk.bin": {
+      "FileSize": 2722814
+    }, 
+    "LEAD.sk.dic": {
+      "FileSize": 4834916
+    }
+  }, 
+  "mt": {
+    "LEAD.mt.bin": {
+      "FileSize": 2688049
+    }, 
+    "LEAD.mt.dic": {
+      "FileSize": 14917708
+    }
+  }, 
+  "ms": {
+    "LEAD.ms.bin": {
+      "FileSize": 2078163
+    }, 
+    "LEAD.ms.dic": {
+      "FileSize": 338506
+    }
+  }, 
+  "sl": {
+    "LEAD.sl.bin": {
+      "FileSize": 2401644
+    }, 
+    "LEAD.sl.dic": {
+      "FileSize": 4069596
+    }
+  }
+}

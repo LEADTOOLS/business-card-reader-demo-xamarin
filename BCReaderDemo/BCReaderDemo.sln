@@ -80,11 +80,13 @@ Global
 		{1C00074B-E3BD-4A3C-A9DA-27682DB9FB94}.Debug|Any CPU.Build.0 = Debug|iPhone
 		{1C00074B-E3BD-4A3C-A9DA-27682DB9FB94}.Debug|iPhone.ActiveCfg = Debug|iPhone
 		{1C00074B-E3BD-4A3C-A9DA-27682DB9FB94}.Debug|iPhone.Build.0 = Debug|iPhone
+		{1C00074B-E3BD-4A3C-A9DA-27682DB9FB94}.Debug|iPhone.Deploy.0 = Debug|iPhone
 		{1C00074B-E3BD-4A3C-A9DA-27682DB9FB94}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
 		{1C00074B-E3BD-4A3C-A9DA-27682DB9FB94}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
 		{1C00074B-E3BD-4A3C-A9DA-27682DB9FB94}.Release|Any CPU.ActiveCfg = Release|iPhone
 		{1C00074B-E3BD-4A3C-A9DA-27682DB9FB94}.Release|iPhone.ActiveCfg = Release|iPhone
 		{1C00074B-E3BD-4A3C-A9DA-27682DB9FB94}.Release|iPhone.Build.0 = Release|iPhone
+		{1C00074B-E3BD-4A3C-A9DA-27682DB9FB94}.Release|iPhone.Deploy.0 = Release|iPhone
 		{1C00074B-E3BD-4A3C-A9DA-27682DB9FB94}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
 		{1C00074B-E3BD-4A3C-A9DA-27682DB9FB94}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
 	EndGlobalSection

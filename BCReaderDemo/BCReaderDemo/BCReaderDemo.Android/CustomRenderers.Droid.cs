@@ -1,5 +1,5 @@
 ﻿// *************************************************************
-// Copyright (c) 1991-2019 LEAD Technologies, Inc.              
+// Copyright (c) 1991-2020 LEAD Technologies, Inc.              
 // All Rights Reserved.                                         
 // *************************************************************
 using Android.Content;
@@ -15,6 +15,7 @@ using BCReaderDemo.Droid;
 using BCReaderDemo.Utils;
 using CarouselView.FormsPlugin.Abstractions;
 using CarouselView.FormsPlugin.Android;
+using Leadtools.Demos;
 using System;
 using System.ComponentModel;
 using Xamarin.Forms;
@@ -22,17 +23,12 @@ using Xamarin.Forms.Platform.Android;
 
 [assembly: ExportRenderer(typeof(TableViewModelRenderer), typeof(CustomTableViewModelRenderer))]
 [assembly: ExportRenderer(typeof(CustomTableView), typeof(CustomTableViewRenderer))]
-[assembly: ExportRenderer(typeof(CustomSearchBar), typeof(CustomSearchBarRenderer))]
-[assembly: ExportRenderer(typeof(ListViewWithLongPressGesture), typeof(ListViewWithLongPressRenderer))]
+[assembly: ExportRenderer(typeof(GradientContentView), typeof(GradientContentViewRenderer))]
 [assembly: ExportRenderer(typeof(CustomEntry), typeof(CustomEntryRenderer))]
 [assembly: ExportRenderer(typeof(Picker), typeof(CustomPickerRenderer))]
 [assembly: ExportRenderer(typeof(Editor), typeof(CustomEditorRenderer))]
-[assembly: ExportRenderer(typeof(GradientContentView), typeof(GradientContentViewRenderer))]
-[assembly: ExportRenderer(typeof(MyCarouselViewControl), typeof(MyCarouselViewControlRenderer))]
 [assembly: ExportRenderer(typeof(Xamarin.Forms.Switch), typeof(CustomSwitchRenderer))]
-
-[assembly: ResolutionGroupName("BCReaderDemo")]
-[assembly: ExportEffect(typeof(CustomRoundCornersEffect), nameof(RoundCornersEffect))]
+[assembly: ExportRenderer(typeof(MyCarouselViewControl), typeof(MyCarouselViewControlRenderer))]
 
 namespace BCReaderDemo.Droid
 {
@@ -66,7 +62,7 @@ namespace BCReaderDemo.Droid
                textView.TextSize = (float)PlatformsConstants.TableViewGroupHeaderFontSize;
 
                // Set section header left padding to zero.
-               textView.SetPadding((int) (15 * App.DisplayScaleFactor), view.PaddingTop, view.PaddingRight, view.PaddingBottom);
+               textView.SetPadding((int) (15 * DemoUtilities.DisplayDensity), view.PaddingTop, view.PaddingRight, view.PaddingBottom);
 
                // Set section header text font to bold.
                //textView.SetTypeface(Typeface.Default, TypefaceStyle.Bold);
@@ -77,10 +73,9 @@ namespace BCReaderDemo.Droid
                // Get the divider below the header
                var divider = (view as LinearLayout).GetChildAt(1);
                divider.LayoutParameters = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, 1);
-               divider.SetBackgroundColor(CustomColors.LightSharkonColor.ToAndroid());
-                              
+
                // Set divider color to gray
-               //divider.SetBackgroundColor(CustomColors.LightSharkonColor.ToAndroid());
+               divider.SetBackgroundColor(CustomColors.LightSharkonColor.ToAndroid());
             }
             catch (Exception) { }
          }
@@ -253,227 +248,6 @@ namespace BCReaderDemo.Droid
                Control.SetCompoundDrawables(null, null, null, null);
             }
          }
-      }
-   }
-
-   /*********************************************************************************************************/
-   /*                                                                                                       */
-   /* Custom SearchBar renderer to create round rectangular search bar with custom colors and also change   */
-   /* its colors on focus/unfocus events.                                                                   */
-   /*                                                                                                       */
-   /*********************************************************************************************************/
-   public class CustomSearchBarRenderer : SearchBarRenderer
-   {
-      public CustomSearchBarRenderer(Context context) : base(context)
-      {
-      }
-
-      protected override void OnElementChanged(ElementChangedEventArgs<SearchBar> e)
-      {
-         base.OnElementChanged(e);
-
-         if (Control != null)
-         {
-            SearchView searchView = (base.Control as SearchView);
-            searchView.Touch += SearchView_Touch;
-
-            bool isEntryStyle = false;
-            if (!string.IsNullOrEmpty(e.NewElement.StyleId) && e.NewElement.StyleId.Equals("EntryStyle"))
-               isEntryStyle = true;
-
-            // I have customized the search bar to use it as Entry control as our design requires Entry field that looks exactly like 
-            // the search bar without the magnifying glass and with different border and text colors, and we differentiate them by checking
-            // for that "StyleId" member if it equals "EntryStyle" then tweak this SearchBar control a bit, this flag you have to set it 
-            // yourself inside the page that uses the SearchBar.
-            Android.Graphics.Color placeholderTextColor;
-            if (isEntryStyle)
-            {
-               // Hide the magnifier icon.
-               int searchIconId = Context.Resources.GetIdentifier("android:id/search_mag_icon", null, null);
-               ImageView searchViewIcon = (ImageView)searchView.FindViewById<ImageView>(searchIconId);
-               searchViewIcon.Visibility = ViewStates.Gone;
-               searchViewIcon.SetImageDrawable(null);
-
-               placeholderTextColor = CustomColors.SearchBarPlaceHolderInactiveLightBlueTextColor.ToAndroid();
-               searchView.Background = ContextCompat.GetDrawable(Context, Resource.Drawable.searchbar_as_edit_field_inactive);
-            }
-            else
-            {
-               searchView.Background = ContextCompat.GetDrawable(Context, Resource.Drawable.searchbar_inactive);
-               placeholderTextColor = CustomColors.SearchBarPlaceHolderInactiveTextColor.ToAndroid();
-            }
-
-            // This code will remove the default search bar underline.
-            var plateId = Resources.GetIdentifier("android:id/search_plate", null, null);
-            var plate = Control.FindViewById(plateId);
-            if (plate != null)
-               plate.SetBackgroundColor(Android.Graphics.Color.Transparent);
-
-            // Access search text view within control and change some properties
-            int textViewId = searchView.Context.Resources.GetIdentifier("android:id/search_src_text", null, null);
-            EditText textView = (searchView.FindViewById(textViewId) as EditText);
-            textView.SetHintTextColor(placeholderTextColor);
-            textView.SetTextColor(CustomColors.SearchBarPlaceHolderActiveTextColor.ToAndroid());
-            textView.TextSize = 14f;
-            // Fixed text vertical alignment inside search bar for Nexus 5X device (that has BuildVersionCodes.M SDK version)
-            if (Build.VERSION.SdkInt <= BuildVersionCodes.M)
-               textView.Gravity = GravityFlags.Bottom;
-            textView.FocusChange += TextView_FocusChange;
-            if (isEntryStyle)
-               textView.ImeOptions = Android.Views.InputMethods.ImeAction.Done;
-         }
-      }
-
-      private void SearchView_Touch(object sender, TouchEventArgs e)
-      {
-         (Element as CustomSearchBar).OnClicked();
-
-         e.Handled = false;
-      }
-
-      private void TextView_FocusChange(object sender, FocusChangeEventArgs e)
-      {
-         EditText textView = (sender as EditText);
-
-         SearchView searchView = (base.Control as SearchView);
-
-         if (textView.HasFocus)
-         {
-            if (!string.IsNullOrEmpty(Element.StyleId) && Element.StyleId.Equals("EntryStyle"))
-            {
-               searchView.Background = ContextCompat.GetDrawable(Context, Resource.Drawable.searchbar_as_edit_field_active);
-            }
-            else
-            {
-               searchView.Background = ContextCompat.GetDrawable(Context, Resource.Drawable.searchbar_active);
-            }
-         }
-         else
-         {
-            if (!string.IsNullOrEmpty(Element.StyleId) && Element.StyleId.Equals("EntryStyle"))
-            {
-               searchView.Background = ContextCompat.GetDrawable(Context, Resource.Drawable.searchbar_as_edit_field_inactive);
-            }
-            else
-            {
-               searchView.Background = ContextCompat.GetDrawable(Context, Resource.Drawable.searchbar_inactive);
-            }
-         }
-
-         (Element as CustomSearchBar).OnClicked();
-      }
-   }
-
-
-   /*********************************************************************************************************/
-   /*                                                                                                       */
-   /* Custom effect to show Xamarin controls with cornered edges                                            */
-   /*                                                                                                       */
-   /*********************************************************************************************************/
-   public class CustomRoundCornersEffect : PlatformEffect
-   {
-      protected override void OnAttached()
-      {
-         try
-         {
-            PrepareContainer();
-            SetCornerRadius();
-         }
-         catch { }
-      }
-
-      protected override void OnDetached()
-      {
-         try
-         {
-            Container.OutlineProvider = ViewOutlineProvider.Background;
-         }
-         catch { }
-      }
-
-      protected override void OnElementPropertyChanged(PropertyChangedEventArgs args)
-      {
-         if (args.PropertyName == RoundCornersEffect.CornerRadiusProperty.PropertyName)
-            SetCornerRadius();
-      }
-
-      private void PrepareContainer()
-      {
-         Container.ClipToOutline = true;
-      }
-
-      private void SetCornerRadius()
-      {
-         var cornerRadius = RoundCornersEffect.GetCornerRadius(Element) * GetDensity();
-         Container.OutlineProvider = new RoundedOutlineProvider(cornerRadius);
-      }
-
-      private static float GetDensity() =>
-          Android.App.Application.Context.Resources.DisplayMetrics.Density;
-
-      private class RoundedOutlineProvider : ViewOutlineProvider
-      {
-         private readonly float _radius;
-
-         public RoundedOutlineProvider(float radius)
-         {
-            _radius = radius;
-         }
-
-         public override void GetOutline(Android.Views.View view, Outline outline)
-         {
-            outline?.SetRoundRect(0, 0, view.Width, view.Height, _radius);
-         }
-      }
-   }
-
-
-   /*********************************************************************************************************/
-   /*                                                                                                       */
-   /* Custom ListView to support item's LongPress event                                                     */
-   /*                                                                                                       */
-   /*********************************************************************************************************/
-   public class ListViewWithLongPressRenderer : ListViewRenderer
-   {
-      public ListViewWithLongPressRenderer(Context context) : base(context)
-      {
-      }
-
-      protected override void OnElementChanged(ElementChangedEventArgs<Xamarin.Forms.ListView> e)
-      {
-         base.OnElementChanged(e);
-
-         if (Control != null)
-         {
-            Control.LongClickable = true;
-            Control.ItemLongClick += Control_ItemLongClick;
-            Control.Touch += Control_Touch;
-         }
-      }
-
-      private void Control_Touch(object sender, TouchEventArgs e)
-      {
-         if(e.Event.ActionMasked == MotionEventActions.Up)
-            (Element as ListViewWithLongPressGesture).OnClicked();
-
-         e.Handled = false;
-      }
-
-      private void Control_ItemLongClick(object sender, AdapterView.ItemLongClickEventArgs e)
-      {
-         BCReaderDemo.Models.ContactModel item = Control.GetItemAtPosition(e.Position).Cast<BCReaderDemo.Models.ContactModel>();
-         ListViewWithLongPressGesture element = Element as ListViewWithLongPressGesture;
-         element.ItemLongPressedAction?.Invoke(item);
-      }
-   }
-
-   public static class ObjectTypeHelper
-   {
-      public static T Cast<T>(this Java.Lang.Object obj) where T : class
-      {
-         if (obj == null) return null;
-         var propertyInfo = obj.GetType().GetProperty("Instance");
-         return propertyInfo == null ? null : propertyInfo.GetValue(obj, null) as T;
       }
    }
 

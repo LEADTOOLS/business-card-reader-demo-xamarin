@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35.5 35.5">
+  <title>delete</title>
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="icons">
+      <path style="fill:#8d9cb7;" d="M32.5,35.5a3,3,0,0,1-2.12-.88L.88,5.12A3,3,0,0,1,5.12.88l29.5,29.5A3,3,0,0,1,32.5,35.5Z" />
+      <path style="fill:#8d9cb7;" d="M3,35.5A3,3,0,0,1,.88,30.38L30.38.88a3,3,0,0,1,4.24,4.24L5.12,34.62A3,3,0,0,1,3,35.5Z" />
+    </g>
+  </g>
+</svg>

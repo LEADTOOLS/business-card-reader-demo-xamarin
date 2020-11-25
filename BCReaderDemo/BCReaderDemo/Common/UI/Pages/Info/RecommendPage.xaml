@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<page:CustomPage xmlns="http://xamarin.com/schemas/2014/forms"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:demos="clr-namespace:Leadtools.Demos"
+                 xmlns:elements="clr-namespace:Leadtools.Demos.UI.Elements"
+                 xmlns:page="clr-namespace:Leadtools.Demos.UI.Page"
+                 xmlns:utils="clr-namespace:Leadtools.Demos.Utils"
+                 x:Class="Leadtools.Demos.UI.Pages.Info.RecommendPage"
+                 ControlTemplate="{StaticResource CustomPageTemplate}">
+
+   <page:CustomPage.Resources>
+      <x:String x:Key="BackButtonResourceName">back.svg</x:String>
+      <x:String x:Key="TitleText">Recommend to Friends</x:String>
+   </page:CustomPage.Resources>
+
+   <ScrollView x:Name="ContainerScrollViewer">
+      <Grid Margin="0" Padding="0" ColumnSpacing="0" RowSpacing="{utils:GlobalMargin 0.75}">
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+         </Grid.ColumnDefinitions>
+         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+         </Grid.RowDefinitions>
+
+         <elements:SvgImage x:Name="QRCode" Grid.Column="0" Grid.Row="0" Margin="{utils:GlobalMargin '1, 0'}"
+                         HeightRequest="{utils:GlobalMargin 7}" HorizontalOptions="Center" ResourceName="recommend.svg"
+                         VerticalOptions="Center"
+                         />
+         <Label Grid.Column="0" Grid.Row="1" Margin="{utils:GlobalMargin '1, 0'}" HorizontalTextAlignment="Center"
+             VerticalTextAlignment="Center" FontFamily="{Static demos:DemoUtilities.FontFamily}"
+             FontSize="{Static utils:FontSizeExtension.SmallFontSize}" TextColor="#687787">
+            <Label.FormattedText>
+               <FormattedString>
+                  <Span Text="Scan code to install " />
+                  <Span Text="{Static demos:DemoUtilities.AppStoreName}" />
+               </FormattedString>
+            </Label.FormattedText>
+         </Label>
+         <Grid x:Name="OptionsGrid" Grid.Column="0" Grid.Row="2" Margin="0" Padding="{utils:GlobalMargin '1,'}"
+            BackgroundColor="#EEF0F4" ColumnSpacing="0" RowSpacing="0">
+            <Grid.ColumnDefinitions>
+               <!-- Will be configured programmatically -->
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+               <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+         </Grid>
+      </Grid>
+   </ScrollView>
+</page:CustomPage>

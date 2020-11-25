@@ -1,0 +1,66 @@
+﻿{
+   "apps": [
+      {
+         "app": "default",
+         "ads": [
+            { "content": "LEADTOOLS Image to Searchable Text" },
+            { "content": "LEADTOOLS Recognition Technology" },
+            { "content": "LEADTOOLS Image to Searchable Data" },
+            { "content": "LEADTOOLS Artificial Intelligence" },
+            { "content": "Developed With LEADTOOLS" },
+            { "content": "LEADTOOLS Machine Vision SDK" },
+            { "content": "View, Convert, Edit & Share Documents With LEADTOOLS" },
+            { "content": "Add Recognition to Your Apps With LEADTOOLS" },
+            { "content": "Add Barcode to Your Apps With LEADTOOLS" },
+            { "content": "Add OCR to Your Apps With LEADTOOLS" },
+            { "content": "Add Forms to Your Apps With LEADTOOLS " },
+            { "content": "Add Barcodes Using LEADTOOLS" },
+            { "content": "Grab Text From Images" },
+            { "content": "Convert Images to Searchable PDFs" },
+            { "content": "Edit PDFs With LEADTOOLS" },
+            { "content": "View Medical Images With LEADTOOLS" },
+            { "content": "Convert 150+ Different Image Types" },
+            { "content": "Mark up Pictures With LEADTOOLS" },
+            { "content": "Create Audio/Video Streams" },
+            { "content": "Create Mobile Apps Using LEADTOOLS" },
+            { "content": "Scan Checks Using LEADTOOLS" },
+            { "content": "Create Barcodes Using LEADTOOLS" },
+            { "content": "Copy/Paste Text From Images" },
+            { "content": "Scan and Store Business Cards With LEADTOOLS" },
+            { "content": "Powered by LEADTOOLS Machine Learning" },
+            { "content": "Build Better Apps Using LEADTOOLS" }
+         ]
+      },
+      {
+         "app": "business_card_reader",
+         "ads": [
+            { "content": "LEADTOOLS Image to Searchable Text" },
+            { "content": "LEADTOOLS Recognition Technology" },
+            { "content": "LEADTOOLS Image to Searchable Data" },
+            { "content": "LEADTOOLS Artificial Intelligence" },
+            { "content": "Developed With LEADTOOLS" },
+            { "content": "LEADTOOLS Machine Vision SDK" },
+            { "content": "View, Convert, Edit & Share Documents With LEADTOOLS" },
+            { "content": "Add Recognition to Your Apps With LEADTOOLS" },
+            { "content": "Add Barcode to Your Apps With LEADTOOLS" },
+            { "content": "Add OCR to Your Apps With LEADTOOLS" },
+            { "content": "Add Forms to Your Apps With LEADTOOLS " },
+            { "content": "Add Barcodes Using LEADTOOLS" },
+            { "content": "Grab Text From Images" },
+            { "content": "Convert Images to Searchable PDFs" },
+            { "content": "Edit PDFs With LEADTOOLS" },
+            { "content": "View Medical Images With LEADTOOLS" },
+            { "content": "Convert 150+ Different Image Types" },
+            { "content": "Mark up Pictures With LEADTOOLS" },
+            { "content": "Create Audio/Video Streams" },
+            { "content": "Create Mobile Apps Using LEADTOOLS" },
+            { "content": "Scan Checks Using LEADTOOLS" },
+            { "content": "Create Barcodes Using LEADTOOLS" },
+            { "content": "Copy/Paste Text From Images" },
+            { "content": "Scan and Store Business Cards With LEADTOOLS" },
+            { "content": "Powered by LEADTOOLS Machine Learning" },
+            { "content": "Build Better Apps Using LEADTOOLS" }
+         ]
+      }
+   ]
+}

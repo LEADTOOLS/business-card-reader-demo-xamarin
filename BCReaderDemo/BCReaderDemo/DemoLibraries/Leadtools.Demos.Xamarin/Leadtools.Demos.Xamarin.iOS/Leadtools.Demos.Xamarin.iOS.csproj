@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{632AD6A3-6408-4811-A820-02577D0C84F3}</ProjectGuid>
+    <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Leadtools.Demos.Xamarin.iOS</RootNamespace>
+    <AssemblyName>Leadtools.Demos.Xamarin.iOS</AssemblyName>
+    <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+    <TargetFrameworkMonikerAssemblyAttributesPath>$([System.IO.Path]::Combine('$(IntermediateOutputPath)','$(TargetFrameworkMoniker).AssemblyAttributes$(DefaultLanguageSourceExtension)'))</TargetFrameworkMonikerAssemblyAttributesPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG;__MOBILE__;__UNIFIED__;__IOS__;NETSTANDARD1_4;FOR_XAMARIN;FOR_STD;LTV20_CONFIG;LEADTOOLS_V16_OR_LATER;LEADTOOLS_V17_OR_LATER;LEADTOOLS_V175_OR_LATER;FOR_ANYCPU;FOR_DOTNET4;LEADTOOLS_V18_OR_LATER;LEADTOOLS_V19_OR_LATER;LEADTOOLS_V20_OR_LATER;LTV21_CONFIG;LEADTOOLS_V21_OR_LATER</DefineConstants>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <NoWarn>3009;3003;3001;1701;1702;1705;0436</NoWarn>
+    <OutputPath>objx_ios\Debug\</OutputPath>
+    <BaseIntermediateOutputPath>objx_ios</BaseIntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DefineConstants>TRACE;__MOBILE__;__UNIFIED__;RELEASE;__IOS__;NETSTANDARD1_4;FOR_XAMARIN;FOR_STD;LTV20_CONFIG;LEADTOOLS_V16_OR_LATER;LEADTOOLS_V17_OR_LATER;LEADTOOLS_V175_OR_LATER;FOR_ANYCPU;FOR_DOTNET4;LEADTOOLS_V18_OR_LATER;LEADTOOLS_V19_OR_LATER;LEADTOOLS_V20_OR_LATER;LTV21_CONFIG;LEADTOOLS_V21_OR_LATER</DefineConstants>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <NoWarn>3009;3003;3001;1701;1702;1705;0436</NoWarn>
+    <OutputPath>objx_ios\Release\</OutputPath>
+    <BaseIntermediateOutputPath>objx_ios</BaseIntermediateOutputPath>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodesignKey>iPhone Developer</CodesignKey>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="Xamarin.iOS" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Essentials" Version="1.5.3" />
+    <PackageReference Include="Xamarin.Forms" Version="4.5.0.617" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Leadtools.Kernel" Version="21.*" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Leadtools.Demos.Xamarin\Leadtools.Demos.Xamarin.csproj">
+      <Project>{0e7486c7-1f28-47ae-861c-2d72a91091f5}</Project>
+      <Name>Leadtools.Demos.Xamarin</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Assembly.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\Common\iOS\UI\Elements\BorderViewRenderer.cs">
+      <Link>Common\UI\Elements\BorderViewRenderer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\iOS\UI\Elements\CustomEntryRenderer.cs">
+      <Link>Common\UI\Elements\CustomEntryRenderer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\iOS\UI\Elements\CustomListViewRenderer.cs">
+      <Link>Common\UI\Elements\CustomListViewRenderer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\iOS\UI\Elements\CustomSearchBarRenderer.cs">
+      <Link>Common\UI\Elements\CustomSearchBarRenderer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\iOS\UI\Elements\CustomViewCellRenderer.cs">
+      <Link>Common\UI\Elements\CustomViewCellRenderer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\iOS\UI\Elements\MultiGesturesEffectRenderer.cs">
+      <Link>Common\UI\Elements\MultiGesturesEffectRenderer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\iOS\UI\Elements\RoundCornersEffectRenderer.cs">
+      <Link>Common\UI\Elements\RoundCornersEffectRenderer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\iOS\UI\Elements\SelectAreaViewRenderer.cs">
+      <Link>Common\UI\Elements\SelectAreaViewRenderer.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\Common\iOS\Utils\DemoUtilitiesImplementation.cs">
+      <Link>Common\Utils\DemoUtilitiesImplementation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\iOS\Utils\PermissionsImplementation.cs">
+      <Link>Common\Utils\PermissionsImplementation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\iOS\Utils\PicturePickerImplementation.cs">
+      <Link>Common\Utils\PicturePickerImplementation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\iOS\Utils\PictureSaverImplementation.cs">
+      <Link>Common\Utils\PictureSaverImplementation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\iOS\Utils\StatusBarImplementation.cs">
+      <Link>Common\Utils\StatusBarImplementation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\iOS\Utils\ToastImplementation.cs">
+      <Link>Common\Utils\ToastImplementation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\iOS\Utils\FileManagerImplementation.cs">
+      <Link>Common\Utils\FileManagerImplementation.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <PropertyGroup>
+      <AssemblyTimestampBeforeCompile>%(IntermediateAssembly.ModifiedTime)</AssemblyTimestampBeforeCompile>
+    </PropertyGroup>
+  </Target>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <PropertyGroup>
+      <AssemblyTimestampAfterCompile>%(IntermediateAssembly.ModifiedTime)</AssemblyTimestampAfterCompile>
+    </PropertyGroup>
+    <Exec Command="IF NOT EXIST $(TargetDir)..\..\..\..\Bin md $(TargetDir)..\..\..\..\Bin&#xD;&#xA;				copy $(TargetPath) $(TargetDir)..\..\..\..\Bin" />
+  </Target>
+</Project>

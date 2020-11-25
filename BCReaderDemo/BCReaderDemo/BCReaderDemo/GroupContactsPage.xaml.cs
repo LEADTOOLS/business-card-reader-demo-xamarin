@@ -1,9 +1,14 @@
 ﻿// *************************************************************
-// Copyright (c) 1991-2019 LEAD Technologies, Inc.              
+// Copyright (c) 1991-2020 LEAD Technologies, Inc.              
 // All Rights Reserved.                                         
 // *************************************************************
 using BCReaderDemo.Models;
 using BCReaderDemo.Utils;
+using Leadtools.Demos;
+using Leadtools.Demos.UI.Elements;
+using Leadtools.Demos.Utils;
+using Rg.Plugins.Popup.Pages;
+using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,69 +20,43 @@ using Xamarin.Forms.Xaml;
 namespace BCReaderDemo
 {
    [XamlCompilation(XamlCompilationOptions.Compile)]
-   public partial class GroupContactsPage : ContentPage
+   public partial class GroupContactsPage : PopupPage
    {
       public ObservableCollection<Grouping<string, ContactModel>> FilteredGroupContacts { get; set; }
       private string _groupName = null;
-      private System.Timers.Timer _adsHiddenTimer = null;
-      private System.Timers.Timer _adsVisibleTimer = null;
 
       public event EventHandler PageClosing;
 
       public GroupContactsPage(string groupName)
       {
          InitializeComponent();
+#if __IOS__
+         HasSystemPadding = false;
+#endif
 
          _groupName = groupName;
          groupTitle.Text = groupName + " ";
 
-         _adsHiddenTimer = new System.Timers.Timer(HomePage.AD_HIDDEN_DURATION);
-         _adsHiddenTimer.AutoReset = true;
-         _adsHiddenTimer.Elapsed += (sender, e) =>
-         {
-            _adsHiddenTimer.Enabled = false;
-            _adsHiddenTimer.Stop();
-            _adsVisibleTimer = AdHelper.ShowAdvertisement(advertisementLayout);
-            _adsVisibleTimer.Elapsed += (sender1, e1) =>
-            {
-               _adsVisibleTimer.Enabled = false;
-               _adsVisibleTimer = null;
-               _adsHiddenTimer.Enabled = true;
-               _adsHiddenTimer.Start();
-            };
-         };
-
          RefreshListView();
       }
 
-      protected override void OnAppearing()
+      protected override async void OnAppearing()
       {
          base.OnAppearing();
 
-         if (_adsHiddenTimer != null && (_adsVisibleTimer == null || (_adsVisibleTimer != null && !_adsVisibleTimer.Enabled)))
-         {
-            _adsHiddenTimer.Enabled = false;
-            _adsHiddenTimer.Stop();
-            _adsVisibleTimer = AdHelper.ShowAdvertisement(advertisementLayout);
-            _adsVisibleTimer.Elapsed += (sender1, e1) =>
-            {
-               _adsVisibleTimer.Enabled = false;
-               _adsVisibleTimer = null;
-               _adsHiddenTimer.Enabled = true;
-               _adsHiddenTimer.Start();
-            };
-         }
+         // Delay a bit, so the ad doesn't appear immediately
+         await Task.Delay(1000);
+
+         // Start the ads
+         Ads.Start();
       }
 
       protected override void OnDisappearing()
       {
          base.OnDisappearing();
 
-         if (_adsHiddenTimer != null)
-         {
-            _adsHiddenTimer.Stop();
-            _adsHiddenTimer.Enabled = false;
-         }
+         // Stop the ads
+         Ads.Stop();
       }
 
       private void BackButton_Tapped(object sender, EventArgs e)
@@ -95,7 +74,7 @@ namespace BCReaderDemo
       {
          PageClosing?.Invoke(this, null);
 
-         await HomePage.Instance.Navigation.PopAsync();
+         await PopupNavigation.Instance.PopAsync();
       }
 
       private void SearchBarTextChanged(object sender, TextChangedEventArgs e)
@@ -135,14 +114,15 @@ namespace BCReaderDemo
          HideQuickActionControls();
          var page = new SelectCardsPage(Utils.PredefinedActions.Group, _groupName, null, true, null);
          page.PageClosing += SelectCardsPage_PageClosing;
-         await HomePage.Instance.Navigation.PushAsync(page);
+         await PopupNavigation.Instance.PushAsync(page);
       }
 
-      private async void ContactsList_ItemLongPressed(object sender, ContactSavedEventArgs e)
+      private async void ContactsList_ItemLongPressed(object sender, LongPressedEventArgs e)
       {
-         var page = new SelectCardsPage(PredefinedActions.All, _groupName, e.Contact, false, null);
+         ContactModel itemData = (e.Item != null) ? e.Item as ContactModel : FilteredGroupContacts[e.Section][e.Row];
+         var page = new SelectCardsPage(PredefinedActions.All, _groupName, itemData, false, null);
          page.PageClosing += SelectCardsPage_PageClosing;
-         await HomePage.Instance.Navigation.PushAsync(page);
+         await PopupNavigation.Instance.PushAsync(page);
       }
 
       private void SelectCardsPage_PageClosing(object sender, EventArgs e)
@@ -157,7 +137,7 @@ namespace BCReaderDemo
          var index = HomePage.ContactCollection.IndexOf(item);
          var page = new PreviewBusinessCardPage(item, index);
          page.PageClosing += PreviewBusinessCardPage_PageClosing;
-         await HomePage.Instance.Navigation.PushAsync(page);
+         await PopupNavigation.Instance.PushAsync(page);
       }
 
       private void PreviewBusinessCardPage_PageClosing(object sender, EventArgs e)
@@ -198,7 +178,7 @@ namespace BCReaderDemo
                Grid actionsGrid = itemGrid.Children[1] as Grid;
                if (actionsGrid != null)
                {
-                  actionsGrid.TranslationX = App.DisplayScreenWidth;
+                  actionsGrid.TranslationX = DemoUtilities.DisplayWidth;
                   actionsGrid.TranslateTo(-1, 0);
                }
             }
@@ -249,8 +229,8 @@ namespace BCReaderDemo
       private async void CameraAddButton_Tapped(object sender, EventArgs e)
       {
          HideQuickActionControls();
-         var results = await DependencyService.Get<Permissions.IPermissions>().VerifyPermissionsAsync(Permissions.Permission.Camera);
-         if (results == null || results[Permissions.Permission.Camera] != Permissions.PermissionStatus.Granted)
+         var results = await DependencyService.Get<IPermissions>().VerifyPermissionsAsync(false, PermissionType.Camera);
+         if (results == null || results[PermissionType.Camera] != PermissionStatus.Granted)
             return;
 
          HomePage.Instance.ContactSavedAction = new Action<ContactModel>((contact) =>

@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" xmlns:xlink="http://www.w3.org/1999/xlink" width="105" height="39.714" viewBox="0 0 105 39.714">
+   <rect x="0" y="0" width="105" height="39.714" style="fill:#ffffff;" />
+   <line fill="none" style="stroke:#000000; stroke-width:1;" x1="10.5" y1="0" x2="10.5" y2="35" />
+   <line fill="none" style="stroke:#000000; stroke-width:1;" x1="12.5" y1="0" x2="12.5" y2="35" />
+   <line fill="none" style="stroke:#000000; stroke-width:2;" x1="16" y1="0" x2="16" y2="30" />
+   <line fill="none" style="stroke:#000000; stroke-width:1;" x1="19.5" y1="0" x2="19.5" y2="30" />
+   <line fill="none" style="stroke:#000000; stroke-width:2;" x1="23" y1="0" x2="23" y2="30" />
+   <line fill="none" style="stroke:#000000; stroke-width:2;" x1="26" y1="0" x2="26" y2="30" />
+   <line fill="none" style="stroke:#000000; stroke-width:4;" x1="30" y1="0" x2="30" y2="30" />
+   <line fill="none" style="stroke:#000000; stroke-width:1;" x1="33.5" y1="0" x2="33.5" y2="30" />
+   <line fill="none" style="stroke:#000000; stroke-width:3;" x1="37.5" y1="0" x2="37.5" y2="30" />
+   <line fill="none" style="stroke:#000000; stroke-width:1;" x1="40.5" y1="0" x2="40.5" y2="30" />
+   <line fill="none" style="stroke:#000000; stroke-width:2;" x1="43" y1="0" x2="43" y2="30" />
+   <line fill="none" style="stroke:#000000; stroke-width:1;" x1="47.5" y1="0" x2="47.5" y2="30" />
+   <line fill="none" style="stroke:#000000; stroke-width:1;" x1="52.5" y1="0" x2="52.5" y2="30" />
+   <line fill="none" style="stroke:#000000; stroke-width:1;" x1="54.5" y1="0" x2="54.5" y2="30" />
+   <line fill="none" style="stroke:#000000; stroke-width:1;" x1="56.5" y1="0" x2="56.5" y2="35" />
+   <line fill="none" style="stroke:#000000; stroke-width:1;" x1="58.5" y1="0" x2="58.5" y2="35" />
+   <line fill="none" style="stroke:#000000; stroke-width:1;" x1="60.5" y1="0" x2="60.5" y2="30" />
+   <line fill="none" style="stroke:#000000; stroke-width:1;" x1="64.5" y1="0" x2="64.5" y2="30" />
+   <line fill="none" style="stroke:#000000; stroke-width:1;" x1="67.5" y1="0" x2="67.5" y2="30" />
+   <line fill="none" style="stroke:#000000; stroke-width:1;" x1="70.5" y1="0" x2="70.5" y2="30" />
+   <line fill="none" style="stroke:#000000; stroke-width:3;" x1="75.5" y1="0" x2="75.5" y2="30" />
+   <line fill="none" style="stroke:#000000; stroke-width:1;" x1="78.5" y1="0" x2="78.5" y2="30" />
+   <line fill="none" style="stroke:#000000; stroke-width:3;" x1="82.5" y1="0" x2="82.5" y2="30" />
+   <line fill="none" style="stroke:#000000; stroke-width:1;" x1="86.5" y1="0" x2="86.5" y2="30" />
+   <line fill="none" style="stroke:#000000; stroke-width:2;" x1="89" y1="0" x2="89" y2="30" />
+   <line fill="none" style="stroke:#000000; stroke-width:2;" x1="93" y1="0" x2="93" y2="30" />
+   <line fill="none" style="stroke:#000000; stroke-width:1;" x1="95.5" y1="0" x2="95.5" y2="30" />
+   <line fill="none" style="stroke:#000000; stroke-width:3;" x1="99.5" y1="0" x2="99.5" y2="30" />
+   <line fill="none" style="stroke:#000000; stroke-width:1;" x1="102.5" y1="0" x2="102.5" y2="35" />
+   <line fill="none" style="stroke:#000000; stroke-width:1;" x1="104.5" y1="0" x2="104.5" y2="35" />
+   <text x="5" y="37.763" text-anchor="middle" style="font-family: Tahoma; font-size: 9px; stroke: none; fill:#000000;">7</text>
+   <text x="33.75" y="37.763" text-anchor="middle" style="font-family: Tahoma; font-size: 9px; stroke: none; fill:#000000;">123456</text>
+   <text x="81.25" y="37.763" text-anchor="middle" style="font-family: Tahoma; font-size: 9px; stroke: none; fill:#000000;">789015</text>
+</svg>

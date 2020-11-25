@@ -1,9 +1,12 @@
 ﻿// *************************************************************
-// Copyright (c) 1991-2019 LEAD Technologies, Inc.              
+// Copyright (c) 1991-2020 LEAD Technologies, Inc.              
 // All Rights Reserved.                                         
 // *************************************************************
 using BCReaderDemo.Models;
 using BCReaderDemo.Utils;
+using Leadtools.Demos;
+using Rg.Plugins.Popup.Pages;
+using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,16 +18,17 @@ using Xamarin.Forms.Xaml;
 namespace BCReaderDemo
 {
    [XamlCompilation(XamlCompilationOptions.Compile)]
-   public partial class GroupsPage : ContentPage
+   public partial class GroupsPage : PopupPage
    {
       private ObservableCollection<GroupsPageItem> _itemsList;
       private ObservableCollection<GroupsPageItem> _filteredItemsList;
-      private System.Timers.Timer _adsHiddenTimer = null;
-      private System.Timers.Timer _adsVisibleTimer = null;
 
       public GroupsPage()
       {
          InitializeComponent();
+#if __IOS__
+         HasSystemPadding = false;
+#endif
 
          _itemsList = new ObservableCollection<GroupsPageItem>();
 
@@ -36,53 +40,26 @@ namespace BCReaderDemo
             _itemsList.Add(item);
          }
 
-         _adsHiddenTimer = new System.Timers.Timer(HomePage.AD_HIDDEN_DURATION);
-         _adsHiddenTimer.AutoReset = true;
-         _adsHiddenTimer.Elapsed += (sender, e) =>
-         {
-            _adsHiddenTimer.Enabled = false;
-            _adsHiddenTimer.Stop();
-            _adsVisibleTimer = AdHelper.ShowAdvertisement(advertisementLayout);
-            _adsVisibleTimer.Elapsed += (sender1, e1) =>
-            {
-               _adsVisibleTimer.Enabled = false;
-               _adsVisibleTimer = null;
-               _adsHiddenTimer.Enabled = true;
-               _adsHiddenTimer.Start();
-            };
-         };
-
          RefreshListView();
       }
 
-      protected override void OnAppearing()
+      protected override async void OnAppearing()
       {
          base.OnAppearing();
 
-         if (_adsHiddenTimer != null && (_adsVisibleTimer == null || (_adsVisibleTimer != null && !_adsVisibleTimer.Enabled)))
-         {
-            _adsHiddenTimer.Enabled = false;
-            _adsHiddenTimer.Stop();
-            _adsVisibleTimer = AdHelper.ShowAdvertisement(advertisementLayout);
-            _adsVisibleTimer.Elapsed += (sender1, e1) =>
-            {
-               _adsVisibleTimer.Enabled = false;
-               _adsVisibleTimer = null;
-               _adsHiddenTimer.Enabled = true;
-               _adsHiddenTimer.Start();
-            };
-         }
+         // Delay a bit, so the ad doesn't appear immediately
+         await Task.Delay(1000);
+
+         // Start the ads
+         Ads.Start();
       }
 
       protected override void OnDisappearing()
       {
          base.OnDisappearing();
 
-         if (_adsHiddenTimer != null)
-         {
-            _adsHiddenTimer.Stop();
-            _adsHiddenTimer.Enabled = false;
-         }
+         // Stop the ads
+         Ads.Stop();
       }
 
       private async void RefreshListView(bool updateGroupsCounts = false)
@@ -113,7 +90,7 @@ namespace BCReaderDemo
          Device.BeginInvokeOnMainThread(() =>
          {
             int listViewDesiredHeight = _filteredItemsList.Count * GroupsListView.RowHeight;
-            int groupsListViewMaxHeight = (int)(App.DisplayScreenHeight - pageUpperControlsGrid.Height - PlatformsConstants.AdRowHeight - listViewHeaderRow.Height.Value - listViewHintRow.Height.Value);
+            int groupsListViewMaxHeight = (int)(DemoUtilities.DisplayHeight - pageUpperControlsGrid.Height - PlatformsConstants.AdRowHeight - listViewHeaderRow.Height.Value - listViewHintRow.Height.Value);
             GroupsListView.HeightRequest = Math.Min(groupsListViewMaxHeight, GroupsListView.Height - (GroupsListView.Height - listViewDesiredHeight));
          });
       }
@@ -125,7 +102,7 @@ namespace BCReaderDemo
 
       private async void BackButton_Tapped(object sender, EventArgs e)
       {
-         await HomePage.Instance.Navigation.PopAsync();
+         await PopupNavigation.Instance.PopAsync();
       }
 
       private void SearchBarTextChanged(object sender, TextChangedEventArgs e)
@@ -135,18 +112,17 @@ namespace BCReaderDemo
 
       public ObservableCollection<GroupsPageItem> SearchGroups(string text)
       {
-         ObservableCollection<GroupsPageItem> filteredList = new ObservableCollection<GroupsPageItem>(_itemsList.Where(x => x.GroupName.Contains(text)));
+         ObservableCollection<GroupsPageItem> filteredList = new ObservableCollection<GroupsPageItem>(_itemsList.Where(x => x.GroupName.ToLower().Contains(text.ToLower())));
          return filteredList;
       }
 
       private async void GroupsListView_ItemTapped(object sender, ItemTappedEventArgs e)
       {
-         ListView lv = sender as ListView;
          GroupsPageItem tappedItem = e.Item as GroupsPageItem;
 
          GroupContactsPage page = new GroupContactsPage(tappedItem.GroupName);
          page.PageClosing += GroupContactsPage_PageClosing;
-         await HomePage.Instance.Navigation.PushAsync(page);
+         await PopupNavigation.Instance.PushAsync(page);
       }
 
       private void GroupContactsPage_PageClosing(object sender, EventArgs e)
@@ -158,7 +134,7 @@ namespace BCReaderDemo
       {
          var page = new CreateNewGroupPage(_itemsList, false);
          page.PageClosing += CreateNewGroupPage_PageClosing;
-         await HomePage.Instance.Navigation.PushAsync(page);
+         await PopupNavigation.Instance.PushAsync(page);
       }
 
       private void CreateNewGroupPage_PageClosing(object sender, EventArgs e)

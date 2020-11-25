@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<page:CustomPage xmlns="http://xamarin.com/schemas/2014/forms"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:demos="clr-namespace:Leadtools.Demos;assembly=Leadtools.Demos.Xamarin"
+                 xmlns:elements="clr-namespace:Leadtools.Demos.UI.Elements;assembly=Leadtools.Demos.Xamarin"
+                 xmlns:page="clr-namespace:Leadtools.Demos.UI.Page;assembly=Leadtools.Demos.Xamarin"
+                 xmlns:utils="clr-namespace:Leadtools.Demos.Utils;assembly=Leadtools.Demos.Xamarin"
+                 x:Class="Leadtools.Demos.Document.UI.Pages.Ocr.OcrFormatsPage"
+                 ControlTemplate="{StaticResource CustomPageTemplate}">
+
+   <page:CustomPage.Resources>
+      <x:String x:Key="BackButtonResourceName">back.svg</x:String>
+      <x:String x:Key="TitleText">Output Formats</x:String>
+   </page:CustomPage.Resources>
+
+   <elements:CustomListView x:Name="FormatListView" BackgroundColor="Transparent" HasUnevenRows="True"
+                            ItemTapped="FormatListView_ItemTapped" SelectionMode="None" ShowSelection="False">
+      <elements:CustomListView.ItemTemplate>
+         <DataTemplate>
+            <elements:CustomViewCell>
+               <Grid ColumnSpacing="0" Padding="{utils:GlobalMargin '1, 0.25'}">
+                  <Grid.ColumnDefinitions>
+                     <ColumnDefinition Width="*" />
+                     <ColumnDefinition Width="Auto" />
+                  </Grid.ColumnDefinitions>
+                  <Grid.RowDefinitions>
+                     <RowDefinition Height="*" />
+                  </Grid.RowDefinitions>
+
+                  <Label Grid.Column="0" Grid.Row="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"
+                         FontAttributes="{Binding FontAttributes}" FontFamily="{Static demos:DemoUtilities.FontFamily}"
+                         FontSize="{Static utils:FontSizeExtension.SmallFontSize}" Text="{Binding Text, Mode=OneTime}"
+                         TextColor="{Binding TextColor}"
+                         />
+                  <!-- Disable to pass-through touch events -->
+                  <elements:SvgImage Grid.Column="1" Grid.Row="0" IsEnabled="False" HorizontalOptions="End"
+                                     VerticalOptions="Center" HeightRequest="{utils:GlobalMargin 0.6}"
+                                     Opacity="{Binding IsSelected, Converter={StaticResource OpacityConverter}}"
+                                     ResourceName="Icons/selected-format.svg" WidthRequest="{utils:GlobalMargin 0.6}"
+                                     />
+               </Grid>
+            </elements:CustomViewCell>
+         </DataTemplate>
+      </elements:CustomListView.ItemTemplate>
+   </elements:CustomListView>
+</page:CustomPage>

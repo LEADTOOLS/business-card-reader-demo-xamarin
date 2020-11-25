@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Frame xmlns="http://xamarin.com/schemas/2014/forms"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:demos="clr-namespace:Leadtools.Demos"
+       xmlns:demos_elements="clr-namespace:Leadtools.Demos.UI.Elements"
+       x:Class="Leadtools.Demos.UI.Elements.RoundImageButton"
+       x:Name="This">
+
+   <Frame.BindingContext>
+      <Reference Name="This" />
+   </Frame.BindingContext>
+
+   <Grid x:Name="TheGrid" Margin="0" Padding="0" ColumnSpacing="{Binding ColumnSpacing}" RowSpacing="0">
+      <Grid.ColumnDefinitions>
+         <ColumnDefinition Width="*" />
+         <ColumnDefinition Width="Auto" />
+         <ColumnDefinition Width="Auto" />
+         <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+         <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+
+      <!-- Pass-through touch events -->
+      <demos_elements:SvgImage x:Name="TheImage" Grid.Column="1" Grid.Row="0" IsEnabled="False" HorizontalOptions="Center"
+                         VerticalOptions="Center" HeightRequest="{Binding ImageSize}" WidthRequest="{Binding ImageSize}"
+                         />
+      <Label x:Name="TheLabel" Grid.Column="2" Grid.Row="0" HorizontalOptions="Center" HorizontalTextAlignment="Center"
+             VerticalOptions="Center" VerticalTextAlignment="Center" FontAttributes="{Binding FontAttributes}"
+             FontFamily="{Static demos:DemoUtilities.FontFamily}" FontSize="{Binding FontSize}" Text="{Binding Text}"
+             TextColor="{Binding TextColor}"
+             />
+   </Grid>
+</Frame>

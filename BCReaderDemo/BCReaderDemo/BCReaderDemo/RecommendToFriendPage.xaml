@@ -1,14 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-                  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-                  x:Class="BCReaderDemo.RecommendToFriendPage"
-                  xmlns:local="clr-namespace:BCReaderDemo"
-                  xmlns:utils="clr-namespace:BCReaderDemo.Utils"
-                  xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
-                  BackgroundColor="White"
-                  ios:Page.UseSafeArea="True"
-                  NavigationPage.HasNavigationBar="False"
-                  NavigationPage.HasBackButton="False">
+<popup:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 x:Class="BCReaderDemo.RecommendToFriendPage"
+                 xmlns:local="clr-namespace:BCReaderDemo"
+                 xmlns:demos_elements="clr-namespace:Leadtools.Demos.UI.Elements;assembly=Leadtools.Demos.Xamarin"
+                 xmlns:page="clr-namespace:Leadtools.Demos.UI.Page;assembly=Leadtools.Demos.Xamarin"
+                 xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+                 xmlns:popup="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+                 xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+                 ios:Page.UseSafeArea="True"
+                 BackgroundColor="White">
+   <popup:PopupPage.Animation>
+      <animations:MoveAnimation EasingIn="{Static page:CustomPageAnimation.QuintOut}"
+                                EasingOut="{Static page:CustomPageAnimation.QuintIn}"
+                                />
+   </popup:PopupPage.Animation>
+
    <Grid x:Name="MainLayout" RowSpacing="0">
       <Grid.RowDefinitions>
          <RowDefinition Height="{x:Static local:PlatformsConstants.PagesHeaderTitleRowHeight}"/>
@@ -26,8 +33,8 @@
             <ColumnDefinition Width="*"/>
          </Grid.ColumnDefinitions>
 
-         <Grid Grid.Column="0" WidthRequest="40" VerticalOptions="FillAndExpand">
-            <Image Source="back.png" WidthRequest="25" HorizontalOptions="Start" VerticalOptions="Center" Aspect="AspectFit"/>
+         <Grid Grid.Column="0" WidthRequest="40" HorizontalOptions="Start" VerticalOptions="FillAndExpand">
+            <demos_elements:SvgImage ResourceName="Icons/back.svg" WidthRequest="25" HorizontalOptions="Start" VerticalOptions="Center" Aspect="AspectFit" IsEnabled="False"/>
             <Grid.GestureRecognizers>
                <TapGestureRecognizer Tapped="BackButton_Tapped"/>
             </Grid.GestureRecognizers>
@@ -45,7 +52,7 @@
             <ColumnDefinition Width="2*"/>
          </Grid.ColumnDefinitions>
 
-         <Image Grid.Column="1" Source="qr_code.png" HorizontalOptions="Center" VerticalOptions="Center" Aspect="AspectFit"/>
+         <demos_elements:SvgImage Grid.Column="1" ResourceName="recommend.svg" HorizontalOptions="Center" VerticalOptions="Center" Aspect="AspectFit"/>
       </Grid>
 
       <Label Grid.Row="2" Text="Scan code to install LEADTOOLS BCR" TextColor="{x:Static local:CustomColors.ScanQRLabelTextColor}" FontSize="Small" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Start" Margin="0,0,0,20"/>
@@ -62,7 +69,7 @@
          </Grid.RowDefinitions>
 
          <StackLayout Grid.Column="0" Orientation="Vertical" Spacing="10" HorizontalOptions="Center" VerticalOptions="Center">
-            <Image Source="facebook.png" WidthRequest="40" HeightRequest="40" HorizontalOptions="Center" VerticalOptions="Start" Aspect="AspectFit"/>
+            <demos_elements:SvgImage ResourceName="Icons/fb-ico.svg" WidthRequest="40" HeightRequest="40" HorizontalOptions="Center" VerticalOptions="Start" Aspect="AspectFit" IsEnabled="False"/>
             <Label Text="FACEBOOK" TextColor="{x:Static local:CustomColors.FacebookTextColor}" FontSize="12" HorizontalOptions="Center" VerticalOptions="End"/>
 
             <StackLayout.GestureRecognizers>
@@ -71,7 +78,7 @@
          </StackLayout>
 
          <StackLayout Grid.Column="1" Orientation="Vertical" Spacing="10" HorizontalOptions="Center" VerticalOptions="Center">
-            <Image Source="twitter.png" WidthRequest="40" HeightRequest="40" HorizontalOptions="Center" VerticalOptions="Start" Aspect="AspectFit"/>
+            <demos_elements:SvgImage ResourceName="Icons/twitter-ico.svg" WidthRequest="40" HeightRequest="40" HorizontalOptions="Center" VerticalOptions="Start" Aspect="AspectFit" IsEnabled="False"/>
             <Label Text="TWITTER" TextColor="{x:Static local:CustomColors.TwitterTextColor}" FontSize="12" HorizontalOptions="Center" VerticalOptions="End"/>
 
             <StackLayout.GestureRecognizers>
@@ -80,7 +87,7 @@
          </StackLayout>
 
          <StackLayout Grid.Column="2" Orientation="Vertical" Spacing="10" HorizontalOptions="Center" VerticalOptions="Center">
-            <Image Source="sms_to_friend.png" WidthRequest="40" HeightRequest="40" HorizontalOptions="Center" VerticalOptions="Start" Aspect="AspectFit"/>
+            <demos_elements:SvgImage ResourceName="Icons/sms-ico.svg" WidthRequest="40" HeightRequest="40" HorizontalOptions="Center" VerticalOptions="Start" Aspect="AspectFit" IsEnabled="False"/>
             <Label Text="SMS" TextColor="{x:Static local:CustomColors.SmsTextColor}" FontSize="12" HorizontalOptions="Center" VerticalOptions="End"/>
 
             <StackLayout.GestureRecognizers>
@@ -89,7 +96,7 @@
          </StackLayout>
 
          <StackLayout Grid.Column="3" Orientation="Vertical" Spacing="10" HorizontalOptions="Center" VerticalOptions="Center">
-            <Image Source="email_to_friend.png" WidthRequest="40" HeightRequest="40" HorizontalOptions="Center" VerticalOptions="Start" Aspect="AspectFit"/>
+            <demos_elements:SvgImage ResourceName="Icons/email-ico.svg" WidthRequest="40" HeightRequest="40" HorizontalOptions="Center" VerticalOptions="Start" Aspect="AspectFit" IsEnabled="False"/>
             <Label Text="EMAIL" TextColor="{x:Static local:CustomColors.EmailTextColor}" FontSize="12" HorizontalOptions="Center" VerticalOptions="End">
                <Label.FontAttributes>
                   <OnPlatform x:TypeArguments="FontAttributes" iOS="Bold" Android="None"/>
@@ -102,8 +109,8 @@
          </StackLayout>
       </Grid>
 
-      <Image Grid.Row="4" Source="powered_by_left_logo.png" WidthRequest="130" HorizontalOptions="Start" VerticalOptions="End" Aspect="AspectFit" Margin="20,0,0,0"/>
+      <demos_elements:SvgImage Grid.Row="4" ResourceName="leadtools.svg" WidthRequest="130" HorizontalOptions="Start" VerticalOptions="End" Aspect="AspectFit" Margin="20,0,0,0"/>
 
-      <utils:AdsLayout x:Name="advertisementLayout" Grid.Row="5"/>
+      <demos_elements:AdsView x:Name="Ads" Grid.Row="5"/>
    </Grid>
-</ContentPage>
+</popup:PopupPage>

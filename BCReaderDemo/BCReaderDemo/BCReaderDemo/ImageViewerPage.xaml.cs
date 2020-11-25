@@ -1,11 +1,15 @@
-﻿using BCReaderDemo.Models;
-using BCReaderDemo.Utils;
-using DataService;
+﻿// *************************************************************
+// Copyright (c) 1991-2020 LEAD Technologies, Inc.              
+// All Rights Reserved.                                         
+// *************************************************************
+using BCReaderDemo.Models;
 using Leadtools;
 using Leadtools.Codecs;
 using Leadtools.Controls;
 using Leadtools.Demos.Utils;
 using Leadtools.ImageProcessing.Core;
+using Rg.Plugins.Popup.Pages;
+using Rg.Plugins.Popup.Services;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -44,7 +48,7 @@ namespace BCReaderDemo
    }
 
    [XamlCompilation(XamlCompilationOptions.Compile)]
-   public partial class ImageViewerPage : ContentPage
+   public partial class ImageViewerPage : PopupPage
    {
       
       private ImageViewer _imageViewer;
@@ -52,8 +56,6 @@ namespace BCReaderDemo
       private string _imagePath;
       private ImageType _imageType;
       private ContactModel _contactModel;
-      private System.Timers.Timer _adsHiddenTimer = null;
-      private System.Timers.Timer _adsVisibleTimer = null;
 
       public delegate void ImageModifiedEventHandler(object source, ImageModifiedEventArgs e);
       public event ImageModifiedEventHandler ImageModified;
@@ -63,6 +65,9 @@ namespace BCReaderDemo
       public ImageViewerPage(ContactModel contactModel, string filePath, ImageType imageType)
       {
          InitializeComponent();
+#if __IOS__
+         HasSystemPadding = false;
+#endif
 
          _imagePath = filePath;
          _contactModel = contactModel;
@@ -74,6 +79,9 @@ namespace BCReaderDemo
       public ImageViewerPage(ContactModel contactModel, RasterImage rasterImage, ImageType imageType)
       {
          InitializeComponent();
+#if __IOS__
+         HasSystemPadding = false;
+#endif
 
          _rasterImage = rasterImage;
          _contactModel = contactModel;
@@ -133,65 +141,38 @@ namespace BCReaderDemo
             _imageViewer.Image = _rasterImage;
             _imageViewer.Zoom(ControlSizeMode.FitAlways, 1.0, _imageViewer.DefaultZoomOrigin);
          }
-
-         _adsHiddenTimer = new System.Timers.Timer(HomePage.AD_HIDDEN_DURATION);
-         _adsHiddenTimer.AutoReset = true;
-         _adsHiddenTimer.Elapsed += (sender, e) =>
-         {
-            _adsHiddenTimer.Enabled = false;
-            _adsHiddenTimer.Stop();
-            _adsVisibleTimer = AdHelper.ShowAdvertisement(advertisementLayout);
-            _adsVisibleTimer.Elapsed += (sender1, e1) =>
-            {
-               _adsVisibleTimer.Enabled = false;
-               _adsVisibleTimer = null;
-               _adsHiddenTimer.Enabled = true;
-               _adsHiddenTimer.Start();
-            };
-         };
       }
 
-      protected override void OnAppearing()
+      protected override async void OnAppearing()
       {
          base.OnAppearing();
 
-         if (_adsHiddenTimer != null && (_adsVisibleTimer == null || (_adsVisibleTimer != null && !_adsVisibleTimer.Enabled)))
-         {
-            _adsHiddenTimer.Enabled = false;
-            _adsHiddenTimer.Stop();
-            _adsVisibleTimer = AdHelper.ShowAdvertisement(advertisementLayout);
-            _adsVisibleTimer.Elapsed += (sender1, e1) =>
-            {
-               _adsVisibleTimer.Enabled = false;
-               _adsVisibleTimer = null;
-               _adsHiddenTimer.Enabled = true;
-               _adsHiddenTimer.Start();
-            };
-         }
+         // Delay a bit, so the ad doesn't appear immediately
+         await Task.Delay(1000);
+
+         // Start the ads
+         Ads.Start();
       }
 
       protected override void OnDisappearing()
       {
          base.OnDisappearing();
 
-         if (_adsHiddenTimer != null)
-         {
-            _adsHiddenTimer.Stop();
-            _adsHiddenTimer.Enabled = false;
-         }
+         // Stop the ads
+         Ads.Stop();
       }
 
       private void BackButton_Clicked(object sender, EventArgs e)
       {
-         HomePage.Instance.Navigation.PopAsync();
+         PopupNavigation.Instance.PopAsync();
       }
 
       private async void RetakeButton_Clicked(object sender, EventArgs e)
       {
          try
          {
-            var results = await DependencyService.Get<Permissions.IPermissions>().VerifyPermissionsAsync(Permissions.Permission.Camera);
-            if (results == null || results[Permissions.Permission.Camera] != Permissions.PermissionStatus.Granted)
+            var results = await DependencyService.Get<IPermissions>().VerifyPermissionsAsync(false, PermissionType.Camera);
+            if (results == null || results[PermissionType.Camera] != PermissionStatus.Granted)
                return;
 
             CameraPage cameraPage = new CameraPage(CameraOperationType.Normal, true);
@@ -248,11 +229,11 @@ namespace BCReaderDemo
 
             if (imageStream != null)
             {
-               await DependencyService.Get<IPictureSaver>().SaveImage(imageStream, filePath, saveResolution);
+               await DependencyService.Get<IPictureSaver>().SaveImage(imageStream, filePath, saveResolution, false);
             }
             else if (image != null)
             {
-               LeadSize size = RasterImageHelper.GetImageSize(image.Width, image.Height, saveResolution);
+               LeadSize size = ImageSizeHelper.GetImageSize(image.Width, image.Height, saveResolution);
                ResizeInterpolateCommand resizeInterpolateCommand = new ResizeInterpolateCommand(size.Width, size.Height, ResizeInterpolateCommandType.Resample);
                resizeInterpolateCommand.Run(image);
 
@@ -329,7 +310,7 @@ namespace BCReaderDemo
 
                   ImageModified?.Invoke(this, new ImageModifiedEventArgs(this._contactModel, ImageType.ProfileImage, ImageOperations.Delete));
 
-                  await HomePage.Instance.Navigation.PopAsync();
+                  await PopupNavigation.Instance.PopAsync();
                }
                else if(_imageType == ImageType.BackImage)
                {
@@ -342,7 +323,7 @@ namespace BCReaderDemo
 
                   ImageModified?.Invoke(this, new ImageModifiedEventArgs(this._contactModel, ImageType.BackImage, ImageOperations.Delete));
 
-                  await HomePage.Instance.Navigation.PopAsync();
+                  await PopupNavigation.Instance.PopAsync();
                }
             }
          });               

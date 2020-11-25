@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<page:CustomPage xmlns="http://xamarin.com/schemas/2014/forms"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:demos="clr-namespace:Leadtools.Demos"
+                 xmlns:elements="clr-namespace:Leadtools.Demos.UI.Elements"
+                 xmlns:page="clr-namespace:Leadtools.Demos.UI.Page"
+                 xmlns:utils="clr-namespace:Leadtools.Demos.Utils"
+                 x:Class="Leadtools.Demos.UI.Pages.Info.FollowPage"
+                 ControlTemplate="{StaticResource CustomPageTemplate}">
+
+   <page:CustomPage.Resources>
+      <x:String x:Key="BackButtonResourceName">back.svg</x:String>
+      <x:String x:Key="TitleText">Follow us</x:String>
+   </page:CustomPage.Resources>
+
+   <Grid>
+      <elements:CustomListView x:Name="OptionsList" ItemTapped="OptionsList_ItemTapped" ShowSelection="True" HorizontalScrollBarVisibility="Default" VerticalScrollBarVisibility="Default">
+         <elements:CustomListView.ItemTemplate>
+            <DataTemplate>
+               <elements:CustomViewCell>
+                  <Grid Margin="0" Padding="{utils:GlobalMargin '1, 0.5'}" ColumnSpacing="{utils:GlobalMargin 1}"
+                     RowSpacing="0">
+                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                     </Grid.ColumnDefinitions>
+                     <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                     </Grid.RowDefinitions>
+
+                     <Label Grid.Column="0" Grid.Row="0" FontAttributes="Bold"
+                         FontFamily="{Static demos:DemoUtilities.FontFamily}" FontSize="{utils:FontSize 0.7}"
+                         HorizontalTextAlignment="Start" Text="{Binding LabelText, Mode=OneTime}"
+                         TextColor="{Binding TextColor, Mode=OneTime}" VerticalTextAlignment="Center"
+                         />
+                     <!-- Disable to pass through touch events -->
+                     <elements:SvgImage Grid.Column="1" Grid.Row="0" HeightRequest="{utils:GlobalMargin 0.8}" 
+                                        WidthRequest="{utils:GlobalMargin 0.8}" HorizontalOptions="Center"
+                                        VerticalOptions="Center" ResourceName="{Binding ImageResourceName, Mode=OneTime}"
+                                        />
+                  </Grid>
+               </elements:CustomViewCell>
+            </DataTemplate>
+         </elements:CustomListView.ItemTemplate>
+      </elements:CustomListView>
+   </Grid>
+</page:CustomPage>

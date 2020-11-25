@@ -1,0 +1,268 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
+    <SignAssembly>false</SignAssembly>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+    <TargetFrameworkMonikerAssemblyAttributesPath>$([System.IO.Path]::Combine('$(IntermediateOutputPath)','$(TargetFrameworkMoniker).AssemblyAttributes$(DefaultLanguageSourceExtension)'))</TargetFrameworkMonikerAssemblyAttributesPath>
+    <AssemblyName>Leadtools.Annotations.Xamarin</AssemblyName>
+    <RootNamespace>Leadtools.Annotations.Xamarin</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+    <OutputPath>objx\Debug\</OutputPath>
+    <DefineConstants>TRACE;FOR_STD;FOR_XAMARIN;LEADTOOLS_V16_OR_LATER;LEADTOOLS_V17_OR_LATER;LEADTOOLS_V175_OR_LATER;FOR_ANYCPU;FOR_DOTNET4;LEADTOOLS_V18_OR_LATER;LEADTOOLS_V19_OR_LATER;LEADTOOLS_V20_OR_LATER;LTV21_CONFIG;LEADTOOLS_V21_OR_LATER</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+    <OutputPath>objx\Release\</OutputPath>
+    <DefineConstants>TRACE;FOR_STD;FOR_XAMARIN;LEADTOOLS_V16_OR_LATER;LEADTOOLS_V17_OR_LATER;LEADTOOLS_V175_OR_LATER;FOR_ANYCPU;FOR_DOTNET4;LEADTOOLS_V18_OR_LATER;LEADTOOLS_V19_OR_LATER;LEADTOOLS_V20_OR_LATER;LTV21_CONFIG;LEADTOOLS_V21_OR_LATER</DefineConstants>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Common\AnnAutomationRasterImageViewer.cs" />
+    <Compile Include="Common\AnnObjectEditior.cs" />
+    <Compile Include="Common\AnnPropertyInfo.cs" />
+    <Compile Include="Common\AutomationInteractiveMode.cs" />
+    <Compile Include="Common\AutomationManagerHelper.cs" />
+    <Compile Include="Common\EditTextView.cs" />
+    <Compile Include="Common\ImageViewerAutomationControl.cs" />
+    <Compile Include="Common\RasterImageProvider.cs" />
+    <Compile Include="Common\TreeView.cs" />
+    <Compile Include="Common\TreeViewItem.cs" />
+    <Compile Include="Common\Tools.cs" />
+    <EmbeddedResource Include="..\Common\AutomationObjectUpdatePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <Link>Common\AutomationObjectUpdatePage.xaml</Link>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="..\Common\AutomationObjectUpdatePage.xaml.cs">
+      <DependentUpon>AutomationObjectUpdatePage.xaml</DependentUpon>
+      <Link>Common\AutomationObjectUpdatePage.xaml.cs</Link>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Leadtools.Formats.Document">
+      <Version>21.*</Version>
+    </PackageReference>
+    <PackageReference Include="Leadtools.Formats.Raster.Common">
+      <Version>21.*</Version>
+    </PackageReference>
+    <PackageReference Include="Leadtools.Pdf">
+      <Version>21.*</Version>
+    </PackageReference>
+    <PackageReference Include="Leadtools.Viewer.Controls.Xamarin">
+      <Version>21.*</Version>
+    </PackageReference>
+    <PackageReference Include="Leadtools.Annotations">
+      <Version>21.*</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Essentials" Version="1.5.3" />
+    <PackageReference Include="Xamarin.Forms" Version="4.5.0.617" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Rg.Plugins.Popup" Version="2.0.0.2" />
+    <PackageReference Include="SkiaSharp.Svg" Version="1.60.0" />
+    <PackageReference Include="SkiaSharp.Views.Forms" Version="1.68.1.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Leadtools.Demos.Xamarin">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Bin\Leadtools.Demos.Xamarin.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets\Objects\Stamps\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Resources\Audio.png">
+      <Link>Assets\Objects\Audio.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Resources\Content.png">
+      <Link>Assets\Objects\Content.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Resources\EncryptPrimary.png">
+      <Link>Assets\Objects\EncryptPrimary.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Resources\EncryptSecondary.png">
+      <Link>Assets\Objects\EncryptSecondary.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Resources\Hotspot.png">
+      <Link>Assets\Objects\Hotspot.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Resources\Lock.png">
+      <Link>Assets\Objects\Lock.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Resources\Point.png">
+      <Link>Assets\Objects\Point.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Resources\StickyNote.png">
+      <Link>Assets\Objects\StickyNote.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Resources\Video.png">
+      <Link>Assets\Objects\Video.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Resources\Stamps\Approved.png">
+      <Link>Assets\Objects\Stamps\Approved.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Resources\Stamps\Assigned.png">
+      <Link>Assets\Objects\Stamps\Assigned.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Resources\Stamps\Checked.png">
+      <Link>Assets\Objects\Stamps\Checked.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Resources\Stamps\Client.png">
+      <Link>Assets\Objects\Stamps\Client.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Resources\Stamps\Copy.png">
+      <Link>Assets\Objects\Stamps\Copy.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Resources\Stamps\Draft.png">
+      <Link>Assets\Objects\Stamps\Draft.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Resources\Stamps\Extended.png">
+      <Link>Assets\Objects\Stamps\Extended.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Resources\Stamps\Fax.png">
+      <Link>Assets\Objects\Stamps\Fax.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Resources\Stamps\Faxed.png">
+      <Link>Assets\Objects\Stamps\Faxed.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Resources\Stamps\Important.png">
+      <Link>Assets\Objects\Stamps\Important.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Resources\Stamps\Invoice.png">
+      <Link>Assets\Objects\Stamps\Invoice.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Resources\Stamps\Notice.png">
+      <Link>Assets\Objects\Stamps\Notice.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Resources\Stamps\Official.png">
+      <Link>Assets\Objects\Stamps\Official.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Resources\Stamps\OnFile.png">
+      <Link>Assets\Objects\Stamps\OnFile.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Resources\Stamps\Paid.png">
+      <Link>Assets\Objects\Stamps\Paid.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Resources\Stamps\Passed.png">
+      <Link>Assets\Objects\Stamps\Passed.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Resources\Stamps\Pending.png">
+      <Link>Assets\Objects\Stamps\Pending.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Resources\Stamps\Processed.png">
+      <Link>Assets\Objects\Stamps\Processed.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Resources\Stamps\Received.png">
+      <Link>Assets\Objects\Stamps\Received.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Resources\Stamps\Rejected.png">
+      <Link>Assets\Objects\Stamps\Rejected.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Resources\Stamps\Release.png">
+      <Link>Assets\Objects\Stamps\Release.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Resources\Stamps\Sent.png">
+      <Link>Assets\Objects\Stamps\Sent.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Resources\Stamps\Shipped.png">
+      <Link>Assets\Objects\Stamps\Shipped.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Resources\Stamps\TopSecret.png">
+      <Link>Assets\Objects\Stamps\TopSecret.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Resources\Stamps\Urgent.png">
+      <Link>Assets\Objects\Stamps\Urgent.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Resources\Stamps\Void.png">
+      <Link>Assets\Objects\Stamps\Void.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <PropertyGroup>
+      <AssemblyTimestampBeforeCompile>%(IntermediateAssembly.ModifiedTime)</AssemblyTimestampBeforeCompile>
+    </PropertyGroup>
+  </Target>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <PropertyGroup>
+      <AssemblyTimestampAfterCompile>%(IntermediateAssembly.ModifiedTime)</AssemblyTimestampAfterCompile>
+    </PropertyGroup>
+    <Exec Command="IF NOT EXIST $(TargetDir)..\..\..\..\..\Bin md $(TargetDir)..\..\..\..\..\Bin&#xD;&#xA;				copy $(TargetPath) $(TargetDir)..\..\..\..\..\Bin" />
+  </Target>
+</Project>

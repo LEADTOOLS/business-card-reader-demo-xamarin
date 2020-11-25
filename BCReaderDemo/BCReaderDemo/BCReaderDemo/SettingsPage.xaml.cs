@@ -1,26 +1,30 @@
 ﻿// *************************************************************
-// Copyright (c) 1991-2019 LEAD Technologies, Inc.              
+// Copyright (c) 1991-2020 LEAD Technologies, Inc.              
 // All Rights Reserved.                                         
 // *************************************************************
 using BCReaderDemo.Utils;
+using Rg.Plugins.Popup.Pages;
+using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.ObjectModel;
-using Xamarin.Forms;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace BCReaderDemo
 {
    [XamlCompilation(XamlCompilationOptions.Compile)]
-   public partial class SettingsPage : ContentPage
+   public partial class SettingsPage : PopupPage
    {
-      private System.Timers.Timer _adsHiddenTimer = null;
-      private System.Timers.Timer _adsVisibleTimer = null;
       private ObservableCollection<SettingsFields> Settings { get; set; }
 
       public SettingsPage()
       {
          InitializeComponent();
+#if __IOS__
+         HasSystemPadding = false;
+#endif
 
          Settings = new ObservableCollection<SettingsFields>
          {
@@ -32,57 +36,30 @@ namespace BCReaderDemo
             new SettingsFields { FieldName = "HELP"                  , AssociatedPageType = typeof(HelpPage) },
          };
          settingsListView.ItemsSource = Settings;
-
-         _adsHiddenTimer = new System.Timers.Timer(HomePage.AD_HIDDEN_DURATION);
-         _adsHiddenTimer.AutoReset = true;
-         _adsHiddenTimer.Elapsed += (sender, e) =>
-         {
-            _adsHiddenTimer.Enabled = false;
-            _adsHiddenTimer.Stop();
-            _adsVisibleTimer = AdHelper.ShowAdvertisement(advertisementLayout);
-            _adsVisibleTimer.Elapsed += (sender1, e1) =>
-            {
-               _adsVisibleTimer.Enabled = false;
-               _adsVisibleTimer = null;
-               _adsHiddenTimer.Enabled = true;
-               _adsHiddenTimer.Start();
-            };
-         };
       }
 
-      protected override void OnAppearing()
+      protected override async void OnAppearing()
       {
          base.OnAppearing();
 
-         if (_adsHiddenTimer != null && (_adsVisibleTimer == null || (_adsVisibleTimer != null && !_adsVisibleTimer.Enabled)))
-         {
-            _adsHiddenTimer.Enabled = false;
-            _adsHiddenTimer.Stop();
-            _adsVisibleTimer = AdHelper.ShowAdvertisement(advertisementLayout);
-            _adsVisibleTimer.Elapsed += (sender1, e1) =>
-            {
-               _adsVisibleTimer.Enabled = false;
-               _adsVisibleTimer = null;
-               _adsHiddenTimer.Enabled = true;
-               _adsHiddenTimer.Start();
-            };
-         }
+         // Delay a bit, so the ad doesn't appear immediately
+         await Task.Delay(1000);
+
+         // Start the ads
+         Ads.Start();
       }
 
       protected override void OnDisappearing()
       {
          base.OnDisappearing();
 
-         if (_adsHiddenTimer != null)
-         {
-            _adsHiddenTimer.Stop();
-            _adsHiddenTimer.Enabled = false;
-         }
+         // Stop the ads
+         Ads.Stop();
       }
 
       private async void BackButton_Tapped(object sender, EventArgs e)
       {
-         await HomePage.Instance.Navigation.PopAsync();
+         await PopupNavigation.Instance.PopAsync();
       }
 
       private async void SettingsListView_ItemTapped(object sender, ItemTappedEventArgs e)
@@ -96,8 +73,8 @@ namespace BCReaderDemo
          }
          else
          {
-            var page = Activator.CreateInstance(item.AssociatedPageType) as Page;
-            await HomePage.Instance.Navigation.PushAsync(page, true);
+            var page = Activator.CreateInstance(item.AssociatedPageType) as PopupPage;
+            await PopupNavigation.Instance.PushAsync(page, true);
          }
       }
    }

@@ -1,15 +1,17 @@
 ﻿// *************************************************************
-// Copyright (c) 1991-2019 LEAD Technologies, Inc.              
+// Copyright (c) 1991-2020 LEAD Technologies, Inc.              
 // All Rights Reserved.                                         
 // *************************************************************
-using DataService;
 using Leadtools;
 using Leadtools.Camera.Xamarin;
+using Leadtools.Demos;
+using Leadtools.Demos.Utils;
+using Rg.Plugins.Popup.Pages;
+using Rg.Plugins.Popup.Services;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Timers;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -37,7 +39,7 @@ namespace BCReaderDemo
    }
 
    [XamlCompilation(XamlCompilationOptions.Compile)]
-   public partial class CameraPage : ContentPage
+   public partial class CameraPage : PopupPage
    {
       public delegate void PictureTakenEventHandler(object source, PictureTakenEventArgs e);
       public event PictureTakenEventHandler PictureTaken;
@@ -81,6 +83,9 @@ namespace BCReaderDemo
       {
          CurrentOperation = currentOperation;
          InitializeComponent();
+#if __IOS__
+         HasSystemPadding = false;
+#endif
          InitFormsUI();
          _autoCapture = new AutoCapture();
 
@@ -94,14 +99,14 @@ namespace BCReaderDemo
 
       private void InitFormsUI()
       {
-         overlayGrid.HeightRequest = App.DisplayScreenHeight;
+         overlayGrid.HeightRequest = DemoUtilities.DisplayHeight;
 
          if (Xamarin.Forms.Device.Idiom == TargetIdiom.Tablet)
          {
             var aspectRatio = 16.0 / 9.0;
             var padding = 20;
-            var aspectWidth = App.DisplayScreenHeight / aspectRatio;
-            var widthAdjustment = App.DisplayScreenWidth - aspectWidth;
+            var aspectWidth = DemoUtilities.DisplayHeight / aspectRatio;
+            var widthAdjustment = DemoUtilities.DisplayWidth - aspectWidth;
             var outerColumnWidth = (widthAdjustment / 2) - padding;
 
             c0.Width = new GridLength(outerColumnWidth);
@@ -251,22 +256,9 @@ namespace BCReaderDemo
 #pragma warning restore CS0618 // Type or member is obsolete
 #endif
 
+         autoCaptureGrid.IsVisible = _enableAutoCapture;
          if (_enableAutoCapture)
-         {
-            autoCaptureGrid.IsVisible = true;
             leadCamera.FrameReceived += LeadCamera_FrameReceived;
-         }
-
-#if __ANDROID__
-         if(!_enableAutoCapture)
-         {
-            if (Android.OS.Build.Manufacturer == "samsung")
-            {
-               leadCamera.FrameReceived += LeadCamera_FrameReceived_Focus;
-            }
-         }
-
-#endif // #if __ANDROID__
       }
 
       private void UpdateCardDetectionStatus()
@@ -275,23 +267,6 @@ namespace BCReaderDemo
          autoCaptureLabel.TextColor = Color.White;
       }
       
-      private void LeadCamera_FrameReceived_Focus(FrameHandlerEventArgs e)
-      {
-         if (e.Image == null)
-            return;
-
-         if (leadCamera.Camera.FocusMode != FocusMode.Continuous)
-            leadCamera.Camera.FocusMode = FocusMode.Continuous;
-
-         if (firstFrame)
-         {
-            leadCamera.Camera.Focus();
-            firstFrame = false;
-         }
-
-         e.Image.Dispose();
-      }
-
       private void LeadCamera_FrameReceived(FrameHandlerEventArgs e)
       {
          if (e.Image == null)
@@ -506,8 +481,11 @@ namespace BCReaderDemo
          }
          else
          {
-            HomePage.Instance.PopCameraPage();
-            PictureTaken?.Invoke(this, new PictureTakenEventArgs(e.Image, null, CurrentOperation));
+            Device.BeginInvokeOnMainThread(() =>
+            {
+               HomePage.Instance.PopCameraPage();
+               PictureTaken?.Invoke(this, new PictureTakenEventArgs(e.Image, null, CurrentOperation));
+            });
          }
       }
 
@@ -525,7 +503,7 @@ namespace BCReaderDemo
          Device.BeginInvokeOnMainThread(async () =>
          {
             HomePage.Instance.PopCameraPage();
-            await HomePage.Instance.Navigation.PushAsync(page, true);
+            await PopupNavigation.Instance.PushAsync(page, true);
          });
       }
 
@@ -536,8 +514,8 @@ namespace BCReaderDemo
 
       private async void GalleryButton_Tapped(object sender, EventArgs e)
       {
-         var results = await DependencyService.Get<Permissions.IPermissions>().VerifyPermissionsAsync(Permissions.Permission.Photos);
-         if (results == null || results[Permissions.Permission.Photos] != Permissions.PermissionStatus.Granted)
+         var results = await DependencyService.Get<IPermissions>().VerifyPermissionsAsync(false, PermissionType.Photos);
+         if (results == null || results[PermissionType.Photos] != PermissionStatus.Granted)
             return;
 
          cleanup = false;
@@ -552,8 +530,11 @@ namespace BCReaderDemo
                }
                else
                {
-                  HomePage.Instance.PopCameraPage();
-                  PictureTaken?.Invoke(this, new PictureTakenEventArgs(null, stream, CurrentOperation));
+                  Device.BeginInvokeOnMainThread(() =>
+                  {
+                     HomePage.Instance.PopCameraPage();
+                     PictureTaken?.Invoke(this, new PictureTakenEventArgs(null, stream, CurrentOperation));
+                  });
                }
             }
          }
@@ -586,12 +567,12 @@ namespace BCReaderDemo
          if (leadCamera.CameraOptions.FlashMode == Leadtools.Camera.Xamarin.FlashMode.Torch)
          {
             leadCamera.CameraOptions.FlashMode = Leadtools.Camera.Xamarin.FlashMode.Off;
-            flashButton.Source = "noFlash.png";
+            flashButton.ResourceName = "Icons/flash-off.svg";
          }
          else
          {
             leadCamera.CameraOptions.FlashMode = Leadtools.Camera.Xamarin.FlashMode.Torch;
-            flashButton.Source = "flash.png";
+            flashButton.ResourceName = "Icons/flash-on.svg";
          }
       }
 
@@ -613,9 +594,7 @@ namespace BCReaderDemo
 
          _captureImage = true;
          _enableAutoCapture = false;
-         leadCamera.Camera.FocusMode = FocusMode.Auto;
-         leadCamera.FocusCompleted += leadCamera_FocusCompleted;
-         leadCamera.Camera.Focus();
+         leadCamera.Camera.TakePicture();
       }
    }
 }

@@ -39,7 +39,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)ImageViewerPage.xaml.cs">
       <DependentUpon>ImageViewerPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)IPermissions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RecommendToFriendPage.xaml.cs">
       <DependentUpon>RecommendToFriendPage.xaml</DependentUpon>
     </Compile>
@@ -87,7 +86,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Animations.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\AppData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\CustomClasses.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utils\Effects.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Helpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\MECardUtils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\SectionsFactory.cs" />
@@ -97,9 +95,162 @@
       <DependentUpon>CameraPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)..\..\Common\Shared\Utils\RasterImageLoader.cs">
-      <Link>Common\Utils\RasterImageLoader.cs</Link>
+    <Compile Include="$(MSBuildThisFileDirectory)..\Common\LicenseManagerUtility.cs">
+      <Link>Common\LicenseManagerUtility.cs</Link>
     </Compile>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\leadtools.svg">
+      <Link>Common\Resources\leadtools.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\leadtools-logo.svg">
+      <Link>Common\Resources\leadtools-logo.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\accept.svg">
+      <Link>Common\Resources\Icons\accept.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\settings-ico-1.svg">
+      <Link>Common\Resources\Icons\settings-ico-1.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\settings-ico-2.svg">
+      <Link>Common\Resources\Icons\settings-ico-2.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\add-ico-1.svg">
+      <Link>Common\Resources\Icons\add-ico-1.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\back.svg">
+      <Link>Common\Resources\Icons\back.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\backside.svg">
+      <Link>Common\Resources\Icons\backside.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\barcode-scan.svg">
+      <Link>Common\Resources\Icons\barcode-scan.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\camera-ico-1.svg">
+      <Link>Common\Resources\Icons\camera-ico-1.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\camera-add.svg">
+      <Link>Common\Resources\Icons\camera-add.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\cancel.svg">
+      <Link>Common\Resources\Icons\cancel.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\warning.svg">
+      <Link>Common\Resources\Icons\warning.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\radio-selected.svg">
+      <Link>Common\Resources\Icons\radio-selected.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\radio-unselected.svg">
+      <Link>Common\Resources\Icons\radio-unselected.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\close.svg">
+      <Link>Common\Resources\Icons\close.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\company.svg">
+      <Link>Common\Resources\Icons\company.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\company-active.svg">
+      <Link>Common\Resources\Icons\company-active.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\date.svg">
+      <Link>Common\Resources\Icons\date.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\date-active.svg">
+      <Link>Common\Resources\Icons\date-active.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\email.svg">
+      <Link>Common\Resources\Icons\email.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\email-active.svg">
+      <Link>Common\Resources\Icons\email-active.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\name.svg">
+      <Link>Common\Resources\Icons\name.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\name-active.svg">
+      <Link>Common\Resources\Icons\name-active.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\add-to-contacts.svg">
+      <Link>Common\Resources\Icons\add-to-contacts.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\del-icon-1.svg">
+      <Link>Common\Resources\Icons\del-icon-1.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\del-icon-2.svg">
+      <Link>Common\Resources\Icons\del-icon-2.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\arrow-down.svg">
+      <Link>Common\Resources\Icons\arrow-down.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\tools-ico.svg">
+      <Link>Common\Resources\Icons\tools-ico.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\mail-ico.svg">
+      <Link>Common\Resources\Icons\mail-ico.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\email-ico.svg">
+      <Link>Common\Resources\Icons\email-ico.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\fb-ico.svg">
+      <Link>Common\Resources\Icons\fb-ico.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\twitter-ico.svg">
+      <Link>Common\Resources\Icons\twitter-ico.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\sms-ico.svg">
+      <Link>Common\Resources\Icons\sms-ico.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\linked-in-ico.svg">
+      <Link>Common\Resources\Icons\linked-in-ico.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\youtube-ico.svg">
+      <Link>Common\Resources\Icons\youtube-ico.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\right-arrow.svg">
+      <Link>Common\Resources\Icons\right-arrow.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\gallery.svg">
+      <Link>Common\Resources\Icons\gallery.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\group.svg">
+      <Link>Common\Resources\Icons\group.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\remove.svg">
+      <Link>Common\Resources\Icons\remove.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\remove-ico.svg">
+      <Link>Common\Resources\Icons\remove-ico.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\message-ico.svg">
+      <Link>Common\Resources\Icons\message-ico.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\phone-ico.svg">
+      <Link>Common\Resources\Icons\phone-ico.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\avatar.svg">
+      <Link>Common\Resources\Icons\avatar.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\save-to-contacts.svg">
+      <Link>Common\Resources\Icons\save-to-contacts.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\share-ico.svg">
+      <Link>Common\Resources\Icons\share-ico.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\share.svg">
+      <Link>Common\Resources\Icons\share.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\take-picture.svg">
+      <Link>Common\Resources\Icons\take-picture.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\flash-on.svg">
+      <Link>Common\Resources\Icons\flash-on.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\flash-off.svg">
+      <Link>Common\Resources\Icons\flash-off.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\Common\Resources\Icons\more-options.svg">
+      <Link>Common\Resources\Icons\more-options.svg</Link>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)UpdateBusinessCardPage.xaml">
@@ -223,5 +374,8 @@
       <Generator>
       </Generator>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\recommend.svg" />
   </ItemGroup>
 </Project>

@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ControlTemplate xmlns="http://xamarin.com/schemas/2014/forms"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:demos="clr-namespace:Leadtools.Demos"
+                 xmlns:demos_elements="clr-namespace:Leadtools.Demos.UI.Elements"
+                 xmlns:utils="clr-namespace:Leadtools.Demos.Utils"
+                 x:Class="Leadtools.Demos.UI.Page.CustomPageTemplate">
+
+   <StackLayout x:Name="PageRoot" Orientation="Vertical" BackgroundColor="#F5F7FA">
+      <!-- Padding for iOS safe area -->
+      <BoxView x:Name="TopPadding" HeightRequest="{Binding SafeAreaTop, Source={Static demos:DemoUtilities.Instance}}"
+               VerticalOptions="Start" BackgroundColor="Transparent"
+               />
+
+      <!-- Back button (with some extra padding, but still left-aligned) -->
+      <ContentView x:Name="PageBackButton" Margin="{utils:GlobalMargin '0.5, 0.5, 1, 0'}"
+                   HeightRequest="{utils:GlobalMargin 1.5}" HorizontalOptions="Start" VerticalOptions="Start">
+         <!-- Disable the image to pass-through touch events to parent -->
+         <demos_elements:SvgImage IsEnabled="False" Margin="{utils:GlobalMargin '0.5,'}"
+                            ResourceName="{DynamicResource BackButtonResourceName}"
+                            />
+      </ContentView>
+
+      <!-- Title -->
+      <StackLayout x:Name="PageTitle" Margin="{utils:GlobalMargin '1, 0, 1, 0.5'}" HorizontalOptions="FillAndExpand" VerticalOptions="Start" Orientation="Horizontal">
+         <Label x:Name="PageTitleLabel" HorizontalOptions="StartAndExpand"
+             VerticalOptions="Center" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"
+             FontAttributes="Bold" FontFamily="{Static demos:DemoUtilities.FontFamily}"
+             FontSize="{Static utils:FontSize.LargeFontSize}" Text="{DynamicResource TitleText}" TextColor="#57687F"
+             />
+
+         <Label x:Name="PageTitleExtraButton" HorizontalOptions="End"
+             VerticalOptions="Center" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"
+             FontAttributes="Bold" FontFamily="{Static demos:DemoUtilities.FontFamily}"
+             FontSize="{Static utils:FontSize.MediumFontSize}" Text="{DynamicResource TitleExtraButtonText}" TextColor="#56A7FD" IsVisible="{DynamicResource IsTitleExtraButtonVisible}"
+             />
+      </StackLayout>
+
+      <!-- Content -->
+      <ContentPresenter x:Name="PageContent" VerticalOptions="FillAndExpand" />
+
+      <!-- Footer -->
+      <demos_elements:SvgImage x:Name="PageFooter" Margin="{utils:GlobalMargin '1, 0.5, 1, 0.3'}"
+                         HeightRequest="{utils:GlobalMargin 0.75}" HorizontalOptions="Start" VerticalOptions="End"
+                         ResourceName="leadtools.svg"
+                         />
+
+      <!-- Ads View -->
+      <demos_elements:AdsView x:Name="Ads"/>
+
+      <!-- Padding for iOS safe area -->
+      <BoxView HeightRequest="{Binding SafeAreaBottom, Source={Static demos:DemoUtilities.Instance}}"
+               VerticalOptions="End" BackgroundColor="Transparent"
+               />
+   </StackLayout>
+
+</ControlTemplate>

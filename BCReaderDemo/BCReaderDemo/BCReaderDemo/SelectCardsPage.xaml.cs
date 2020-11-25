@@ -1,10 +1,13 @@
 ﻿// *************************************************************
-// Copyright (c) 1991-2019 LEAD Technologies, Inc.              
+// Copyright (c) 1991-2020 LEAD Technologies, Inc.              
 // All Rights Reserved.                                         
 // *************************************************************
 using BCReaderDemo.Models;
 using BCReaderDemo.Utils;
 using DataService;
+using Leadtools.Demos.Utils;
+using Rg.Plugins.Popup.Pages;
+using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,13 +18,11 @@ using Xamarin.Forms.Xaml;
 namespace BCReaderDemo
 {
    [XamlCompilation(XamlCompilationOptions.Compile)]
-   public partial class SelectCardsPage : ContentPage
+   public partial class SelectCardsPage : PopupPage
    {
       private ObservableCollection<Grouping<string, ContactModel>> _contactsGrouped = null;
       private string _preSelectedGroupName = null;
       private bool _addFromCardsHolder;
-      private System.Timers.Timer _adsHiddenTimer = null;
-      private System.Timers.Timer _adsVisibleTimer = null;
 
       public bool IsSingleActionPage { get; set; }
       public string SingleActionName { get; set; }
@@ -31,6 +32,9 @@ namespace BCReaderDemo
       public SelectCardsPage(PredefinedActions action, string preSelectedGroupName, ContactModel defaultSelectedItem, bool addFromCardsHolder, string defaultSearchCardsString)
       {
          InitializeComponent();
+#if __IOS__
+         HasSystemPadding = false;
+#endif
 
          Init(action, preSelectedGroupName, defaultSelectedItem, addFromCardsHolder, defaultSearchCardsString);
       }
@@ -83,22 +87,6 @@ namespace BCReaderDemo
                break;
          }
 
-         _adsHiddenTimer = new System.Timers.Timer(HomePage.AD_HIDDEN_DURATION);
-         _adsHiddenTimer.AutoReset = true;
-         _adsHiddenTimer.Elapsed += (sender, e) =>
-         {
-            _adsHiddenTimer.Enabled = false;
-            _adsHiddenTimer.Stop();
-            _adsVisibleTimer = AdHelper.ShowAdvertisement(advertisementLayout);
-            _adsVisibleTimer.Elapsed += (sender1, e1) =>
-            {
-               _adsVisibleTimer.Enabled = false;
-               _adsVisibleTimer = null;
-               _adsHiddenTimer.Enabled = true;
-               _adsHiddenTimer.Start();
-            };
-         };
-
          if (!string.IsNullOrEmpty(defaultSearchCardsString))
             mainSearchBar.Text = defaultSearchCardsString;
          else
@@ -107,34 +95,23 @@ namespace BCReaderDemo
          BindingContext = this;
       }
 
-      protected override void OnAppearing()
+      protected override async void OnAppearing()
       {
          base.OnAppearing();
 
-         if (_adsHiddenTimer != null && (_adsVisibleTimer == null || (_adsVisibleTimer != null && !_adsVisibleTimer.Enabled)))
-         {
-            _adsHiddenTimer.Enabled = false;
-            _adsHiddenTimer.Stop();
-            _adsVisibleTimer = AdHelper.ShowAdvertisement(advertisementLayout);
-            _adsVisibleTimer.Elapsed += (sender1, e1) =>
-            {
-               _adsVisibleTimer.Enabled = false;
-               _adsVisibleTimer = null;
-               _adsHiddenTimer.Enabled = true;
-               _adsHiddenTimer.Start();
-            };
-         }
+         // Delay a bit, so the ad doesn't appear immediately
+         await Task.Delay(1000);
+
+         // Start the ads
+         Ads.Start();
       }
 
       protected override void OnDisappearing()
       {
          base.OnDisappearing();
 
-         if (_adsHiddenTimer != null)
-         {
-            _adsHiddenTimer.Stop();
-            _adsHiddenTimer.Enabled = false;
-         }
+         // Stop the ads
+         Ads.Stop();
       }
 
       private async void RefreshListView(ContactModel defaultSelectedItem = null)
@@ -149,13 +126,23 @@ namespace BCReaderDemo
 
          ContactsList.ItemsSource = _contactsGrouped;
 
-         Device.BeginInvokeOnMainThread(() =>
+         if(Device.IsInvokeRequired)
          {
-            if(defaultSelectedItem != null)
+            Device.BeginInvokeOnMainThread(() =>
+            {
+               if (defaultSelectedItem != null)
+                  ContactsList.ScrollTo(defaultSelectedItem, ScrollToPosition.Center, true);
+               UpdatePageTitle();
+               UpdateSelectAllButtonText();
+            });
+         }
+         else
+         {
+            if (defaultSelectedItem != null)
                ContactsList.ScrollTo(defaultSelectedItem, ScrollToPosition.Center, true);
             UpdatePageTitle();
             UpdateSelectAllButtonText();
-         });
+         }
       }
 
       private void SearchBarTextChanged(object sender, TextChangedEventArgs e)
@@ -180,7 +167,7 @@ namespace BCReaderDemo
 
          PageClosing?.Invoke(this, null);
 
-         await HomePage.Instance.Navigation.PopAsync();
+         await PopupNavigation.Instance.PopAsync();
       }
 
       private void SelectAllButton_Tapped(object sender, EventArgs e)
@@ -304,7 +291,7 @@ namespace BCReaderDemo
          {
             SelectGroupPage page = new SelectGroupPage(null);
             page.PageClosing += SelectGroupPage_PageClosing;
-            await HomePage.Instance.Navigation.PushAsync(page);
+            await PopupNavigation.Instance.PushAsync(page);
          }
          else
          {
@@ -346,8 +333,8 @@ namespace BCReaderDemo
 
       private async void SaveToContactsButton_Tapped(object sender, EventArgs e)
       {
-         var results = await DependencyService.Get<Permissions.IPermissions>().VerifyPermissionsAsync(Permissions.Permission.Contacts);
-         if (results == null || results[Permissions.Permission.Contacts] != Permissions.PermissionStatus.Granted)
+         var results = await DependencyService.Get<IPermissions>().VerifyPermissionsAsync(false, PermissionType.Contacts);
+         if (results == null || results[PermissionType.Contacts] != PermissionStatus.Granted)
             return;
 
          if (!IsAnyItemSelected())

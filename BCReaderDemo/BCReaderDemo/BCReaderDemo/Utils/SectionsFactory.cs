@@ -1,8 +1,9 @@
 ﻿// *************************************************************
-// Copyright (c) 1991-2019 LEAD Technologies, Inc.              
+// Copyright (c) 1991-2020 LEAD Technologies, Inc.              
 // All Rights Reserved.                                         
 // *************************************************************
 using BCReaderDemo.Models;
+using Leadtools.Demos.UI.Elements;
 using System;
 using System.Text.RegularExpressions;
 using Xamarin.Forms;
@@ -12,7 +13,7 @@ namespace BCReaderDemo.Utils
    public static class SectionsFactory
    {
       // Load image source to avoid blinking
-      private static ImageSource deleteImageSource = ImageSource.FromFile("delete.png");
+      private static ImageSource deleteImageSource = ImageSource.FromFile("del-icon-1.svg");
 
       public static TableSection CreateSection(Section section)
       {
@@ -86,10 +87,11 @@ namespace BCReaderDemo.Utils
                BackgroundColor = CustomColors.PagesBackgroundColor,
             });
          }
-         
-         return new ViewCell
+
+         return new CustomViewCell()
          {
             View = grid,
+            ShowSelection = false
          };
       }
 
@@ -131,10 +133,10 @@ namespace BCReaderDemo.Utils
             FontSize = PlatformsConstants.TableViewFieldEntryFontSize,
          };
 
-         Image profileImage = new Image
+         SvgImage profileImage = new SvgImage
          {
             Aspect = Aspect.AspectFill,
-            Source = String.IsNullOrEmpty(nameRow.ImagePath) ? "profile_placeholder.png" : nameRow.ImagePath,
+            ResourceName = "Icons/avatar.svg",
             VerticalOptions = LayoutOptions.Center,
             HorizontalOptions = LayoutOptions.Center,
             WidthRequest = 50,
@@ -177,10 +179,11 @@ namespace BCReaderDemo.Utils
          entry.Focused += (sender, e) => nameRow.OnFocusAction?.Invoke(e);
          entry.Unfocused += (sender, e) => nameRow.OnUnfocusAction?.Invoke(e);
          entry.TextChanged += (sender, e) => nameRow.TextChangedAction?.Invoke(sender, e);
-         
-         return new ViewCell()
+
+         return new CustomViewCell()
          {
             View = grid,
+            ShowSelection = false
          };
       }
 
@@ -351,9 +354,10 @@ namespace BCReaderDemo.Utils
             }
          };
 
-         ViewCell viewCell = new ViewCell()
+         CustomViewCell viewCell = new CustomViewCell()
          {
-            View = grid
+            View = grid,
+            ShowSelection = false
          };
 
          return viewCell;
@@ -397,9 +401,10 @@ namespace BCReaderDemo.Utils
             },
          };
 
-         ViewCell viewCell = new ViewCell
+         CustomViewCell viewCell = new CustomViewCell()
          {
             View = stackLayout,
+            ShowSelection = false
          };
 
          editor.TextChanged += (sender, e) => notesRow.TextChangedAction?.Invoke(sender, e);
@@ -411,7 +416,10 @@ namespace BCReaderDemo.Utils
 
       private static Cell GetButtonRow(ButtonRow buttonRow, double topMargin)
       {
-         ViewCell cell = new ViewCell();
+         CustomViewCell cell = new CustomViewCell()
+         {
+            ShowSelection = false
+         };
 
          Button rowButton = new Button
          {
@@ -510,9 +518,10 @@ namespace BCReaderDemo.Utils
 
          grid.Children.Add(stackLayout, 0, 0);
 
-         ViewCell viewCell = new ViewCell
+         CustomViewCell viewCell = new CustomViewCell()
          {
-            View = grid
+            View = grid,
+            ShowSelection = false
          };
 
          TapGestureRecognizer labelTapGestureRecognizer = new TapGestureRecognizer()

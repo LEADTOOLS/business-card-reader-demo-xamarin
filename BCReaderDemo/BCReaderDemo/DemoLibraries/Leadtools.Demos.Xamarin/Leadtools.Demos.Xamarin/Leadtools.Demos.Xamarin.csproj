@@ -1,0 +1,535 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+    <TargetFrameworkMonikerAssemblyAttributesPath>$([System.IO.Path]::Combine('$(IntermediateOutputPath)','$(TargetFrameworkMoniker).AssemblyAttributes$(DefaultLanguageSourceExtension)'))</TargetFrameworkMonikerAssemblyAttributesPath>
+    <AssemblyName>Leadtools.Demos.Xamarin</AssemblyName>
+    <RootNamespace>Leadtools.Demos.Xamarin</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+    <OutputPath>objx\Debug\</OutputPath>
+    <DefineConstants>TRACE;FOR_STD;FOR_XAMARIN;LEADTOOLS_V16_OR_LATER;LEADTOOLS_V17_OR_LATER;LEADTOOLS_V175_OR_LATER;FOR_ANYCPU;FOR_DOTNET4;LEADTOOLS_V18_OR_LATER;LEADTOOLS_V19_OR_LATER;LEADTOOLS_V20_OR_LATER;LTV21_CONFIG;LEADTOOLS_V21_OR_LATER</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+    <OutputPath>objx\Release\</OutputPath>
+    <DefineConstants>TRACE;FOR_STD;FOR_XAMARIN;LEADTOOLS_V16_OR_LATER;LEADTOOLS_V17_OR_LATER;LEADTOOLS_V175_OR_LATER;FOR_ANYCPU;FOR_DOTNET4;LEADTOOLS_V18_OR_LATER;LEADTOOLS_V19_OR_LATER;LEADTOOLS_V20_OR_LATER;LTV21_CONFIG;LEADTOOLS_V21_OR_LATER</DefineConstants>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" Version="4.5.0.617" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Rg.Plugins.Popup" Version="2.0.0.2" />
+    <PackageReference Include="SkiaSharp.Svg" Version="1.60.0" />
+    <PackageReference Include="SkiaSharp.Views.Forms" Version="1.68.1.1" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.5.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Leadtools.Viewer.Controls.Xamarin" Version="21.*" />
+    <PackageReference Include="Leadtools.Camera.Xamarin" Version="21.*" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Elements\AdsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <Link>Common\UI\Elements\AdsView.xaml</Link>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Elements\AdsView.xaml.cs">
+      <DependentUpon>AdsView.xaml</DependentUpon>
+      <Link>Common\UI\Elements\AdsView.xaml.cs</Link>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Elements\BorderView.cs">
+      <Link>Common\UI\Elements\BorderView.cs</Link>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Elements\CustomButton.cs">
+      <Link>Common\UI\Elements\CustomButton.cs</Link>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Elements\CustomCheckBox.cs">
+      <Link>Common\UI\Elements\CustomCheckBox.cs</Link>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Elements\CustomEntry.cs">
+      <Link>Common\UI\Elements\CustomEntry.cs</Link>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Elements\CustomGradientButton.cs">
+      <Link>Common\UI\Elements\CustomGradientButton.cs</Link>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Elements\CustomImageButton.cs">
+      <Link>Common\UI\Elements\CustomImageButton.cs</Link>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Elements\CustomListView.cs">
+      <Link>Common\UI\Elements\CustomListView.cs</Link>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Elements\CustomSearchBar.cs">
+      <Link>Common\UI\Elements\CustomSearchBar.cs</Link>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Elements\CustomSwitch.cs">
+      <Link>Common\UI\Elements\CustomSwitch.cs</Link>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Elements\CustomViewCell.cs">
+      <Link>Common\UI\Elements\CustomViewCell.cs</Link>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Elements\ManualDeskewInteractiveMode.cs">
+      <Link>Common\UI\Elements\ManualDeskewInteractiveMode.cs</Link>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Elements\MultiGesturesEffect.cs">
+      <Link>Common\UI\Elements\MultiGesturesEffect.cs</Link>
+    </Compile>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Elements\NavigationListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <Link>Common\UI\Elements\NavigationListView.xaml</Link>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Elements\NavigationListView.xaml.cs">
+      <DependentUpon>NavigationListView.xaml</DependentUpon>
+      <Link>Common\UI\Elements\NavigationListView.xaml.cs</Link>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Elements\RoundCornersEffect.cs">
+      <Link>Common\UI\Elements\RoundCornersEffect.cs</Link>
+    </Compile>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Elements\RoundImageButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <Link>Common\UI\Elements\RoundImageButton.xaml</Link>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Elements\RoundImageButton.xaml.cs">
+      <DependentUpon>RoundImageButton.xaml</DependentUpon>
+      <Link>Common\UI\Elements\RoundImageButton.xaml.cs</Link>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Elements\SegmentedControl.cs">
+      <Link>Common\UI\Elements\SegmentedControl.cs</Link>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Elements\SelectAreaInteractiveMode.cs">
+      <Link>Common\UI\Elements\SelectAreaInteractiveMode.cs</Link>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Elements\SvgImage.cs">
+      <Link>Common\UI\Elements\SvgImage.cs</Link>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Elements\SvgImageButton.cs">
+      <Link>Common\UI\Elements\SvgImageButton.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Page\CustomPage.cs">
+      <Link>Common\UI\Page\CustomPage.cs</Link>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Page\CustomPageAnimation.cs">
+      <Link>Common\UI\Page\CustomPageAnimation.cs</Link>
+    </Compile>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Page\CustomPageTemplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <Link>Common\UI\Page\CustomPageTemplate.xaml</Link>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Page\CustomPageTemplate.xaml.cs">
+      <DependentUpon>CustomPageTemplate.xaml</DependentUpon>
+      <Link>Common\UI\Page\CustomPageTemplate.xaml.cs</Link>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Pages\Info\AboutPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <Link>Common\UI\Pages\Info\AboutPage.xaml</Link>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Pages\Info\AboutPage.xaml.cs">
+      <DependentUpon>AboutPage.xaml</DependentUpon>
+      <Link>Common\UI\Pages\Info\AboutPage.xaml.cs</Link>
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Pages\Info\FeedbackPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <Link>Common\UI\Pages\Info\FeedbackPage.xaml</Link>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Pages\Info\FeedbackPage.xaml.cs">
+      <DependentUpon>FeedbackPage.xaml</DependentUpon>
+      <Link>Common\UI\Pages\Info\FeedbackPage.xaml.cs</Link>
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Pages\Info\FollowPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <Link>Common\UI\Pages\Info\FollowPage.xaml</Link>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Pages\Info\FollowPage.xaml.cs">
+      <DependentUpon>FollowPage.xaml</DependentUpon>
+      <Link>Common\UI\Pages\Info\FollowPage.xaml.cs</Link>
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Pages\Info\InfoPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <Link>Common\UI\Pages\Info\InfoPage.xaml</Link>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Pages\Info\InfoPage.xaml.cs">
+      <DependentUpon>InfoPage.xaml</DependentUpon>
+      <Link>Common\UI\Pages\Info\InfoPage.xaml.cs</Link>
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Pages\Info\RecommendPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <Link>Common\UI\Pages\Info\RecommendPage.xaml</Link>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Pages\Info\RecommendPage.xaml.cs">
+      <DependentUpon>RecommendPage.xaml</DependentUpon>
+      <Link>Common\UI\Pages\Info\RecommendPage.xaml.cs</Link>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Pages\CameraPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <Link>Common\UI\Pages\CameraPage.xaml</Link>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\UI\Pages\CameraPage.xaml.cs">
+      <DependentUpon>CameraPage.xaml</DependentUpon>
+      <Link>Common\UI\Pages\CameraPage.xaml.cs</Link>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Utils\Animator.cs">
+      <Link>Common\Utils\Animator.cs</Link>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Utils\DataConverters.cs">
+      <Link>Common\Utils\DataConverters.cs</Link>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Utils\FontSizeExtension.cs">
+      <Link>Common\Utils\FontSizeExtension.cs</Link>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Utils\GlobalMarginExtension.cs">
+      <Link>Common\Utils\GlobalMarginExtension.cs</Link>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Utils\ImageSizeHelper.cs">
+      <Link>Common\Utils\ImageSizeHelper.cs</Link>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Utils\IPermissions.cs">
+      <Link>Common\Utils\IPermissions.cs</Link>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Utils\IPicturePicker.cs">
+      <Link>Common\Utils\IPicturePicker.cs</Link>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Utils\IPictureSaver.cs">
+      <Link>Common\Utils\IPictureSaver.cs</Link>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Utils\IStatusBar.cs">
+      <Link>Common\Utils\IStatusBar.cs</Link>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Utils\IToast.cs">
+      <Link>Common\Utils\IToast.cs</Link>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Utils\RasterImageLoader.cs">
+      <Link>Common\Utils\RasterImageLoader.cs</Link>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Utils\UnitSizeExtension.cs">
+      <Link>Common\Utils\UnitSizeExtension.cs</Link>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Utils\HttpClientDownloader.cs">
+      <Link>Common\Utils\HttpClientDownloader.cs</Link>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Utils\IFileManager.cs">
+      <Link>Common\Utils\IFileManager.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\DemoUtilities.cs">
+      <Link>Common\DemoUtilities.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\embedded_ads.json">
+      <Link>Common\Resources\embedded_ads.json</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\selected.svg">
+      <Link>Common\Resources\Icons\selected.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\unselected.svg">
+      <Link>Common\Resources\Icons\unselected.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\on.svg">
+      <Link>Common\Resources\Icons\on.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\off.svg">
+      <Link>Common\Resources\Icons\off.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\more-options.svg">
+      <Link>Common\Resources\Icons\more-options.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\menu-indicator.svg">
+      <Link>Common\Resources\Icons\menu-indicator.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\home.svg">
+      <Link>Common\Resources\Icons\home.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\flash-disabled.svg">
+      <Link>Common\Resources\Icons\flash-disabled.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\flash-enabled.svg">
+      <Link>Common\Resources\Icons\flash-enabled.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\flash-auto.svg">
+      <Link>Common\Resources\Icons\flash-auto.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\flash-sun.svg">
+      <Link>Common\Resources\Icons\flash-sun.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\gallery-cam.svg">
+      <Link>Common\Resources\Icons\gallery-cam.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\take-picture2.svg">
+      <Link>Common\Resources\Icons\take-picture2.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\back.svg">
+      <Link>Common\Resources\Icons\back.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\more-options-2.svg">
+      <Link>Common\Resources\Icons\more-options-2.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\convert-ico.svg">
+      <Link>Common\Resources\Icons\convert-ico.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\pan-zoom.svg">
+      <Link>Common\Resources\Icons\pan-zoom.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\select-text.svg">
+      <Link>Common\Resources\Icons\select-text.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\copy.svg">
+      <Link>Common\Resources\Icons\copy.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\speak.svg">
+      <Link>Common\Resources\Icons\speak.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\share-ico-5.svg">
+      <Link>Common\Resources\Icons\share-ico-5.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\cancel-btn-2.svg">
+      <Link>Common\Resources\Icons\cancel-btn-2.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\continue-btn.svg">
+      <Link>Common\Resources\Icons\continue-btn.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\thumbnails-ico.svg">
+      <Link>Common\Resources\Icons\thumbnails-ico.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\right-arrow-2.svg">
+      <Link>Common\Resources\Icons\right-arrow-2.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\ann-ico.svg">
+      <Link>Common\Resources\Icons\ann-ico.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\save-doc.svg">
+      <Link>Common\Resources\Icons\save-doc.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\stop-speaking.svg">
+      <Link>Common\Resources\Icons\stop-speaking.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\none-file.svg">
+      <Link>Common\Resources\Icons\none-file.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\doc-file.svg">
+      <Link>Common\Resources\Icons\doc-file.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\pdf-file.svg">
+      <Link>Common\Resources\Icons\pdf-file.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\rtf-file.svg">
+      <Link>Common\Resources\Icons\rtf-file.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\svg-file.svg">
+      <Link>Common\Resources\Icons\svg-file.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\txt-file.svg">
+      <Link>Common\Resources\Icons\txt-file.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\x-ico.svg">
+      <Link>Common\Resources\Icons\x-ico.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\arrow-ico.svg">
+      <Link>Common\Resources\Icons\arrow-ico.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\fb-ico.svg">
+      <Link>Common\Resources\Icons\fb-ico.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\linked-in-ico.svg">
+      <Link>Common\Resources\Icons\linked-in-ico.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\twitter-ico.svg">
+      <Link>Common\Resources\Icons\twitter-ico.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\youtube-ico.svg">
+      <Link>Common\Resources\Icons\youtube-ico.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\sms-ico.svg">
+      <Link>Common\Resources\Icons\sms-ico.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\email-ico.svg">
+      <Link>Common\Resources\Icons\email-ico.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\selected-format.svg">
+      <Link>Common\Resources\Icons\selected-format.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\remove-ico2.svg">
+      <Link>Common\Resources\Icons\remove-ico2.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Icons\sort.svg">
+      <Link>Common\Resources\Icons\sort.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\delete-ann.svg">
+      <Link>Common\Resources\Annotations\delete-ann.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\delete-ann-disabled.svg">
+      <Link>Common\Resources\Annotations\delete-ann-disabled.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\properties-ann.svg">
+      <Link>Common\Resources\Annotations\properties-ann.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\properties-ann-disabled.svg">
+      <Link>Common\Resources\Annotations\properties-ann-disabled.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\undo.svg">
+      <Link>Common\Resources\Annotations\undo.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\undo-disabled.svg">
+      <Link>Common\Resources\Annotations\undo-disabled.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\redo.svg">
+      <Link>Common\Resources\Annotations\redo.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\redo-disabled.svg">
+      <Link>Common\Resources\Annotations\redo-disabled.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\select-ann.svg">
+      <Link>Common\Resources\Annotations\select-ann.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\line-ann.svg">
+      <Link>Common\Resources\Annotations\line-ann.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\rec-ann.svg">
+      <Link>Common\Resources\Annotations\rec-ann.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\ellipse-ann.svg">
+      <Link>Common\Resources\Annotations\ellipse-ann.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\poly-ann.svg">
+      <Link>Common\Resources\Annotations\poly-ann.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\polygon.svg">
+      <Link>Common\Resources\Annotations\polygon.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\curve-ann.svg">
+      <Link>Common\Resources\Annotations\curve-ann.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\closed-curve-ann.svg">
+      <Link>Common\Resources\Annotations\closed-curve-ann.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\pointer-ann.svg">
+      <Link>Common\Resources\Annotations\pointer-ann.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\freehand-ann.svg">
+      <Link>Common\Resources\Annotations\freehand-ann.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\hilite-ann.svg">
+      <Link>Common\Resources\Annotations\hilite-ann.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\text-ann.svg">
+      <Link>Common\Resources\Annotations\text-ann.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\text-rollup-ann.svg">
+      <Link>Common\Resources\Annotations\text-rollup-ann.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\text-pointer-ann.svg">
+      <Link>Common\Resources\Annotations\text-pointer-ann.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\note-ann.svg">
+      <Link>Common\Resources\Annotations\note-ann.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\stamp-ann.svg">
+      <Link>Common\Resources\Annotations\stamp-ann.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\rubber-ann.svg">
+      <Link>Common\Resources\Annotations\rubber-ann.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\hotspot-ann.svg">
+      <Link>Common\Resources\Annotations\hotspot-ann.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\freehand-hot-ann.svg">
+      <Link>Common\Resources\Annotations\freehand-hot-ann.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\point-ann.svg">
+      <Link>Common\Resources\Annotations\point-ann.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\ruler-ann.svg">
+      <Link>Common\Resources\Annotations\ruler-ann.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\polyruler-ann.svg">
+      <Link>Common\Resources\Annotations\polyruler-ann.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\protractor-ann.svg">
+      <Link>Common\Resources\Annotations\protractor-ann.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\cross-ann.svg">
+      <Link>Common\Resources\Annotations\cross-ann.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\redaction-ann.svg">
+      <Link>Common\Resources\Annotations\redaction-ann.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\encrypt-ann.svg">
+      <Link>Common\Resources\Annotations\encrypt-ann.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\audio-ann.svg">
+      <Link>Common\Resources\Annotations\audio-ann.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\media-ann.svg">
+      <Link>Common\Resources\Annotations\media-ann.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\triangle-ann.svg">
+      <Link>Common\Resources\Annotations\triangle-ann.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\sticky-ann.svg">
+      <Link>Common\Resources\Annotations\sticky-ann.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\text-hilite-ann.svg">
+      <Link>Common\Resources\Annotations\text-hilite-ann.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\strikeout-ann.svg">
+      <Link>Common\Resources\Annotations\strikeout-ann.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\underline-ann.svg">
+      <Link>Common\Resources\Annotations\underline-ann.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\Annotations\text-redact-ann.svg">
+      <Link>Common\Resources\Annotations\text-redact-ann.svg</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\leadtools.svg">
+      <Link>Common\Resources\leadtools.svg</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <PropertyGroup>
+      <AssemblyTimestampBeforeCompile>%(IntermediateAssembly.ModifiedTime)</AssemblyTimestampBeforeCompile>
+    </PropertyGroup>
+  </Target>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <PropertyGroup>
+      <AssemblyTimestampAfterCompile>%(IntermediateAssembly.ModifiedTime)</AssemblyTimestampAfterCompile>
+    </PropertyGroup>
+    <Exec Command="IF NOT EXIST $(TargetDir)..\..\..\..\..\Bin md $(TargetDir)..\..\..\..\..\Bin&#xD;&#xA;				copy $(TargetPath) $(TargetDir)..\..\..\..\..\Bin" />
+  </Target>
+</Project>

@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{3F5F8D4D-D01A-4354-91F9-3B6240B48E1E}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TemplateGuid>{c9e5eea5-ca05-42a1-839b-61506e0a37df}</TemplateGuid>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkVersion>v9.0</TargetFrameworkVersion>
+    <AssemblyName>Leadtools.Demos.Xamarin.Android</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Leadtools.Demos.Xamarin.Android</RootNamespace>
+    <AssemblyName>Leadtools.Demos.Xamarin.Android</AssemblyName>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
+    <TargetFrameworkVersion>v9.0</TargetFrameworkVersion>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+    <TargetFrameworkMonikerAssemblyAttributesPath>$([System.IO.Path]::Combine('$(IntermediateOutputPath)','$(TargetFrameworkMoniker).AssemblyAttributes$(DefaultLanguageSourceExtension)'))</TargetFrameworkMonikerAssemblyAttributesPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG;__ANDROID__;NETSTANDARD1_4;FOR_STD;FOR_XAMARIN;LEADTOOLS_V16_OR_LATER;LEADTOOLS_V17_OR_LATER;LEADTOOLS_V175_OR_LATER;FOR_ANYCPU;FOR_DOTNET4;LEADTOOLS_V18_OR_LATER;LEADTOOLS_V19_OR_LATER;LEADTOOLS_V20_OR_LATER;LTV21_CONFIG;LEADTOOLS_V21_OR_LATER</DefineConstants>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <NoWarn>3009;3003;3001;1701;1702;1705;0436</NoWarn>
+    <OutputPath>objx_android\Debug\</OutputPath>
+    <BaseIntermediateOutputPath>objx_android</BaseIntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;RELEASE;__ANDROID__;NETSTANDARD1_4;FOR_STD;FOR_XAMARIN;LEADTOOLS_V16_OR_LATER;LEADTOOLS_V17_OR_LATER;LEADTOOLS_V175_OR_LATER;FOR_ANYCPU;FOR_DOTNET4;LEADTOOLS_V18_OR_LATER;LEADTOOLS_V19_OR_LATER;LEADTOOLS_V20_OR_LATER;LTV21_CONFIG;LEADTOOLS_V21_OR_LATER</DefineConstants>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <NoWarn>3009;3003;3001;1701;1702;1705;0436</NoWarn>
+    <OutputPath>objx_android\Release\</OutputPath>
+    <BaseIntermediateOutputPath>objx_android</BaseIntermediateOutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Assembly.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Mono.Android" />
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Essentials" Version="1.5.3" />
+    <PackageReference Include="Xamarin.Forms" Version="4.5.0.617" />
+    <PackageReference Include="Xamarin.GooglePlayServices.Ads.Identifier" Version="71.1600.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Leadtools.Kernel" Version="21.*" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\AndroidManifest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Leadtools.Demos.Xamarin\Leadtools.Demos.Xamarin.csproj">
+      <Project>{0e7486c7-1f28-47ae-861c-2d72a91091f5}</Project>
+      <Name>Leadtools.Demos.Xamarin</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\searchbar_active.xml">
+      <Link>Resources\drawable\searchbar_active.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\searchbar_inactive.xml">
+      <Link>Resources\drawable\searchbar_inactive.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\searchbar_as_edit_field_active.xml">
+      <Link>Resources\drawable\searchbar_as_edit_field_active.xml</Link>
+    </AndroidResource>
+    <AndroidResource Include="$(MSBuildThisFileDirectory)..\..\..\Common\Shared\Resources\searchbar_as_edit_field_inactive.xml">
+      <Link>Resources\drawable\searchbar_as_edit_field_inactive.xml</Link>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\Common\Android\UI\Elements\BorderViewRenderer.cs">
+      <Link>Common\UI\Elements\BorderViewRenderer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\Android\UI\Elements\CustomButtonRenderer.cs">
+      <Link>Common\UI\Elements\CustomButtonRenderer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\Android\UI\Elements\CustomListViewRenderer.cs">
+      <Link>Common\UI\Elements\CustomListViewRenderer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\Android\UI\Elements\CustomSearchBarRenderer.cs">
+      <Link>Common\UI\Elements\CustomSearchBarRenderer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\Android\UI\Elements\CustomViewCellRenderer.cs">
+      <Link>Common\UI\Elements\CustomViewCellRenderer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\Android\UI\Elements\MultiGesturesEffectRenderer.cs">
+      <Link>Common\UI\Elements\MultiGesturesEffectRenderer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\Android\UI\Elements\RoundCornersEffectRenderer.cs">
+      <Link>Common\UI\Elements\RoundCornersEffectRenderer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\Android\UI\Elements\SelectAreaViewRenderer.cs">
+      <Link>Common\UI\Elements\SelectAreaViewRenderer.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\Common\Android\Utils\FileStorageHelper.cs">
+      <Link>Common\Utils\FileStorageHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\Android\Utils\DemoUtilitiesImplementation.cs">
+      <Link>Common\Utils\DemoUtilitiesImplementation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\Android\Utils\PermissionsImplementation.cs">
+      <Link>Common\Utils\PermissionsImplementation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\Android\Utils\PicturePickerImplementation.cs">
+      <Link>Common\Utils\PicturePickerImplementation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\Android\Utils\PictureSaverImplementation.cs">
+      <Link>Common\Utils\PictureSaverImplementation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\Android\Utils\StatusBarImplementation.cs">
+      <Link>Common\Utils\StatusBarImplementation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\Android\Utils\ToastImplementation.cs">
+      <Link>Common\Utils\ToastImplementation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\Common\Android\Utils\FileManagerImplementation.cs">
+      <Link>Common\Utils\FileManagerImplementation.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <PropertyGroup>
+      <AssemblyTimestampBeforeCompile>%(IntermediateAssembly.ModifiedTime)</AssemblyTimestampBeforeCompile>
+    </PropertyGroup>
+  </Target>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <PropertyGroup>
+      <AssemblyTimestampAfterCompile>%(IntermediateAssembly.ModifiedTime)</AssemblyTimestampAfterCompile>
+    </PropertyGroup>
+    <Exec Command="IF NOT EXIST $(TargetDir)..\..\..\..\Bin md $(TargetDir)..\..\..\..\Bin&#xD;&#xA;				copy $(TargetPath) $(TargetDir)..\..\..\..\Bin" />
+  </Target>
+</Project>

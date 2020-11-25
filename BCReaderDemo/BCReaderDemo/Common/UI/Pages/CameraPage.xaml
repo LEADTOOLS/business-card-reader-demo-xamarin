@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<popup:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:demos="clr-namespace:Leadtools.Demos"
+                 xmlns:demos_elements="clr-namespace:Leadtools.Demos.UI.Elements"
+                 xmlns:page="clr-namespace:Leadtools.Demos.UI.Page"
+                 xmlns:local="clr-namespace:Leadtools.Demos.UI.Pages"
+                 xmlns:utils="clr-namespace:Leadtools.Demos.Utils"
+                 xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+                 xmlns:popup="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+                 x:Class="Leadtools.Demos.UI.Pages.CameraPage">
+   <popup:PopupPage.Animation>
+      <animations:MoveAnimation EasingIn="{Static page:CustomPageAnimation.QuintOut}"
+                                EasingOut="{Static page:CustomPageAnimation.QuintIn}"
+                                />
+   </popup:PopupPage.Animation>
+
+   <Grid ColumnSpacing="0" RowSpacing="0" BackgroundColor="{Static local:CameraPage.OverlayColor}">
+      <Grid.ColumnDefinitions>
+         <ColumnDefinition Width="*" />
+         <ColumnDefinition Width="*" />
+         <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+         <RowDefinition Height="Auto" />
+         <RowDefinition Height="*" />
+         <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+
+      <!-- Camera container (z-ordering based on child order, so this must be first) -->
+      <ContentView x:Name="CameraContainer" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="3"/>
+
+      <!-- Header -->
+      <Grid Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" BackgroundColor="{Static local:CameraPage.OverlayColor}">
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="6*" />
+            <ColumnDefinition Width="2*" />
+         </Grid.ColumnDefinitions>
+         <Grid.RowDefinitions>
+            <RowDefinition Height="{Binding SafeAreaTop, Source={Static demos:DemoUtilities.Instance}}" />
+            <RowDefinition Height="{utils:GlobalMargin '2.5GL'}" />
+         </Grid.RowDefinitions>
+
+         <demos_elements:SvgImage Grid.Column="0" Grid.Row="1" ResourceName="Icons/home.svg" Margin="{utils:GlobalMargin '0.75, 0.75'}" Tapped="HomeButton_Tapped"/>
+      </Grid>
+
+      <!-- Viewer container -->
+      <ContentView x:Name="ViewerContainer" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" BackgroundColor="{Static local:CameraPage.ViewBackgroundColor}" IsVisible="False"/>
+
+      <!-- Camera flash modes container -->
+      <Grid x:Name="FlashModesContainer" Grid.Column="2" Grid.Row="1" HorizontalOptions="Center" VerticalOptions="End" Margin="0,0,0,10" BackgroundColor="Transparent" IsVisible="False" WidthRequest="{utils:GlobalMargin '1.5'}">
+         <Grid x:Name="FlashModesTranslucentContainer" BackgroundColor="Black" Opacity="0.4" demos_elements:RoundCornersEffect.CornerRadius="30"/>
+
+         <StackLayout Orientation="Vertical" Spacing="10" Margin="0,10,0,10" Padding="0,10,0,10" BackgroundColor="Transparent"
+                   WidthRequest="{utils:GlobalMargin '1.5'}" SizeChanged="FlashModesContainer_SizeChanged">
+            <demos_elements:SvgImage x:Name="FlashDisabledButton" ResourceName="flash-disabled.svg" HeightRequest="{utils:GlobalMargin 1}" Tapped="FlashImageButton_Tapped" StyleId="FlashDisabled"/>
+            <BoxView HeightRequest="1" BackgroundColor="Black"/>
+            <demos_elements:SvgImage x:Name="FlashEnabledButton" ResourceName="flash-enabled.svg" HeightRequest="{utils:GlobalMargin 1}" Tapped="FlashImageButton_Tapped" StyleId="FlashEnabled"/>
+            <BoxView HeightRequest="1" BackgroundColor="Black"/>
+            <demos_elements:SvgImage x:Name="FlashAutoButton" ResourceName="flash-auto.svg" HeightRequest="{utils:GlobalMargin 1}" Tapped="FlashImageButton_Tapped" StyleId="FlashAuto"/>
+            <BoxView HeightRequest="1" BackgroundColor="Black"/>
+            <demos_elements:SvgImage x:Name="FlashTorchButton" ResourceName="flash-sun.svg" HeightRequest="{utils:GlobalMargin 1}" Tapped="FlashImageButton_Tapped" StyleId="FlashTorch"/>
+         </StackLayout>
+      </Grid>
+
+      <!-- Footer -->
+      <Grid Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" BackgroundColor="{Static local:CameraPage.OverlayColor}">
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+         </Grid.ColumnDefinitions>
+         <Grid.RowDefinitions>
+            <RowDefinition Height="{utils:GlobalMargin '1GL'}" />
+            <RowDefinition Height="{utils:GlobalMargin '2GL'}" />
+            <RowDefinition Height="{utils:GlobalMargin '1GL'}" />
+            <RowDefinition Height="{Binding SafeAreaBottom, Source={Static demos:DemoUtilities.Instance}}" />
+         </Grid.RowDefinitions>
+
+         <demos_elements:SvgImage x:Name="GalleryButton" Grid.Column="0" Grid.Row="1" ResourceName="Icons/gallery-cam.svg" Margin="{utils:GlobalMargin '0.6, 0.6'}" Tapped="GalleryButton_Tapped"/>
+         <demos_elements:SvgImage x:Name="TakePhotoButton" Grid.Column="1" Grid.Row="1" ResourceName="Icons/take-picture2.svg" Tapped="TakePhotoButton_Tapped"/>
+         <demos_elements:SvgImage x:Name="FlashButton" Grid.Column="2" Grid.Row="1" ResourceName="Icons/flash-auto.svg" Margin="{utils:GlobalMargin '0.6, 0.6'}" Tapped="FlashButton_Tapped"/>
+
+         <demos_elements:AdsView x:Name="Ads" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="3" />
+      </Grid>
+   </Grid>
+</popup:PopupPage>

@@ -1,14 +1,17 @@
 ﻿// *************************************************************
-// Copyright (c) 1991-2019 LEAD Technologies, Inc.              
+// Copyright (c) 1991-2020 LEAD Technologies, Inc.              
 // All Rights Reserved.                                         
 // *************************************************************
+using Leadtools.Demos;
+using Leadtools.Demos.UI.Elements;
+using Rg.Plugins.Popup.Pages;
 using Rg.Plugins.Popup.Services;
 using System;
 using Xamarin.Forms;
 
 namespace BCReaderDemo
 {
-   public partial class ActionsPage : Rg.Plugins.Popup.Pages.PopupPage
+   public partial class ActionsPage : PopupPage
    {
       const int DATE_SORT_INDEX = 0;
       const int NAME_SORT_INDEX = 1;
@@ -20,38 +23,38 @@ namespace BCReaderDemo
          this.InitializeComponent();
 
          string[] defaultSortIcons = GetDefaultSortIcons();
-         dateImage.Source = defaultSortIcons[DATE_SORT_INDEX];
-         nameImage.Source = defaultSortIcons[NAME_SORT_INDEX];
-         companyImage.Source = defaultSortIcons[COMPANY_SORT_INDEX];
-         mailImage.Source = defaultSortIcons[EMAIL_SORT_INDEX];
+         dateImage.ResourceName = defaultSortIcons[DATE_SORT_INDEX];
+         nameImage.ResourceName = defaultSortIcons[NAME_SORT_INDEX];
+         companyImage.ResourceName = defaultSortIcons[COMPANY_SORT_INDEX];
+         mailImage.ResourceName = defaultSortIcons[EMAIL_SORT_INDEX];
 
-         MainLayout.Margin = new Thickness(MainLayout.Margin.Left, MainLayout.Margin.Top, MainLayout.Margin.Right, App.DisplayScreenHeight / 8);
+         MainLayout.Margin = new Thickness(MainLayout.Margin.Left, MainLayout.Margin.Top, MainLayout.Margin.Right, DemoUtilities.DisplayHeight / 8);
       }
 
       private string[] GetDefaultSortIcons()
       {
-         string dateSortIcon = "date_inactive.png";
-         string nameSortIcon = "name_inactive.png";
-         string companySortIcon = "company_inactive.png";
-         string emailSortIcon = "email_inactive.png";
+         string dateSortIcon = "Icons/date.svg";
+         string nameSortIcon = "Icons/name.svg";
+         string companySortIcon = "Icons/company.svg";
+         string emailSortIcon = "Icons/email.svg";
          if (HomePage.CurrentAppData != null)
          {
             switch (HomePage.CurrentAppData.SortBy)
             {
                case Utils.SortBy.Date:
-                  dateSortIcon = "date_active.png";
+                  dateSortIcon = "Icons/date-active.svg";
                   break;
 
                case Utils.SortBy.Name:
-                  nameSortIcon = "name_active.png";
+                  nameSortIcon = "Icons/name-active.svg";
                   break;
 
                case Utils.SortBy.Company:
-                  companySortIcon = "company_active.png";
+                  companySortIcon = "Icons/company-active.svg";
                   break;
 
                case Utils.SortBy.Email:
-                  emailSortIcon = "email_active.png";
+                  emailSortIcon = "Icons/email-active.svg";
                   break;
             }
          }
@@ -64,13 +67,13 @@ namespace BCReaderDemo
          Grid grid = image.Parent as Grid;
          foreach (Image child in grid.Children)
          {
-            child.Source = child.StyleId + ".png";
+            (child as SvgImage).ResourceName = "Icons/" + child.StyleId + ".svg";
          }
       }
 
       private async void SortButton_Tapped(object sender, EventArgs e)
       {
-         Image sourceImage = sender as Image;
+         SvgImage sourceImage = sender as SvgImage;
 
          // StyleId represents a unique identifier to identify the tapped image and it also holds the inactive image source name
          // that we use to deselect all images before marking the new one as selected.
@@ -79,7 +82,7 @@ namespace BCReaderDemo
             if (HomePage.CurrentAppData.SortBy == Utils.SortBy.Date) return;
 
             DeactivateSortImages(sourceImage);
-            sourceImage.Source = "date_active.png";
+            sourceImage.ResourceName = "Icons/date-active.svg";
             HomePage.CurrentAppData.SortBy = Utils.SortBy.Date;
          }
          else if (sourceImage.StyleId.Contains("name"))
@@ -87,7 +90,7 @@ namespace BCReaderDemo
             if (HomePage.CurrentAppData.SortBy == Utils.SortBy.Name) return;
 
             DeactivateSortImages(sourceImage);
-            sourceImage.Source = "name_active.png";
+            sourceImage.ResourceName = "Icons/name-active.svg";
             HomePage.CurrentAppData.SortBy = Utils.SortBy.Name;
          }
          else if (sourceImage.StyleId.Contains("company"))
@@ -95,7 +98,7 @@ namespace BCReaderDemo
             if (HomePage.CurrentAppData.SortBy == Utils.SortBy.Company) return;
 
             DeactivateSortImages(sourceImage);
-            sourceImage.Source = "company_active.png";
+            sourceImage.ResourceName = "Icons/company-active.svg";
             HomePage.CurrentAppData.SortBy = Utils.SortBy.Company;
          }
          else if (sourceImage.StyleId.Contains("email"))
@@ -103,7 +106,7 @@ namespace BCReaderDemo
             if (HomePage.CurrentAppData.SortBy == Utils.SortBy.Email) return;
 
             DeactivateSortImages(sourceImage);
-            sourceImage.Source = "email_active.png";
+            sourceImage.ResourceName = "Icons/email-active.svg";
             HomePage.CurrentAppData.SortBy = Utils.SortBy.Email;
          }
 
@@ -113,7 +116,7 @@ namespace BCReaderDemo
       private async void ActionButton_Tapped(object sender, EventArgs e)
       {
          Image source = sender as Image;
-         Page page = null;
+         PopupPage page = null;
 
          await PopupNavigation.Instance.PopAsync();
 
@@ -136,7 +139,7 @@ namespace BCReaderDemo
                break;
          }
 
-         await HomePage.Instance.Navigation.PushAsync(page);
+         await PopupNavigation.Instance.PushAsync(page);
       }
    }
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84.5 84.5">
+  <title>sms-ico</title>
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="icons">
+      <g id="_Group_" data-name="&lt;Group&gt;">
+        <rect style="fill:#54eadf;" width="84.5" height="84.5" rx="10" ry="10" />
+      </g>
+      <path style="fill:#fff;" d="M29.41,52.6a1.5,1.5,0,0,1-1.5-1.49l0-5.93H22.25a1.5,1.5,0,0,1-1.5-1.5V22.28a1.5,1.5,0,0,1,1.5-1.5H53.87a1.5,1.5,0,0,1,1.5,1.5V43.68a1.5,1.5,0,0,1-1.5,1.5H38.25l-7.83,7A1.5,1.5,0,0,1,29.41,52.6ZM23.75,42.18h5.63a1.5,1.5,0,0,1,1.5,1.49l0,4.07,5.77-5.18a1.5,1.5,0,0,1,1-.38h14.7V23.78H23.75Z" />
+      <path style="fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:3px;" d="M58.71,33.39" />
+      <path style="fill:#fff;" d="M55.09,63.72a1.5,1.5,0,0,1-1-.38l-7.83-7H38.06a1.5,1.5,0,0,1,0-3h8.76a1.5,1.5,0,0,1,1,.38l5.77,5.18,0-4.07a1.5,1.5,0,0,1,1.5-1.49h5.63V33.39a1.5,1.5,0,0,1,3,0V54.8a1.5,1.5,0,0,1-1.5,1.5H56.61l0,5.93a1.5,1.5,0,0,1-1.5,1.49Z" />
+      <path style="fill:#fff;" d="M47,38.25H29.12a1.5,1.5,0,1,1,0-3H47a1.5,1.5,0,0,1,0,3Z" />
+      <path style="fill:#fff;" d="M43.25,30.65H29.12a1.5,1.5,0,0,1,0-3H43.25a1.5,1.5,0,0,1,0,3Z" />
+    </g>
+  </g>
+</svg>

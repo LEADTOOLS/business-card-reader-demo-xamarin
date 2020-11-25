@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<popup:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:demos="clr-namespace:Leadtools.Demos"
+                 xmlns:demos_elements="clr-namespace:Leadtools.Demos.UI.Elements"
+                 xmlns:page="clr-namespace:Leadtools.Demos.UI.Page"
+                 xmlns:utils="clr-namespace:Leadtools.Demos.Utils"
+                 xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+                 xmlns:popup="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+                 x:Class="Leadtools.Demos.UI.Pages.Ocr.DocumentViewerPage">
+   <popup:PopupPage.Animation>
+      <animations:MoveAnimation EasingIn="{Static page:CustomPageAnimation.QuintOut}"
+                                EasingOut="{Static page:CustomPageAnimation.QuintIn}"
+                                />
+   </popup:PopupPage.Animation>
+
+   <Grid ColumnSpacing="0" RowSpacing="0" BackgroundColor="{Binding OverlayColor}">
+      <Grid.ColumnDefinitions>
+         <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+         <RowDefinition Height="Auto" />
+         <RowDefinition Height="*" />
+         <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+
+      <!-- Header -->
+      <Grid Grid.Column="0" Grid.Row="0" ColumnSpacing="0" RowSpacing="0">
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+         </Grid.ColumnDefinitions>
+         <Grid.RowDefinitions>
+            <RowDefinition Height="{Binding SafeAreaTop, Source={Static demos:DemoUtilities.Instance}}" />
+            <RowDefinition Height="{utils:GlobalMargin '2.5GL'}" />
+         </Grid.RowDefinitions>
+
+         <demos_elements:SvgImage x:Name="PageBackButton" Grid.Column="0" Grid.Row="1" ResourceName="Icons/back.svg" WidthRequest="{utils:GlobalMargin 1.0}" HorizontalOptions="Start" VerticalOptions="Center" Margin="{utils:GlobalMargin '0.5, 0, 0, 0'}" Tapped="BackButton_Tapped"/>
+         <Label x:Name="PageTitle" Text="Extracted Results" Grid.Column="1" Grid.Row="1" FontSize="{Static utils:FontSizeExtension.MediumFontSize}" HorizontalOptions="Center" VerticalOptions="Center"/>
+      </Grid>
+
+      <!-- Document viewer container -->
+      <Grid x:Name="DocumentViewerContainer" Grid.Column="0" Grid.Row="1" BackgroundColor="White"/>
+
+      <!-- Currently displayed page number inside Document viewer -->
+      <demos_elements:RoundImageButton x:Name="CurrentPageNumberLabel" Grid.Column="0" Grid.Row="1" HorizontalOptions="Center" VerticalOptions="End" 
+                                       Margin="{utils:GlobalMargin '0, 0, 0, 0.75'}" HeightRequest="{utils:GlobalMargin 1.125}" CornerRadius="{utils:GlobalMargin '0.5625f'}"
+                                       BackgroundColor="#252F35" TextColor="White" FontSize="{Static utils:FontSize.SmallFontSize}" Text="Page 1 / 1"/>
+
+      <!-- Footer -->
+      <Grid x:Name="FooterContainer" Grid.Column="0" Grid.Row="2" Padding="{utils:GlobalMargin '0.5,'}" ColumnSpacing="0" RowSpacing="0">
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+         </Grid.ColumnDefinitions>
+         <Grid.RowDefinitions>
+            <RowDefinition Height="{utils:GlobalMargin '1.75GL'}" />
+            <RowDefinition Height="{Binding SafeAreaBottom, Source={Static demos:DemoUtilities.Instance}}" />
+         </Grid.RowDefinitions>
+
+         <StackLayout Grid.Column="0" Grid.Row="0" Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <Label x:Name="SpeakButton" Text="SPEAK" HorizontalOptions="StartAndExpand" VerticalOptions="Center" TextColor="#FF6D68" FontSize="{Static utils:FontSizeExtension.SmallFontSize}" FontAttributes="Bold">
+               <Label.GestureRecognizers>
+                  <TapGestureRecognizer Tapped="SpeakButton_Tapped"/>
+               </Label.GestureRecognizers>
+            </Label>
+            <Label x:Name="CopyButton" Text="COPY" HorizontalOptions="CenterAndExpand" VerticalOptions="Center" TextColor="#6887FF" FontSize="{Static utils:FontSizeExtension.SmallFontSize}" FontAttributes="Bold">
+               <Label.GestureRecognizers>
+                  <TapGestureRecognizer Tapped="CopyButton_Tapped"/>
+               </Label.GestureRecognizers>
+            </Label>
+            <Label x:Name="ExportButton" Text="EXPORT" HorizontalOptions="EndAndExpand" VerticalOptions="Center" TextColor="#4CD88B" FontSize="{Static utils:FontSizeExtension.SmallFontSize}" FontAttributes="Bold">
+               <Label.GestureRecognizers>
+                  <TapGestureRecognizer Tapped="ExportButton_Tapped"/>
+               </Label.GestureRecognizers>
+            </Label>
+         </StackLayout>
+      </Grid>
+
+      <!-- Popup shadow -->
+      <Grid x:Name="PopupShadow" Grid.Row="0" Grid.RowSpan="3" IsVisible="False" BackgroundColor="Black" Opacity="0">
+         <Grid.GestureRecognizers>
+            <TapGestureRecognizer Tapped="PopupShadow_Tapped" />
+         </Grid.GestureRecognizers>
+      </Grid>
+
+      <!-- Export document layout -->
+      <Grid x:Name="ExportDocumentLayout" Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" ColumnSpacing="0" RowSpacing="0" BackgroundColor="{Binding OverlayColor}" VerticalOptions="End" IsVisible="False">
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+         </Grid.ColumnDefinitions>
+         <Grid.RowDefinitions>
+            <RowDefinition Height="{utils:GlobalMargin '2GL'}" />
+            <RowDefinition Height="{utils:GlobalMargin '2GL'}" />
+            <RowDefinition Height="{utils:GlobalMargin '3GL'}" />
+            <RowDefinition Height="{Binding SafeAreaBottom, Source={Static demos:DemoUtilities.Instance}}" />
+         </Grid.RowDefinitions>
+
+         <StackLayout Grid.Row="0" Orientation="Vertical" Spacing="10" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+            <Label HorizontalOptions="Center" VerticalOptions="Center" TextColor="#5280DF" FontSize="{Static utils:FontSizeExtension.SmallFontSize}" Text="Document Name"/>
+            <Label x:Name="OutputDocumentNameLabel" HorizontalOptions="Center" VerticalOptions="Center" TextColor="#5280DF" FontSize="{Static utils:FontSizeExtension.MicroFontSize}" LineBreakMode="MiddleTruncation"/>
+         </StackLayout>
+
+         <ContentView Grid.Row="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="White" Padding="{utils:GlobalMargin '0.5, 0'}" >
+            <Entry x:Name="OutputDocumentNameEntry" HorizontalOptions="FillAndExpand" VerticalOptions="Center" BackgroundColor="White" TextColor="#5280DF" 
+                   PlaceholderColor="#5280DF" FontSize="{Static utils:FontSizeExtension.SmallFontSize}" 
+                   FontAttributes="Italic" Placeholder="TYPE DOCUMENT NAME HERE..." TextChanged="OutputDocumentNameEntry_TextChanged"/>
+         </ContentView>
+
+         <Grid Grid.Column="0" Grid.Row="2" ColumnSpacing="{utils:GlobalMargin 0.5}" RowSpacing="0" Padding="{utils:GlobalMargin '0.5,'}">
+            <Grid.ColumnDefinitions>
+               <ColumnDefinition Width="*" />
+               <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+               <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <demos_elements:SvgImage x:Name="CancelButton" Grid.Column="0" HorizontalOptions="FillAndExpand" VerticalOptions="Center" ResourceName="Icons/cancel-btn-2.svg" Tapped="CancelButton_Tapped"/>
+            <demos_elements:SvgImage x:Name="ContinueButton" Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="Center" ResourceName="Icons/continue-btn.svg" Tapped="ContinueButton_Tapped"/>
+         </Grid>
+      </Grid>
+   </Grid>
+
+</popup:PopupPage>

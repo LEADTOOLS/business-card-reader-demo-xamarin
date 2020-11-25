@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:demos="clr-namespace:Leadtools.Demos"
+             xmlns:local="clr-namespace:Leadtools.Demos.UI.Elements"
+             x:Class="Leadtools.Demos.UI.Elements.AdsView">
+
+   <Label x:Name="AdContent" FontFamily="{Static demos:DemoUtilities.FontFamily}"
+          FontSize="{Static local:AdsView.FontSize}" HorizontalTextAlignment="Center" LineBreakMode="HeadTruncation"
+          TextColor="{Static local:AdsView.TextColor}" VerticalTextAlignment="Center">
+      <Label.FormattedText>
+         <!-- Will be populated later, but needs a default value for layout calculations -->
+         <FormattedString>
+            <Span Text="Transparent placeholder" TextColor="Transparent" />
+         </FormattedString>
+      </Label.FormattedText>
+   </Label>
+</ContentView>

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<page:CustomPage xmlns="http://xamarin.com/schemas/2014/forms"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:page="clr-namespace:Leadtools.Demos.UI.Page"
+                 xmlns:elements="clr-namespace:Leadtools.Demos.UI.Elements"
+                 x:Class="Leadtools.Demos.UI.Pages.Info.InfoPage"
+                 ControlTemplate="{StaticResource CustomPageTemplate}">
+
+   <page:CustomPage.Resources>
+      <x:String x:Key="BackButtonResourceName">delete.svg</x:String>
+      <x:String x:Key="TitleText">App Information</x:String>
+   </page:CustomPage.Resources>
+
+   <elements:NavigationListView x:Name="NavigationList" />
+</page:CustomPage>

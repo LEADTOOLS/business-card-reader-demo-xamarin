@@ -1,5 +1,5 @@
 ﻿// *************************************************************
-// Copyright (c) 1991-2019 LEAD Technologies, Inc.              
+// Copyright (c) 1991-2020 LEAD Technologies, Inc.              
 // All Rights Reserved.                                         
 // *************************************************************
 using BCReaderDemo.Extentions;
@@ -10,13 +10,15 @@ using DataService;
 using Leadtools;
 using Leadtools.Codecs;
 using Leadtools.Controls;
+using Leadtools.Demos.UI.Pages.Info;
 using Leadtools.Demos.Utils;
 using Leadtools.Forms.Commands;
 using Leadtools.ImageProcessing.Core;
+using Rg.Plugins.Popup.Pages;
+using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -25,7 +27,7 @@ using Xamarin.Forms.Xaml;
 namespace BCReaderDemo
 {
    [XamlCompilation(XamlCompilationOptions.Compile)]
-   public partial class UpdateBusinessCardPage : ContentPage
+   public partial class UpdateBusinessCardPage : PopupPage
    {
       public static UpdateBusinessCardPage Instance { get; private set; }
 
@@ -46,8 +48,6 @@ namespace BCReaderDemo
       private bool _processingCard = false;
       private List<string> _tempPaths = new List<string>();
       private BusinessCardReader _bcReader;
-      private System.Timers.Timer _adsHiddenTimer = null;
-      private System.Timers.Timer _adsVisibleTimer = null;
       private int _numberOfFailedInitializations = 0;
 
       public ContactCodePath SaveType { get; set; }
@@ -84,7 +84,7 @@ namespace BCReaderDemo
                _backImage = value;
                _backImageViewer.Image = value;
                if (value != null)
-                  _backImageViewer.Zoom(ControlSizeMode.FitAlways, 1.0, _backImageViewer.DefaultZoomOrigin);
+               _backImageViewer.Zoom(ControlSizeMode.FitAlways, 1.0, _backImageViewer.DefaultZoomOrigin);
             });
          }
       }
@@ -109,6 +109,9 @@ namespace BCReaderDemo
       public UpdateBusinessCardPage(Stream cameraStream, RasterImage image, ContactModel contactItem, int indexInCollection, string picturePath, bool existing)
       {
          InitializeComponent();
+#if __IOS__
+         HasSystemPadding = false;
+#endif
 
          Instance = this;
          _index = indexInCollection;
@@ -191,7 +194,7 @@ namespace BCReaderDemo
                      ImageViewerPage imageViewerPage = new ImageViewerPage(ContactItem, _rasterImage, ImageType.FrontImage);
                      imageViewerPage.ImageModified += ImageViewerPage_ImageModified;
 
-                     await HomePage.Instance.Navigation.PushAsync(imageViewerPage);
+                     await PopupNavigation.Instance.PushAsync(imageViewerPage);
                   }
                   else if (carouselView.Position == 1 && BackImage != null)
                   {
@@ -200,7 +203,7 @@ namespace BCReaderDemo
                         ImageViewerPage imageViewerPage = new ImageViewerPage(ContactItem, BackImage, ImageType.BackImage);
                         imageViewerPage.ImageModified += ImageViewerPage_ImageModified;
 
-                        await HomePage.Instance.Navigation.PushAsync(imageViewerPage);
+                        await PopupNavigation.Instance.PushAsync(imageViewerPage);
                      }
                   }
                })
@@ -211,7 +214,7 @@ namespace BCReaderDemo
             backsideImage_TapGexture.Tapped += backsideImage_Tapped;
             backsideImage.GestureRecognizers.Add(backsideImage_TapGexture);
 
-            autoSaveCheckbox.Checked = HomePage.CurrentAppData.AutoSaveToContacts;
+            autoSaveCheckbox.IsChecked = HomePage.CurrentAppData.AutoSaveToContacts;
 
             // Add the translucent overlay box that shows focus over the selected business card field (invisible by default)
             _overlayBox = new BoxView();
@@ -226,22 +229,6 @@ namespace BCReaderDemo
             BackButtonPressed = new Action<object>((e) => { CheckDiscardChanges(); });
 
             _bcReader = HomePage.BcReader;
-
-            _adsHiddenTimer = new System.Timers.Timer(HomePage.AD_HIDDEN_DURATION);
-            _adsHiddenTimer.AutoReset = true;
-            _adsHiddenTimer.Elapsed += (sender, e) =>
-            {
-               _adsHiddenTimer.Enabled = false;
-               _adsHiddenTimer.Stop();
-               _adsVisibleTimer = AdHelper.ShowAdvertisement(advertisementLayout);
-               _adsVisibleTimer.Elapsed += (sender1, e1) =>
-               {
-                  _adsVisibleTimer.Enabled = false;
-                  _adsVisibleTimer = null;
-                  _adsHiddenTimer.Enabled = true;
-                  _adsHiddenTimer.Start();
-               };
-            };
 
             if (_existing)
                BindingContext = new ContactDetailsViewModel(this);
@@ -258,7 +245,7 @@ namespace BCReaderDemo
          }
       }
 
-      protected override void OnAppearing()
+      protected override async void OnAppearing()
       {
          base.OnAppearing();
 
@@ -268,19 +255,11 @@ namespace BCReaderDemo
          }
          else
          {
-            if (_adsHiddenTimer != null && (_adsVisibleTimer == null || (_adsVisibleTimer != null && !_adsVisibleTimer.Enabled)))
-            {
-               _adsHiddenTimer.Enabled = false;
-               _adsHiddenTimer.Stop();
-               _adsVisibleTimer = AdHelper.ShowAdvertisement(advertisementLayout);
-               _adsVisibleTimer.Elapsed += (sender1, e1) =>
-               {
-                  _adsVisibleTimer.Enabled = false;
-                  _adsVisibleTimer = null;
-                  _adsHiddenTimer.Enabled = true;
-                  _adsHiddenTimer.Start();
-               };
-            }
+            // Delay a bit, so the ad doesn't appear immediately
+            await Task.Delay(1000);
+
+            // Start the ads
+            Ads.Start();
          }
       }
 
@@ -288,11 +267,8 @@ namespace BCReaderDemo
       {
          base.OnDisappearing();
 
-         if (_adsHiddenTimer != null)
-         {
-            _adsHiddenTimer.Stop();
-            _adsHiddenTimer.Enabled = false;
-         }
+         // Stop the ads
+         Ads.Stop();
       }
 
       public async void ProcessCard(Stream cameraStream, RasterImage image, ContactModel contactItem, string picturePath, bool existing)
@@ -301,19 +277,6 @@ namespace BCReaderDemo
          Device.BeginInvokeOnMainThread(() =>
          {
             WaitUI();
-            if (_adsHiddenTimer != null && (_adsVisibleTimer == null || (_adsVisibleTimer != null && !_adsVisibleTimer.Enabled)))
-            {
-               _adsHiddenTimer.Enabled = false;
-               _adsHiddenTimer.Stop();
-               _adsVisibleTimer = AdHelper.ShowAdvertisement(busyAdvertisementLayout);
-               _adsVisibleTimer.Elapsed += (sender1, e1) =>
-               {
-                  _adsVisibleTimer.Enabled = false;
-                  _adsVisibleTimer = null;
-                  _adsHiddenTimer.Enabled = true;
-                  _adsHiddenTimer.Start();
-               };
-            }
          });
 
          try
@@ -423,24 +386,16 @@ namespace BCReaderDemo
                }
 
                WaitUI();
-
-               if(_adsHiddenTimer != null)
-               {
-                  _adsHiddenTimer.Enabled = false;
-                  _adsHiddenTimer.Stop();
-                  _adsVisibleTimer = AdHelper.ShowAdvertisement(advertisementLayout);
-                  _adsVisibleTimer.Elapsed += (sender1, e1) =>
-                  {
-                     _adsVisibleTimer.Enabled = false;
-                     _adsVisibleTimer = null;
-                     _adsHiddenTimer.Enabled = true;
-                     _adsHiddenTimer.Start();
-                  };
-               }
             });
 
             _cardProcessed = true;
             _processingCard = false;
+
+            if(!existing)
+            {
+               // Handle feedback pop-up
+               await FeedbackPage.AppWasUsed();
+            }
          }
       }
 
@@ -489,11 +444,11 @@ namespace BCReaderDemo
 
          if (imageStream != null)
          {
-            await DependencyService.Get<IPictureSaver>().SaveImage(imageStream, filePath, PictureSaveResolution.Low);
+            await DependencyService.Get<IPictureSaver>().SaveImage(imageStream, filePath, PictureSaveResolution.Low, false);
          }
          else if (image != null)
          {
-            LeadSize size = RasterImageHelper.GetImageSize(image.Width, image.Height, PictureSaveResolution.Low);
+            LeadSize size = ImageSizeHelper.GetImageSize(image.Width, image.Height, PictureSaveResolution.Low);
             ResizeInterpolateCommand resizeInterpolateCommand = new ResizeInterpolateCommand(size.Width, size.Height, ResizeInterpolateCommandType.Resample);
             resizeInterpolateCommand.Run(image);
 
@@ -529,7 +484,7 @@ namespace BCReaderDemo
 
          if (imageStream != null)
          {
-            await DependencyService.Get<IPictureSaver>().SaveImage(imageStream, backImagePath, PictureSaveResolution.Medium);
+            await DependencyService.Get<IPictureSaver>().SaveImage(imageStream, backImagePath, PictureSaveResolution.Medium, false);
 
             try
             {
@@ -542,7 +497,7 @@ namespace BCReaderDemo
          }
          else if (backImage != null)
          {
-            LeadSize size = RasterImageHelper.GetImageSize(backImage.Width, backImage.Height, PictureSaveResolution.Medium);
+            LeadSize size = ImageSizeHelper.GetImageSize(backImage.Width, backImage.Height, PictureSaveResolution.Medium);
             ResizeInterpolateCommand resizeInterpolateCommand = new ResizeInterpolateCommand(size.Width, size.Height, ResizeInterpolateCommandType.Resample);
             resizeInterpolateCommand.Run(backImage);
 
@@ -733,6 +688,12 @@ namespace BCReaderDemo
          return;
       }
 
+      private void AutoSaveCheckbox_Tapped(object sender, EventArgs e)
+      {
+         autoSaveCheckbox.IsChecked = !autoSaveCheckbox.IsChecked;
+         HomePage.CurrentAppData.AutoSaveToContacts = autoSaveCheckbox.IsChecked;
+      }
+
       private void SetAsMainLabel_Tapped(object sender, EventArgs e)
       {
          Device.BeginInvokeOnMainThread(() =>
@@ -777,8 +738,8 @@ namespace BCReaderDemo
 
       private async void backsideImage_Tapped(object sender, EventArgs e)
       {
-         var results = await DependencyService.Get<Permissions.IPermissions>().VerifyPermissionsAsync(Permissions.Permission.Camera);
-         if (results == null || results[Permissions.Permission.Camera] != Permissions.PermissionStatus.Granted)
+         var results = await DependencyService.Get<IPermissions>().VerifyPermissionsAsync(false, PermissionType.Camera);
+         if (results == null || results[PermissionType.Camera] != PermissionStatus.Granted)
             return;
 
          CameraPage cameraPage = new CameraPage(CameraOperationType.BackImage);
@@ -881,7 +842,7 @@ namespace BCReaderDemo
          if(navigateToHomePage)
             HomePage.Instance.NavigateToHomePage();
          else
-            await HomePage.Instance.Navigation.PopAsync();
+            await PopupNavigation.Instance.PopAsync();
       }
 
       public void CameraPictureTaken(object sender, PictureTakenEventArgs e)
@@ -981,7 +942,7 @@ namespace BCReaderDemo
          }
 
          if (string.IsNullOrEmpty(contact.Name.Text))
-            contact.Name = new ContactField(" ", LeadRect.Empty);
+            contact.Name = new ContactField(string.Empty, LeadRect.Empty);
 
          contact.Date = DateTime.Now;
 
@@ -1014,8 +975,8 @@ namespace BCReaderDemo
       {
          if (HomePage.CurrentAppData.AutoSaveToContacts)
          {
-            var results = await DependencyService.Get<Permissions.IPermissions>().VerifyPermissionsAsync(Permissions.Permission.Contacts);
-            if (results == null || results[Permissions.Permission.Contacts] != Permissions.PermissionStatus.Granted)
+            var results = await DependencyService.Get<IPermissions>().VerifyPermissionsAsync(false, PermissionType.Contacts);
+            if (results == null || results[PermissionType.Contacts] != PermissionStatus.Granted)
                return;
          }
 
@@ -1040,11 +1001,7 @@ namespace BCReaderDemo
             HomePage.ContactCollection.RemoveAt(_index + 1);
          }
 
-         ContactSavedEventArgs args = new ContactSavedEventArgs()
-         {
-            Contact = ContactToAdd
-         };
-
+         ContactSavedEventArgs args = new ContactSavedEventArgs(ContactToAdd);
          OnContactSaved(args);
 
          CleanUp();
@@ -1148,11 +1105,6 @@ namespace BCReaderDemo
             CleanUp();
             OnPageClosing();
          }
-      }
-
-      private void CheckboxImage_CheckedChanged(object sender, Utils.CheckedChangedEventArgs e)
-      {
-         HomePage.CurrentAppData.AutoSaveToContacts = e.IsChecked;
       }
 
       private void DeleteButton_Tapped(object sender, EventArgs e)

@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<popup:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:page="clr-namespace:Leadtools.Demos.UI.Page;assembly=Leadtools.Demos.Xamarin"
+                 xmlns:utils="clr-namespace:Leadtools.Demos.Utils;assembly=Leadtools.Demos.Xamarin"
+                 xmlns:demos="clr-namespace:Leadtools.Demos;assembly=Leadtools.Demos.Xamarin"
+                 xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+                 xmlns:popup="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+                 x:Class="Leadtools.Annotations.Xamarin.AutomationUpdateObjectPage">
+   <popup:PopupPage.Animation>
+      <animations:MoveAnimation EasingIn="{Static page:CustomPageAnimation.QuintOut}"
+                                EasingOut="{Static page:CustomPageAnimation.QuintIn}"
+                                />
+   </popup:PopupPage.Animation>
+
+   <!--ContentPanel - place additional content here-->
+   <Grid x:Name="_contentPanel" BackgroundColor="White">
+      <Grid.RowDefinitions>
+         <RowDefinition Height="Auto"/>
+         <RowDefinition Height="Auto"/>
+         <RowDefinition Height="*"/>
+         <RowDefinition Height="Auto"/>
+         <RowDefinition Height="{Binding SafeAreaBottom, Source={Static demos:DemoUtilities.Instance}}" />
+      </Grid.RowDefinitions>
+
+      <!-- Header -->
+      <Grid Grid.Row="0" Grid.Column="0" ColumnSpacing="0" RowSpacing="0">
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+         </Grid.ColumnDefinitions>
+         <Grid.RowDefinitions>
+            <RowDefinition Height="{Binding SafeAreaTop, Source={Static demos:DemoUtilities.Instance}}" />
+            <RowDefinition Height="{utils:GlobalMargin '2.5GL'}" />
+         </Grid.RowDefinitions>
+
+         <Label Grid.Row="1" Text="Annotations Properties" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                   FontFamily="{Static demos:DemoUtilities.FontFamily}" FontSize="{Static utils:FontSizeExtension.MediumFontSize}"/>
+      </Grid>
+
+      <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Grid.Row="1" Margin="{utils:GlobalMargin '0.5,0'}">
+         <ScrollView Orientation="Horizontal">
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" x:Name="_tabsPanel">
+               <Button BorderColor="CornflowerBlue" BackgroundColor="White" TextColor="Black" HorizontalOptions="StartAndExpand" FontSize="Medium" x:Name="_propertiesTabButton" Clicked="PropertiesTabButton_Click" Text="Property" />
+               <Button BorderColor="CornflowerBlue" BackgroundColor="White" TextColor="Black" HorizontalOptions="CenterAndExpand" FontSize="Medium" x:Name="_contentTabButton" Clicked="ContentTabButton_Click" Text="Content" />
+               <Button BorderColor="CornflowerBlue" BackgroundColor="White" TextColor="Black" HorizontalOptions="EndAndExpand" FontSize="Medium" x:Name="_reviewsTabButton" Clicked="ReviewsTabButton_Click" Text="Review" />
+            </StackLayout>
+         </ScrollView>
+      </Grid>
+
+      <Grid HorizontalOptions="Fill" VerticalOptions="Fill" Grid.Row="2" Margin="{utils:GlobalMargin '0.5,0'}">
+         <StackLayout x:Name="_propertiesContainerPanel" IsVisible="False">
+            <ScrollView Orientation="Horizontal">
+               <StackLayout Orientation="Horizontal">
+                  <Button WidthRequest="140" BorderColor="LightBlue" BackgroundColor="White" TextColor="Black" Clicked="_propertiesTabButtons_Click" IsVisible="False" x:Name="_commonTab" CommandParameter="-3" Text="Common" />
+                  <Button WidthRequest="140" BorderColor="LightBlue" BackgroundColor="White" TextColor="Black" Clicked="_propertiesTabButtons_Click" IsVisible="False" x:Name="_rulerTab" CommandParameter="-24" Text="Ruler" />
+                  <Button WidthRequest="140" BorderColor="LightBlue" BackgroundColor="White" TextColor="Black" Clicked="_propertiesTabButtons_Click" IsVisible="False" x:Name="_textTab" CommandParameter="-12" Text="Text" />
+                  <Button WidthRequest="140" BorderColor="LightBlue" BackgroundColor="White" TextColor="Black" Clicked="_propertiesTabButtons_Click" IsVisible="False" x:Name="_textRollupTab" CommandParameter="-13" Text="Text Rollup" />
+                  <Button WidthRequest="140" BorderColor="LightBlue" BackgroundColor="White" TextColor="Black" Clicked="_propertiesTabButtons_Click" IsVisible="False" x:Name="_curveTab" CommandParameter="-7" Text="Curve" />
+                  <Button WidthRequest="140" BorderColor="LightBlue" BackgroundColor="White" TextColor="Black" Clicked="_propertiesTabButtons_Click" IsVisible="False" x:Name="_rubberStampTab" CommandParameter="-17" Text="RubberStamp" />
+                  <Button WidthRequest="140" BorderColor="LightBlue" BackgroundColor="White" TextColor="Black" Clicked="_propertiesTabButtons_Click" IsVisible="False" x:Name="_pictureTab" CommandParameter="-31" Text="Picture" />
+                  <Button WidthRequest="140" BorderColor="LightBlue" BackgroundColor="White" TextColor="Black" Clicked="_propertiesTabButtons_Click" IsVisible="False" x:Name="_mediaTab" CommandParameter="-30" Text="Media" />
+                  <Button WidthRequest="140" BorderColor="LightBlue" BackgroundColor="White" TextColor="Black" Clicked="_propertiesTabButtons_Click" IsVisible="False" x:Name="_encryptTab" CommandParameter="-27" Text="Encrypt" />
+                  <Button WidthRequest="140" BorderColor="LightBlue" BackgroundColor="White" TextColor="Black" Clicked="_propertiesTabButtons_Click" IsVisible="False" x:Name="_pointTab" CommandParameter="-21" Text="Point" />
+                  <Button WidthRequest="140" BorderColor="LightBlue" BackgroundColor="White" TextColor="Black" Clicked="_propertiesTabButtons_Click" IsVisible="False" x:Name="_protractorTab" CommandParameter="-24" Text="Protractor" />
+                  <Button WidthRequest="140" BorderColor="LightBlue" BackgroundColor="White" TextColor="Black" Clicked="_propertiesTabButtons_Click" IsVisible="False" x:Name="_textPointerTab" CommandParameter="-14" Text="Text Pointer" />
+               </StackLayout>
+            </ScrollView>
+            <Frame BorderColor="Gray">
+               <ScrollView x:Name="_scrollViewer" Padding="15" VerticalOptions="FillAndExpand">
+                  <Grid x:Name="_propertiesTabPanel">
+                     <StackLayout x:Name="_commonPropertiesContainer"/>
+                     <StackLayout x:Name="_rulerPropertiesContainer"/>
+                     <StackLayout x:Name="_textPropertiesContainer"/>
+                     <StackLayout x:Name="_textRollupPropertiesContainer"/>
+                     <StackLayout x:Name="_curvePropertiesContainer"/>
+                     <StackLayout x:Name="_rubberStampPropertiesContainer"/>
+                     <StackLayout x:Name="_picturePropertiesContainer"/>
+                     <StackLayout x:Name="_mediaPropertiesContainer"/>
+                     <StackLayout x:Name="_encryptPropertiesContainer"/>
+                     <StackLayout x:Name="_pointPropertiesContainer"/>
+                     <StackLayout x:Name="_protractorPropertiesContainer"/>
+                     <StackLayout x:Name="_textPointerPropertiesContainer"/>
+                  </Grid>
+               </ScrollView>
+            </Frame>
+         </StackLayout>
+         <StackLayout x:Name="_contentContainerPanel" IsVisible="False">
+            <Label Text="Content:" />
+            <Frame HasShadow="False" Padding="0">
+               <Frame.BorderColor>
+                  <OnPlatform x:TypeArguments="Color">
+                     <On Platform="iOS" Value="LightGray"/>
+                     <On Platform="Android" Value="LightGray"/>
+                     <On Platform="UWP" Value="Transparent"/>
+                  </OnPlatform>
+               </Frame.BorderColor>
+               <Editor x:Name="_contentTextBox" HeightRequest="150" TextChanged="ContentText_TextChanged" Placeholder="Insert content here"/>
+            </Frame>
+         </StackLayout>
+         <Grid x:Name="_reviewsContainerPanel" IsVisible="False">
+            <StackLayout>
+               <Grid HorizontalOptions="Fill">
+                  <Grid.ColumnDefinitions>
+                     <ColumnDefinition Width="*"/>
+                     <ColumnDefinition Width="*"/>
+                  </Grid.ColumnDefinitions>
+                  <Frame Grid.Column="0" BorderColor="Gray">
+                     <ScrollView  Orientation="Horizontal" >
+                     <StackLayout x:Name="_reviewsControlsPanel">
+                        <Label x:Name="_contetnHeader" Text="Content"/>
+                        <ScrollView HeightRequest="50">
+                           <Label x:Name="_reviewContentTextBox" BackgroundColor="LightGray"/>
+                        </ScrollView>
+                        <Grid>
+                           <Grid.ColumnDefinitions>
+                              <ColumnDefinition Width="*"/>
+                              <ColumnDefinition Width="*"/>
+                              <ColumnDefinition Width="*"/>
+                           </Grid.ColumnDefinitions>
+
+                           <Button x:Name="_replyButton" Grid.Column="0" Text="Reply" Clicked="ReplyButton_Click"/>
+                           <Button x:Name="_addButton" Grid.Column="1" Text="Add" Clicked="AddButton_Click"/>
+                           <Button x:Name="_deleteButton" Grid.Column="2" Text="Delete" Clicked="DeleteButton_Click"/>
+
+                        </Grid>
+                        <ScrollView  Orientation="Horizontal" x:Name="_reviewsTreeContainer"/>
+                     </StackLayout>
+                     </ScrollView>
+                  </Frame>
+                  <Frame Grid.Column="1" BorderColor="Gray">
+                     <ScrollView Orientation="Horizontal">
+                        <StackLayout>
+                           <Label Text="Details"/>
+                           <Grid>
+                              <Grid.ColumnDefinitions>
+                                 <ColumnDefinition Width="Auto"/>
+                                 <ColumnDefinition Width="*"/>
+                              </Grid.ColumnDefinitions>
+                              <Grid.RowDefinitions>
+                                 <RowDefinition Height="Auto"/>
+                                 <RowDefinition Height="Auto"/>
+                                 <RowDefinition Height="Auto"/>
+                                 <RowDefinition Height="Auto"/>
+                                 <RowDefinition Height="Auto"/>
+                              </Grid.RowDefinitions>
+                              <Label Grid.Column="0" Grid.Row="0" VerticalOptions="Center" Text="Author:"/>
+                              <Label Grid.Column="0" Grid.Row="1" VerticalOptions="Center" Text="Date:"/>
+                              <Label Grid.Column="0" Grid.Row="2" VerticalOptions="Center" Text="Status:"/>
+                              <Label Grid.Column="0" Grid.Row="3" VerticalOptions="Center" Text="Checked:"/>
+                              <Label Grid.Column="0" Grid.Row="4" VerticalOptions="Center" Text="Comment:"/>
+
+                              <Entry Grid.Column="1" Grid.Row="0" x:Name="_authorTextBox" TextChanged="DetailsTextBox_TextChanged"/>
+                              <StackLayout Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
+                                 <Label VerticalOptions="Center">Day:</Label>
+                                 <Entry x:Name="_dateDayText" TextChanged="DetailsTextBox_TextChanged"></Entry>
+                                 <Label VerticalOptions="Center">Month:</Label>
+                                 <Entry x:Name="_dateMonthText" TextChanged="DetailsTextBox_TextChanged"></Entry>
+                                 <Label VerticalOptions="Center">Year:</Label>
+                                 <Entry x:Name="_dateYearText" WidthRequest="75" TextChanged="DetailsTextBox_TextChanged"></Entry>
+                              </StackLayout>
+                              <Picker Grid.Column="1" Grid.Row="2" x:Name="_statusPicker" SelectedIndex="0" SelectedIndexChanged="StatusPicker_SelectionChanged">
+                                 <Picker.Items>
+                                    <x:String>Reply</x:String>
+                                    <x:String>Accepted</x:String>
+                                    <x:String>Canceled</x:String>
+                                    <x:String>Completed</x:String>
+                                    <x:String>Created</x:String>
+                                    <x:String>Modified</x:String>
+                                    <x:String>Rejected</x:String>
+                                    <x:String>None</x:String>
+                                 </Picker.Items>
+                              </Picker>
+                              <Switch Grid.Column="1" Grid.Row="3" x:Name="_checkedCheckBox" Toggled="CheckedCheckBox_CheckedChanged"/>
+                              <Frame HasShadow="False" Padding="2" Grid.Column="1" Grid.Row="4">
+                                 <Frame.BorderColor>
+                                    <OnPlatform x:TypeArguments="Color">
+                                       <On Platform="iOS" Value="LightGray"/>
+                                       <On Platform="Android" Value="Transparent"/>
+                                       <On Platform="UWP" Value="Transparent"/>
+                                    </OnPlatform>
+                                 </Frame.BorderColor>
+                                 <Editor x:Name="_commentTextBox" TextChanged="DetailsTextBox_TextChanged" Placeholder="Insert comment here"/>
+                              </Frame>
+
+                           </Grid>
+                        </StackLayout>
+                     </ScrollView>
+                  </Frame>
+               </Grid>
+            </StackLayout>
+         </Grid>
+      </Grid>
+
+      <StackLayout Grid.Row="3" Padding="40">
+         <Button BorderColor="CornflowerBlue" BackgroundColor="WhiteSmoke" TextColor="Black" FontSize="Medium" Clicked="Done_Click" Text="Done" />
+      </StackLayout>
+   </Grid>
+
+</popup:PopupPage>

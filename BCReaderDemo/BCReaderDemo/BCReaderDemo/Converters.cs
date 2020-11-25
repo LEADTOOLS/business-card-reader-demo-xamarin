@@ -1,5 +1,5 @@
 ﻿// *************************************************************
-// Copyright (c) 1991-2019 LEAD Technologies, Inc.              
+// Copyright (c) 1991-2020 LEAD Technologies, Inc.              
 // All Rights Reserved.                                         
 // *************************************************************
 using System;
@@ -50,7 +50,7 @@ namespace BCReaderDemo
       public static readonly Color SettingsLabelsColor                              = Color.FromHex("#a0b3c7");
       public static readonly Color SearchBarPlaceHolderInactiveLightBlueTextColor   = Color.FromHex("#89d8f0");
       public static readonly Color SearchBarPlaceHolderInactiveTextColor            = Color.FromHex("#b6c6d1");
-      public static readonly Color SearchBarPlaceHolderActiveTextColor              = DarkSharkonColor;
+      public static readonly Color SearchBarTextColor                               = DarkSharkonColor;
       public static readonly Color PagesBackgroundColor                             = Color.FromHex("#f2f6ff");
       public static readonly Color DimmedPageBackgroundColor                        = Color.FromHex("#f5f7fa");
       public static readonly Color RetakeButtonColor                                = Color.FromHex("#5cc4cc");
@@ -67,90 +67,5 @@ namespace BCReaderDemo
       public static readonly Color ScanQRLabelTextColor                             = Color.FromHex("#698198");
       public static readonly Color RecommendToFriendIconsBackgroundColor            = Color.FromHex("#f7f8f9");
       public static readonly Color CopyrightTextColor                               = DarkSharkonColor;
-   }
-        
-   class DateConverter : IValueConverter
-   {
-      public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-      {
-         DateTime date = (DateTime)value;
-         if (date.Equals(DateTime.Today))
-         {
-            return "Today";
-         }
-         return date.Day.ToString().PadLeft(2, '0') + @"/" + date.Month.ToString().PadLeft(2, '0') + "-" + date.Year;
-      }
-
-      public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-      {
-         return null;
-      }
-   }
-
-   class NegateBooleanConverter : IValueConverter
-   {
-      public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-      {
-         return !(bool)value;
-      }
-      public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-      {
-         return !(bool)value;
-      }
-   }
-
-   public class StringCaseConverter : IValueConverter
-   {
-      public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-      {
-         if (string.IsNullOrEmpty(value as string))
-            return string.Empty;
-
-         string param = System.Convert.ToString(parameter) ?? "u";
-
-         switch (param.ToUpper())
-         {
-            case "U":
-               return ((string)value).ToUpper();
-            case "L":
-               return ((string)value).ToLower();
-            default:
-               return ((string)value);
-         }
-
-      }
-
-      public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-      {
-         throw new NotSupportedException();
-      }
-   }
-
-   public class NullStringConverter : IValueConverter
-   {
-      public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-      {
-         string retValue = "[Unknown]";
-         string param = System.Convert.ToString(parameter) ?? "c";
-
-         if (param == "c")
-         {
-            char c = (char)value;
-            if (c != '\0')
-               retValue = c.ToString();
-         }
-         else
-         {
-            if (!string.IsNullOrWhiteSpace(value as string))
-               retValue = (value as string);
-         }
-
-         return retValue;
-      }
-
-      public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-      {
-         throw new NotSupportedException();
-      }
    }
 }

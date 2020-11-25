@@ -1,70 +1,75 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:BCReaderDemo"
-             xmlns:utils="clr-namespace:BCReaderDemo.Utils"
-             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
-             ios:Page.UseSafeArea="True"
-             BackgroundColor="{x:Static local:CustomColors.PagesBackgroundColor}"
-             x:Class="BCReaderDemo.ImageViewerPage"
-             NavigationPage.HasNavigationBar="False"
-             NavigationPage.HasBackButton="False">
-   <ContentPage.Padding>
-      <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" Default="0, 0, 0, 0" />
-   </ContentPage.Padding>
+<popup:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:local="clr-namespace:BCReaderDemo"
+                 xmlns:demos_elements="clr-namespace:Leadtools.Demos.UI.Elements;assembly=Leadtools.Demos.Xamarin"
+                 xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+                 ios:Page.UseSafeArea="True"
+                 xmlns:page="clr-namespace:Leadtools.Demos.UI.Page;assembly=Leadtools.Demos.Xamarin"
+                 xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+                 xmlns:popup="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+                 x:Class="BCReaderDemo.ImageViewerPage"
+                 BackgroundColor="{x:Static local:CustomColors.PagesBackgroundColor}">
+   <popup:PopupPage.Animation>
+      <animations:MoveAnimation EasingIn="{Static page:CustomPageAnimation.QuintOut}"
+                                EasingOut="{Static page:CustomPageAnimation.QuintIn}"
+                                />
+   </popup:PopupPage.Animation>
 
-   <ContentPage.Content>
-      <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+   <popup:PopupPage.Padding>
+      <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" Default="0, 0, 0, 0" />
+   </popup:PopupPage.Padding>
+
+   <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+      <Grid.RowDefinitions>
+         <RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
+
+      <Grid x:Name="imageViewerGrid" Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="{x:Static local:CustomColors.PagesBackgroundColor}"/>
+
+      <Grid Grid.Row="0" Grid.Column="0" HorizontalOptions="FillAndExpand" VerticalOptions="Start">
          <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="{x:Static local:PlatformsConstants.PagesHeaderTitleRowHeight}"/>
+         </Grid.RowDefinitions>
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+         </Grid.ColumnDefinitions>
+
+         <Grid WidthRequest="50" HorizontalOptions="Start" VerticalOptions="FillAndExpand">
+            <Label Text="Back" HorizontalOptions="Center" VerticalOptions="Center" Margin="10,0,0,0" FontSize="{x:Static local:PlatformsConstants.PageTitleFontSize}" TextColor="{x:Static local:CustomColors.PinkButtonColor}"/>
+            <Grid.GestureRecognizers>
+               <TapGestureRecognizer Tapped="BackButton_Clicked" />
+            </Grid.GestureRecognizers>
+         </Grid>
+      </Grid>
+
+      <Grid Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="{x:Static local:PlatformsConstants.PagesHeaderTitleRowHeight}" BackgroundColor="Transparent">
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+         </Grid.ColumnDefinitions>
+         <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
          </Grid.RowDefinitions>
 
-         <Grid x:Name="imageViewerGrid" Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="{x:Static local:CustomColors.PagesBackgroundColor}"/>
+         <ContentView x:Name="retakeButton" Grid.Row="0" Grid.Column="0" HorizontalOptions="Start" VerticalOptions="FillAndExpand" Margin="10,0,0,10" >
+            <Label Text="Retake Image" FontSize="Small" TextColor="{x:Static local:CustomColors.BlueButtonColor}" VerticalOptions="Center"/>
+            <ContentView.GestureRecognizers>
+               <TapGestureRecognizer Tapped="RetakeButton_Clicked" />
+            </ContentView.GestureRecognizers>
+         </ContentView>
 
-         <Grid Grid.Row="0" Grid.Column="0" HorizontalOptions="FillAndExpand" VerticalOptions="Start">
-            <Grid.RowDefinitions>
-               <RowDefinition Height="{x:Static local:PlatformsConstants.PagesHeaderTitleRowHeight}"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-               <ColumnDefinition Width="*" />
-               <ColumnDefinition Width="*" />
-               <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+         <ContentView x:Name="deleteButton" Grid.Row="0" Grid.Column="1" HorizontalOptions="End" VerticalOptions="FillAndExpand" Margin="0,0,10,10" >
+            <Label Text="Delete Image" FontSize="Small" TextColor="{x:Static local:CustomColors.BlueButtonColor}" VerticalOptions="Center"/>
+            <ContentView.GestureRecognizers>
+               <TapGestureRecognizer Tapped="DeleteButton_Clicked" />
+            </ContentView.GestureRecognizers>
+         </ContentView>
 
-            <Grid WidthRequest="50" HorizontalOptions="Start" VerticalOptions="FillAndExpand">
-               <Label Text="Back" HorizontalOptions="Center" VerticalOptions="Center" Margin="10,0,0,0" FontSize="{x:Static local:PlatformsConstants.PageTitleFontSize}" TextColor="{x:Static local:CustomColors.PinkButtonColor}"/>
-               <Grid.GestureRecognizers>
-                  <TapGestureRecognizer Tapped="BackButton_Clicked" />
-               </Grid.GestureRecognizers>
-            </Grid>
-         </Grid>
-
-         <Grid Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="End" HeightRequest="{x:Static local:PlatformsConstants.PagesHeaderTitleRowHeight}" BackgroundColor="Transparent">
-            <Grid.ColumnDefinitions>
-               <ColumnDefinition Width="*"/>
-               <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-               <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-
-            <ContentView x:Name="retakeButton" Grid.Row="0" Grid.Column="0" HorizontalOptions="Start" VerticalOptions="FillAndExpand" Margin="10,0,0,10" >
-               <Label Text="Retake Image" FontSize="Small" TextColor="{x:Static local:CustomColors.BlueButtonColor}" VerticalOptions="Center"/>
-               <ContentView.GestureRecognizers>
-                  <TapGestureRecognizer Tapped="RetakeButton_Clicked" />
-               </ContentView.GestureRecognizers>
-            </ContentView>
-
-            <ContentView x:Name="deleteButton" Grid.Row="0" Grid.Column="1" HorizontalOptions="End" VerticalOptions="FillAndExpand" Margin="0,0,10,10" >
-               <Label Text="Delete Image" FontSize="Small" TextColor="{x:Static local:CustomColors.BlueButtonColor}" VerticalOptions="Center"/>
-               <ContentView.GestureRecognizers>
-                  <TapGestureRecognizer Tapped="DeleteButton_Clicked" />
-               </ContentView.GestureRecognizers>
-            </ContentView>
-
-            <utils:AdsLayout x:Name="advertisementLayout" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
-         </Grid>
-
+         <demos_elements:AdsView x:Name="Ads" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
       </Grid>
-   </ContentPage.Content>
-</ContentPage>
+
+   </Grid>
+</popup:PopupPage>

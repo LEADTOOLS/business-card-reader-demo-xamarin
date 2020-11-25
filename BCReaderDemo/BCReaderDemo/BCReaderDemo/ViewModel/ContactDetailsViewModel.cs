@@ -1,11 +1,12 @@
 ﻿// *************************************************************
-// Copyright (c) 1991-2019 LEAD Technologies, Inc.              
+// Copyright (c) 1991-2020 LEAD Technologies, Inc.              
 // All Rights Reserved.                                         
 // *************************************************************
 using BCReaderDemo.Models;
 using BCReaderDemo.Utils;
 using Leadtools;
 using Leadtools.Controls;
+using Leadtools.Demos.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -260,7 +261,7 @@ namespace BCReaderDemo.Extentions
             otherSection.Rows.Add(new PickerRow()
             {
                Title = "Referral",
-               SelectedIndex = HomePage.CurrentAppData.EventPickerItems.DisplayItems.IndexOf(_contact.Referral),
+               SelectedIndex = HomePage.CurrentAppData.ReferralPickerItems.DisplayItems.IndexOf(_contact.Referral),
                Items = HomePage.CurrentAppData.ReferralPickerItems,
                SelectedIndexChanged = new Action<object, EventArgs>((sender, e) =>
                {
@@ -388,8 +389,8 @@ namespace BCReaderDemo.Extentions
       {
          return async (obj) =>
          {
-            var results = await DependencyService.Get<Permissions.IPermissions>().VerifyPermissionsAsync(Permissions.Permission.Camera);
-            if (results == null || results[Permissions.Permission.Camera] != Permissions.PermissionStatus.Granted)
+            var results = await DependencyService.Get<IPermissions>().VerifyPermissionsAsync(false, PermissionType.Camera);
+            if (results == null || results[PermissionType.Camera] != PermissionStatus.Granted)
                return;
 
             string[] actions = null;

@@ -1,0 +1,182 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<page:CustomPage xmlns="http://xamarin.com/schemas/2014/forms"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:demos="clr-namespace:Leadtools.Demos;assembly=Leadtools.Demos.Xamarin"
+                 xmlns:elements="clr-namespace:Leadtools.Demos.UI.Elements;assembly=Leadtools.Demos.Xamarin"
+                 xmlns:page="clr-namespace:Leadtools.Demos.UI.Page;assembly=Leadtools.Demos.Xamarin"
+                 xmlns:local="clr-namespace:Leadtools.Demos.Document.UI.Pages.Ocr"
+                 xmlns:utils="clr-namespace:Leadtools.Demos.Utils;assembly=Leadtools.Demos.Xamarin"
+                 x:Class="Leadtools.Demos.Document.UI.Pages.Ocr.OcrLanguagesPage"
+                 ControlTemplate="{StaticResource CustomPageTemplate}">
+
+   <page:CustomPage.Resources>
+      <x:String x:Key="BackButtonResourceName">back.svg</x:String>
+      <x:String x:Key="TitleText">Languages</x:String>
+      <x:String x:Key="TitleExtraButtonText">Edit</x:String>
+      <x:Boolean x:Key="IsTitleExtraButtonVisible">True</x:Boolean>
+
+      <ResourceDictionary>
+         <DataTemplate x:Key="DefaultItemTemplate">
+            <elements:CustomViewCell>
+               <StackLayout Orientation="Horizontal" Padding="0,5" Spacing="0">
+                  <StackLayout.Resources>
+                     <Style TargetType="Label">
+                        <Setter Property="FontFamily" Value="{Static demos:DemoUtilities.FontFamily}" />
+                        <Setter Property="FontSize" Value="{Static utils:FontSizeExtension.SmallFontSize}" />
+                        <Setter Property="VerticalOptions" Value="Center" />
+                        <Setter Property="VerticalTextAlignment" Value="Center" />
+                        <Setter Property="HorizontalTextAlignment" Value="Center" />
+                     </Style>
+                  </StackLayout.Resources>
+
+                  <Label Text="{Binding LocalizedName}" HorizontalOptions="StartAndExpand" TextColor="{Binding LanguageLabelTextColor}"/>
+               </StackLayout>
+            </elements:CustomViewCell>
+         </DataTemplate>
+
+         <DataTemplate x:Key="EditLanguagesItemTemplate">
+            <elements:CustomViewCell>
+               <StackLayout Orientation="Horizontal" Spacing="0" Padding="0,5">
+                  <StackLayout.Resources>
+                     <Style TargetType="Label">
+                        <Setter Property="FontFamily" Value="{Static demos:DemoUtilities.FontFamily}" />
+                        <Setter Property="FontSize" Value="{Static utils:FontSizeExtension.SmallFontSize}" />
+                        <Setter Property="VerticalOptions" Value="Center" />
+                        <Setter Property="VerticalTextAlignment" Value="Center" />
+                        <Setter Property="HorizontalTextAlignment" Value="Center" />
+                     </Style>
+                  </StackLayout.Resources>
+
+                  <ContentView BackgroundColor="Transparent" HorizontalOptions="Start" VerticalOptions="Center" Margin="0,0,10,0">
+                     <elements:SvgImage ResourceName="Icons/remove-ico2.svg" VerticalOptions="Center" WidthRequest="16" HeightRequest="16" IsVisible="{Binding CanBeDeleted}" Tapped="DeleteLanguageButton_Tapped"/>
+                  </ContentView>
+                  <Label Text="{Binding LocalizedName}" HorizontalOptions="StartAndExpand" VerticalOptions="Center" TextColor="{Binding LanguageLabelTextColor}"/>
+                  <elements:SvgImage ResourceName="Icons/sort.svg" VerticalOptions="Center" WidthRequest="16" HeightRequest="16" IsEnabled="False"/>
+               </StackLayout>
+            </elements:CustomViewCell>
+         </DataTemplate>
+
+         <DataTemplate x:Key="DefaultDownloadItemTemplate">
+            <elements:CustomViewCell>
+               <StackLayout Orientation="Horizontal" Spacing="5" Padding="0,5">
+                  <StackLayout.Resources>
+                     <Style TargetType="Label">
+                        <Setter Property="FontFamily" Value="{Static demos:DemoUtilities.FontFamily}" />
+                        <Setter Property="FontSize" Value="{Static utils:FontSizeExtension.SmallFontSize}" />
+                        <Setter Property="VerticalOptions" Value="Center" />
+                        <Setter Property="VerticalTextAlignment" Value="Center" />
+                        <Setter Property="HorizontalTextAlignment" Value="Center" />
+                     </Style>
+                  </StackLayout.Resources>
+
+                  <Label Text="{Binding LocalizedName}" HorizontalOptions="StartAndExpand" TextColor="#57687F"/>
+                  <Label Text="{Binding FormattedFileSizeString}" HorizontalOptions="End" TextColor="#57687F" FontSize="{Static utils:FontSizeExtension.MicroFontSize}"/>
+                  <Label Text="Download" HorizontalOptions="End" TextColor="#56A7FD" WidthRequest="{utils:GlobalMargin 2.5}" IsEnabled="{Binding IsDownloading, Converter={StaticResource BooleanInverter}}" HorizontalTextAlignment="End">
+                     <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="DownloadLanguageButton_Tapped"/>
+                     </Label.GestureRecognizers>
+                  </Label>
+               </StackLayout>
+            </elements:CustomViewCell>
+         </DataTemplate>
+
+         <DataTemplate x:Key="DownloadingItemTemplate">
+            <elements:CustomViewCell>
+               <StackLayout Orientation="Vertical" Spacing="5" Padding="0,5">
+                  <StackLayout Orientation="Horizontal" Spacing="5">
+                     <StackLayout.Resources>
+                        <Style TargetType="Label">
+                           <Setter Property="FontFamily" Value="{Static demos:DemoUtilities.FontFamily}" />
+                           <Setter Property="FontSize" Value="{Static utils:FontSizeExtension.SmallFontSize}" />
+                           <Setter Property="VerticalOptions" Value="Center" />
+                           <Setter Property="VerticalTextAlignment" Value="Center" />
+                           <Setter Property="HorizontalTextAlignment" Value="Center" />
+                        </Style>
+                     </StackLayout.Resources>
+
+                     <Label Text="{Binding LocalizedName}" HorizontalOptions="StartAndExpand" TextColor="#57687F"/>
+                     <Label Text="{Binding FormattedFileSizeString}" HorizontalOptions="End" TextColor="#57687F" FontSize="{Static utils:FontSizeExtension.MicroFontSize}"/>
+                     <Label Text="Cancel" HorizontalOptions="End" TextColor="#FF5782" WidthRequest="{utils:GlobalMargin 2.3}">
+                        <Label.GestureRecognizers>
+                           <TapGestureRecognizer Tapped="CancelLanguageDownloadButton_Tapped"/>
+                        </Label.GestureRecognizers>
+                     </Label>
+                  </StackLayout>
+                  <ProgressBar HeightRequest="3" ProgressColor="#56A7FD" Progress="{Binding DownloadPercentage}"/>
+               </StackLayout>
+            </elements:CustomViewCell>
+         </DataTemplate>
+
+         <local:ListViewDataTemplateSelector x:Key="ListViewDataTemplateSelector"
+                                             DefaultItemTemplate="{StaticResource DefaultItemTemplate}"
+                                             EditLanguagesItemTemplate="{StaticResource EditLanguagesItemTemplate}"
+                                             DefaultDownloadTemplate="{StaticResource DefaultDownloadItemTemplate}"
+                                             DownloadingTemplate="{StaticResource DownloadingItemTemplate}"/>
+      </ResourceDictionary>
+   </page:CustomPage.Resources>
+
+   <ScrollView>
+      <StackLayout Spacing="0">
+         <StackLayout.Resources>
+            <Style TargetType="Label">
+               <Setter Property="Grid.Column" Value="0" />
+               <Setter Property="Grid.Row" Value="0" />
+               <Setter Property="FontFamily" Value="{Static demos:DemoUtilities.FontFamily}" />
+               <Setter Property="FontSize" Value="{Static utils:FontSizeExtension.SmallFontSize}" />
+               <Setter Property="FontAttributes" Value="Bold" />
+               <Setter Property="HorizontalOptions" Value="Start" />
+               <Setter Property="HorizontalTextAlignment" Value="Start" />
+               <Setter Property="TextColor" Value="#57687F" />
+               <Setter Property="VerticalOptions" Value="Center" />
+               <Setter Property="VerticalTextAlignment" Value="Center" />
+            </Style>
+            <Style TargetType="elements:CustomSwitch">
+               <Setter Property="Grid.Column" Value="1" />
+               <Setter Property="Grid.Row" Value="0" />
+               <Setter Property="IsEnabled" Value="False" />
+               <Setter Property="HeightRequest" Value="{utils:GlobalMargin 0.6}" />
+               <Setter Property="HorizontalOptions" Value="End" />
+               <Setter Property="VerticalOptions" Value="Center" />
+               <Setter Property="WidthRequest" Value="{utils:GlobalMargin 1.1}" />
+            </Style>
+         </StackLayout.Resources>
+
+         <StackLayout x:Name="ActiveDefaultLanguagesLayout" Margin="{utils:GlobalMargin '1, 0.125'}" Padding="0" Spacing="{utils:GlobalMargin 0.5}">
+            <Label Text="ACTIVE/DEFAULT LANGUAGES"/>
+
+            <elements:CustomListView x:Name="ActiveLanguagesListView" 
+                                     SeparatorVisibility="None"
+                                     ShowSelection="False"
+                                     IsPullToRefreshEnabled="False"
+                                     StyleId="ActiveLanguages"
+                                     DropCompleted="ListView_DropCompleted"
+                                     ItemTemplate="{StaticResource ListViewDataTemplateSelector}"/>
+         </StackLayout>
+
+         <BoxView VerticalOptions="Start" Margin="{utils:GlobalMargin '0, 0.25'}" HeightRequest="2" BackgroundColor="#E5E8ED"/>
+
+         <StackLayout x:Name="InactiveLanguagesLayout" Margin="{utils:GlobalMargin '1, 0.125'}" Padding="0" Spacing="{utils:GlobalMargin 0.5}">
+            <Label Text="INACTIVE LANGUAGES"/>
+
+            <elements:CustomListView x:Name="InactiveLanguagesListView" 
+                                     SeparatorVisibility="None"
+                                     ShowSelection="False"
+                                     IsPullToRefreshEnabled="False"
+                                     DropCompleted="ListView_DropCompleted"
+                                     ItemTemplate="{StaticResource ListViewDataTemplateSelector}"/>
+         </StackLayout>
+
+         <BoxView VerticalOptions="Start" Margin="{utils:GlobalMargin '0, 0.25'}" HeightRequest="2" BackgroundColor="#E5E8ED"/>
+
+         <StackLayout x:Name="DownloadableLanguagesLayout" Margin="{utils:GlobalMargin '1, 0.125'}" Padding="0" Spacing="{utils:GlobalMargin 0.5}">
+            <Label Text="DOWNLOADABLE LANGUAGES"/>
+
+            <elements:CustomListView x:Name="DownloadableLanguagesListView" 
+                                     SeparatorVisibility="None"
+                                     ShowSelection="False"
+                                     IsPullToRefreshEnabled="False"
+                                     ItemTemplate="{StaticResource ListViewDataTemplateSelector}"/>
+         </StackLayout>
+      </StackLayout>
+   </ScrollView>
+</page:CustomPage>

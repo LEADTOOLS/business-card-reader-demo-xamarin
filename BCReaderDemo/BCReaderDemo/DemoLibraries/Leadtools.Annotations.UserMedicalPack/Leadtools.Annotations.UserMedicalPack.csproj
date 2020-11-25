@@ -1,0 +1,70 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup Label="Globals">
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>netstandard1.4</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <DelaySign>false</DelaySign>
+    <RootNamespace>Leadtools.Annotations.UserMedicalPack</RootNamespace>
+    <AssemblyName>Leadtools.Annotations.UserMedicalPack</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG;NETSTANDARD1_4;FOR_STD;LTV21_CONFIG;LEADTOOLS_V16_OR_LATER;LEADTOOLS_V17_OR_LATER;LEADTOOLS_V175_OR_LATER;FOR_ANYCPU;FOR_DOTNET4;LEADTOOLS_V18_OR_LATER;LEADTOOLS_V19_OR_LATER;LEADTOOLS_V20_OR_LATER;LTV21_CONFIG;LEADTOOLS_V21_OR_LATER</DefineConstants>
+    <NoWarn>1701;1702;1705;0436</NoWarn>
+    <OutputPath>bin\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACERELEASEDEBUG;NETSTANDARD1_4;FOR_STD;LTV21_CONFIG;LEADTOOLS_V16_OR_LATER;LEADTOOLS_V17_OR_LATER;LEADTOOLS_V175_OR_LATER;FOR_ANYCPU;FOR_DOTNET4;LEADTOOLS_V18_OR_LATER;LEADTOOLS_V19_OR_LATER;LEADTOOLS_V20_OR_LATER;LTV21_CONFIG;LEADTOOLS_V21_OR_LATER</DefineConstants>
+    <NoWarn>1701;1702;1705;0436</NoWarn>
+    <OutputPath>bin\Release\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="AnnMedicalPack.cs" />
+    <Compile Include="Designers\Drawers\AnnFourParallelLinesDrawer.cs" />
+    <Compile Include="Designers\Drawers\AnnNorbergDrawer.cs" />
+    <Compile Include="Designers\Drawers\AnnParallelLinesDrawer.cs" />
+    <Compile Include="Designers\Drawers\AnnSnapPointDrawer.cs" />
+    <Compile Include="Designers\Drawers\AnnTwoLinesDrawer.cs" />
+    <Compile Include="Designers\Editors\AnnParallelLinesEditor.cs" />
+    <Compile Include="Designers\Editors\AnnSnapPointEditor.cs" />
+    <Compile Include="Designers\Editors\AnnTwoLinesEditor.cs" />
+    <Compile Include="Objects\AnnCobbAngleObject.cs" />
+    <Compile Include="Objects\AnnIntersectionPointObject.cs" />
+    <Compile Include="Objects\AnnMidlineObject.cs" />
+    <Compile Include="Objects\AnnNorbergObject.cs" />
+    <Compile Include="Objects\AnnParallelLinesObject.cs" />
+    <Compile Include="Renderer\AnnCobbAngleObjectRenderer.cs" />
+    <Compile Include="Renderer\AnnIntersectionPointObjectRenderer.cs" />
+    <Compile Include="Renderer\AnnMidlineObjectRenderer.cs" />
+    <Compile Include="Renderer\AnnNorbergObjectRenderer.cs" />
+    <Compile Include="Renderer\AnnParallelLinesObjectRenderer.cs" />
+    <Compile Include="Renderer\AnnTowLinesObjectRenderer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Leadtools.Formats.Document">
+      <Version>21.*</Version>
+    </PackageReference>
+    <PackageReference Include="Leadtools.Formats.Raster.Common">
+      <Version>21.*</Version>
+    </PackageReference>
+    <PackageReference Include="Leadtools.Pdf">
+      <Version>21.*</Version>
+    </PackageReference>
+    <PackageReference Include="Leadtools.Annotations">
+      <Version>21.*</Version>
+    </PackageReference>
+    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.0" />
+    <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
+    <PackageReference Include="System.Xml.XPath" Version="4.3.0" />
+    <PackageReference Include="System.Xml.XPath.XmlDocument" Version="4.3.0" />
+    <PackageReference Include="System.Runtime.Serialization.Json" Version="4.3.0" />
+    <PackageReference Include="System.Runtime.Serialization.Primitives" Version="4.3.0" />
+  </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <PropertyGroup>
+      <AssemblyTimestampAfterCompile>%(IntermediateAssembly.ModifiedTime)</AssemblyTimestampAfterCompile>
+    </PropertyGroup>
+    <Exec Command="IF NOT EXIST $(TargetDir)..\..\..\..\Bin md $(TargetDir)..\..\..\..\Bin&#xD;&#xA;				copy $(TargetPath) $(TargetDir)..\..\..\..\Bin" />
+  </Target>
+</Project>

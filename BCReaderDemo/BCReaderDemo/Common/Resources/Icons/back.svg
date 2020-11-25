@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 66.25 35.4">
+  <title>back</title>
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="icons">
+      <path style="fill:#ff6d68;" d="M17.7,35.4a3,3,0,0,1-2.12-.88L.88,19.82a3,3,0,0,1,0-4.24L15.58.88a3,3,0,1,1,4.24,4.24L7.24,17.7,19.82,30.28A3,3,0,0,1,17.7,35.4Z" />
+      <path style="fill:#ff6d68;" d="M63.25,20.7H3a3,3,0,0,1,0-6H63.25a3,3,0,0,1,0,6Z" />
+    </g>
+  </g>
+</svg>

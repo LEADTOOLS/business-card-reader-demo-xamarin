@@ -1,5 +1,5 @@
 ﻿// *************************************************************
-// Copyright (c) 1991-2019 LEAD Technologies, Inc.              
+// Copyright (c) 1991-2020 LEAD Technologies, Inc.              
 // All Rights Reserved.                                         
 // *************************************************************
 using BCReaderDemo.Models;
@@ -8,7 +8,12 @@ using CarouselView.FormsPlugin.Abstractions;
 using DataService;
 using Leadtools;
 using Leadtools.Codecs;
+using Leadtools.Demos;
+using Leadtools.Demos.UI.Elements;
+using Leadtools.Demos.Utils;
 using Leadtools.ImageProcessing.Core;
+using Rg.Plugins.Popup.Pages;
+using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -74,12 +79,10 @@ namespace BCReaderDemo
    }
 
    [XamlCompilation(XamlCompilationOptions.Compile)]
-   public partial class PreviewBusinessCardPage : ContentPage
+   public partial class PreviewBusinessCardPage : PopupPage
    {
       private int _contactIndex;
       private ObservableCollection<ContactFieldItem> ContactFields = new ObservableCollection<ContactFieldItem>();
-      private System.Timers.Timer _adsHiddenTimer = null;
-      private System.Timers.Timer _adsVisibleTimer = null;
 
       public static readonly BindableProperty ContactItemProperty =
          BindableProperty.CreateAttached("ContactItem",
@@ -98,6 +101,9 @@ namespace BCReaderDemo
       public PreviewBusinessCardPage(ContactModel contactItem, int indexInCollection)
       {
          InitializeComponent();
+#if __IOS__
+         HasSystemPadding = false;
+#endif
 
          BindingContext = this;
 
@@ -111,7 +117,7 @@ namespace BCReaderDemo
             baseFrontImageView = grid.Children[0] as Image;
 
             grid = (Grid)grid.Children.Where((a) => a is Grid).GetItem(0);
-            profileImageView = (Image)grid.Children[0];
+            profileImageView = (SvgImage)grid.Children[0];
          }
 
          RoundCornersEffect.SetCornerRadius(profileImageView, (int)(profileImageView.HeightRequest / 2));
@@ -137,7 +143,7 @@ namespace BCReaderDemo
 
                imageViewerPage.ImageModified += ImageViewerPage_ImageModified;
 
-               await HomePage.Instance.Navigation.PushAsync(imageViewerPage);
+               await PopupNavigation.Instance.PushAsync(imageViewerPage);
             })
          });
 
@@ -150,7 +156,7 @@ namespace BCReaderDemo
 
                imageViewerPage.ImageModified += ImageViewerPage_ImageModified;
 
-               await HomePage.Instance.Navigation.PushAsync(imageViewerPage);
+               await PopupNavigation.Instance.PushAsync(imageViewerPage);
             })
          });
 
@@ -160,8 +166,8 @@ namespace BCReaderDemo
             {
                if (String.IsNullOrEmpty(ContactItem.ProfileImage))
                {
-                  var results = await DependencyService.Get<Permissions.IPermissions>().VerifyPermissionsAsync(Permissions.Permission.Camera);
-                  if (results == null || results[Permissions.Permission.Camera] != Permissions.PermissionStatus.Granted)
+                  var results = await DependencyService.Get<IPermissions>().VerifyPermissionsAsync(false, PermissionType.Camera);
+                  if (results == null || results[PermissionType.Camera] != PermissionStatus.Granted)
                      return;
 
                   CameraPage cameraPage = new CameraPage(CameraOperationType.Profile);
@@ -176,7 +182,7 @@ namespace BCReaderDemo
 
                   imageViewerPage.ImageModified += ImageViewerPage_ImageModified;
 
-                  await HomePage.Instance.Navigation.PushAsync(imageViewerPage);
+                  await PopupNavigation.Instance.PushAsync(imageViewerPage);
                }
 
             })
@@ -187,8 +193,8 @@ namespace BCReaderDemo
          {
             Command = new Command(async () =>
             {
-               var results = await DependencyService.Get<Permissions.IPermissions>().VerifyPermissionsAsync(Permissions.Permission.Camera);
-               if (results == null || results[Permissions.Permission.Camera] != Permissions.PermissionStatus.Granted)
+               var results = await DependencyService.Get<IPermissions>().VerifyPermissionsAsync(false, PermissionType.Camera);
+               if (results == null || results[PermissionType.Camera] != PermissionStatus.Granted)
                   return;
 
                CameraPage cameraPage = new CameraPage(CameraOperationType.BackImage);
@@ -210,52 +216,25 @@ namespace BCReaderDemo
 
          ContactModelToFields();
          ContactListView.ItemsSource = ContactFields;
-
-         _adsHiddenTimer = new System.Timers.Timer(HomePage.AD_HIDDEN_DURATION);
-         _adsHiddenTimer.AutoReset = true;
-         _adsHiddenTimer.Elapsed += (sender, e) =>
-         {
-            _adsHiddenTimer.Enabled = false;
-            _adsHiddenTimer.Stop();
-            _adsVisibleTimer = AdHelper.ShowAdvertisement(advertisementLayout);
-            _adsVisibleTimer.Elapsed += (sender1, e1) =>
-            {
-               _adsVisibleTimer.Enabled = false;
-               _adsVisibleTimer = null;
-               _adsHiddenTimer.Enabled = true;
-               _adsHiddenTimer.Start();
-            };
-         };
       }
 
-      protected override void OnAppearing()
+      protected override async void OnAppearing()
       {
          base.OnAppearing();
 
-         if (_adsHiddenTimer != null && (_adsVisibleTimer == null || (_adsVisibleTimer != null && !_adsVisibleTimer.Enabled)))
-         {
-            _adsHiddenTimer.Enabled = false;
-            _adsHiddenTimer.Stop();
-            _adsVisibleTimer = AdHelper.ShowAdvertisement(advertisementLayout);
-            _adsVisibleTimer.Elapsed += (sender1, e1) =>
-            {
-               _adsVisibleTimer.Enabled = false;
-               _adsVisibleTimer = null;
-               _adsHiddenTimer.Enabled = true;
-               _adsHiddenTimer.Start();
-            };
-         }
+         // Delay a bit, so the ad doesn't appear immediately
+         await Task.Delay(1000);
+
+         // Start the ads
+         Ads.Start();
       }
 
       protected override void OnDisappearing()
       {
          base.OnDisappearing();
 
-         if (_adsHiddenTimer != null)
-         {
-            _adsHiddenTimer.Stop();
-            _adsHiddenTimer.Enabled = false;
-         }
+         // Stop the ads
+         Ads.Stop();
       }
 
       private void ImageViewerPage_ImageModified(object source, ImageModifiedEventArgs e)
@@ -300,11 +279,11 @@ namespace BCReaderDemo
             }
             else
             {
-               profileImageView.Source = "profile_placeholder.png";
+               profileImageView.ResourceName = "Icons/avatar.svg";
             }
          }
 
-         HomePage.Instance.DetailsPage_ContactSaved(this, new ContactSavedEventArgs() { Contact = ContactItem });
+         HomePage.Instance.DetailsPage_ContactSaved(this, new ContactSavedEventArgs(ContactItem));
       }
 
       private void ContactModelToFields()
@@ -429,11 +408,11 @@ namespace BCReaderDemo
 
          if (imageStream != null)
          {
-            await DependencyService.Get<IPictureSaver>().SaveImage(imageStream, filePath, PictureSaveResolution.Low);
+            await DependencyService.Get<IPictureSaver>().SaveImage(imageStream, filePath, PictureSaveResolution.Low, false);
          }
          else if (image != null)
          {
-            LeadSize size = RasterImageHelper.GetImageSize(image.Width, image.Height, PictureSaveResolution.Low);
+            LeadSize size = ImageSizeHelper.GetImageSize(image.Width, image.Height, PictureSaveResolution.Low);
             ResizeInterpolateCommand resizeInterpolateCommand = new ResizeInterpolateCommand(size.Width, size.Height, ResizeInterpolateCommandType.Resample);
             resizeInterpolateCommand.Run(image);
 
@@ -457,11 +436,11 @@ namespace BCReaderDemo
 
          if (imageStream != null)
          {
-            await DependencyService.Get<IPictureSaver>().SaveImage(imageStream, backImagePath, PictureSaveResolution.Medium);
+            await DependencyService.Get<IPictureSaver>().SaveImage(imageStream, backImagePath, PictureSaveResolution.Medium, false);
          }
          else if (backImage != null)
          {
-            LeadSize size = RasterImageHelper.GetImageSize(backImage.Width, backImage.Height, PictureSaveResolution.Medium);
+            LeadSize size = ImageSizeHelper.GetImageSize(backImage.Width, backImage.Height, PictureSaveResolution.Medium);
             ResizeInterpolateCommand resizeInterpolateCommand = new ResizeInterpolateCommand(size.Width, size.Height, ResizeInterpolateCommandType.Resample);
             resizeInterpolateCommand.Run(backImage);
 
@@ -513,7 +492,7 @@ namespace BCReaderDemo
 
                if (actionsGrid != null)
                {
-                  actionsGrid.TranslationX = App.DisplayScreenWidth;
+                  actionsGrid.TranslationX = DemoUtilities.DisplayWidth;
                   actionsGrid.TranslateTo(-1, 0);
                }
             }
@@ -540,8 +519,8 @@ namespace BCReaderDemo
                // Apple store asks to have the location permissions asked for even for firing the maps app, but play store doesn't, so just do it for iOS.
                if(Device.RuntimePlatform == Device.iOS)
                {
-                  var results = await DependencyService.Get<Permissions.IPermissions>().VerifyPermissionsAsync(Permissions.Permission.Location);
-                  if (results == null || results[Permissions.Permission.Location] != Permissions.PermissionStatus.Granted)
+                  var results = await DependencyService.Get<IPermissions>().VerifyPermissionsAsync(false, PermissionType.Location);
+                  if (results == null || results[PermissionType.Location] != PermissionStatus.Granted)
                      return;
                }
 
@@ -568,7 +547,7 @@ namespace BCReaderDemo
          page.PageClosing += UpdateBusinessCardPage_PageClosing;
          page.ContactSaved += UpdateBusinessCardPage_ContactSaved;
 
-         await HomePage.Instance.Navigation.PushAsync(page);
+         await PopupNavigation.Instance.PushAsync(page);
       }
 
       private void UpdateBusinessCardPage_PageClosing(object sender, EventArgs e)
@@ -607,15 +586,15 @@ namespace BCReaderDemo
          }
          else
          {
-            Device.BeginInvokeOnMainThread(() => profileImageView.Source = "profile_placeholder.png");
+            Device.BeginInvokeOnMainThread(() => profileImageView.ResourceName = "Icons/avatar.svg");
          }
       }
 
       private async void ContactButton_Tapped(object sender, EventArgs e)
       {
          HideQuickActionControls();
-         var results = await DependencyService.Get<Permissions.IPermissions>().VerifyPermissionsAsync(Permissions.Permission.Contacts);
-         if (results == null || results[Permissions.Permission.Contacts] != Permissions.PermissionStatus.Granted)
+         var results = await DependencyService.Get<IPermissions>().VerifyPermissionsAsync(false, PermissionType.Contacts);
+         if (results == null || results[PermissionType.Contacts] != PermissionStatus.Granted)
             return;
 
          DependencyService.Get<ISaveContact>().SaveContact(ContactItem);
@@ -645,7 +624,7 @@ namespace BCReaderDemo
 
          // Check if this card was deleted inside the UpdateBusinessCardPage, then we already popped this page out.
          if (HomePage.ContactCollection.Contains(ContactItem))
-            await HomePage.Instance.Navigation.PopAsync();
+            await PopupNavigation.Instance.PopAsync();
       }
 
       private void MainGrid_Tapped(object sender, EventArgs e)

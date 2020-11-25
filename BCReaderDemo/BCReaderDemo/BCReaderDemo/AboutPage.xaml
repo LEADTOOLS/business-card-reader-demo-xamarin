@@ -1,14 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-                  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-                  x:Class="BCReaderDemo.AboutPage"
-                  xmlns:local="clr-namespace:BCReaderDemo"
-                  xmlns:utils="clr-namespace:BCReaderDemo.Utils"
-                  xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
-                  BackgroundColor="White"
-                  ios:Page.UseSafeArea="True"
-                  NavigationPage.HasNavigationBar="False"
-                  NavigationPage.HasBackButton="False">
+<popup:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 x:Class="BCReaderDemo.AboutPage"
+                 xmlns:local="clr-namespace:BCReaderDemo"
+                 xmlns:demos_elements="clr-namespace:Leadtools.Demos.UI.Elements;assembly=Leadtools.Demos.Xamarin"
+                 xmlns:page="clr-namespace:Leadtools.Demos.UI.Page;assembly=Leadtools.Demos.Xamarin"
+                 xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+                 xmlns:popup="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+                 xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+                 ios:Page.UseSafeArea="True"
+                 BackgroundColor="White">
+   <popup:PopupPage.Animation>
+      <animations:MoveAnimation EasingIn="{Static page:CustomPageAnimation.QuintOut}"
+                                EasingOut="{Static page:CustomPageAnimation.QuintIn}"
+                                />
+   </popup:PopupPage.Animation>
+
    <Grid x:Name="MainLayout" RowSpacing="0">
       <Grid.RowDefinitions>
          <RowDefinition Height="{x:Static local:PlatformsConstants.PagesHeaderTitleRowHeight}"/>
@@ -24,8 +31,8 @@
             <ColumnDefinition Width="*"/>
          </Grid.ColumnDefinitions>
 
-         <Grid Grid.Column="0" WidthRequest="40" VerticalOptions="FillAndExpand">
-            <Image Source="back.png" WidthRequest="25" HorizontalOptions="Start" VerticalOptions="Center" Aspect="AspectFit"/>
+         <Grid Grid.Column="0" WidthRequest="40" HorizontalOptions="Start" VerticalOptions="FillAndExpand">
+            <demos_elements:SvgImage ResourceName="Icons/back.svg" WidthRequest="25" HorizontalOptions="Start" VerticalOptions="Center" Aspect="AspectFit" IsEnabled="False"/>
             <Grid.GestureRecognizers>
                <TapGestureRecognizer Tapped="BackButton_Tapped"/>
             </Grid.GestureRecognizers>
@@ -66,7 +73,7 @@ We developed LEADTOOLS for programmers to easily integrate unparalleled imaging 
                </Label>
                <Label HorizontalOptions="Start" VerticalOptions="Start" LineBreakMode="WordWrap" FontSize="{x:Static local:PlatformsConstants.AboutTextFontSize}" TextColor="{x:Static local:CustomColors.CopyrightTextColor}">
                   <Label.Text>
-Copyright © 1991-2019 LEAD Technologies, Inc.
+Copyright © 1991-2020 LEAD Technologies, Inc.
 All Rights Reserved.
 
 Version 1.0
@@ -76,8 +83,8 @@ Version 1.0
          </ScrollView>
       </Grid>
 
-      <Image Grid.Row="2" Source="powered_by_left_logo.png" WidthRequest="130" HorizontalOptions="Start" VerticalOptions="End" Aspect="AspectFit" Margin="20,0,0,0"/>
+      <demos_elements:SvgImage Grid.Row="2" ResourceName="leadtools.svg" WidthRequest="130" HorizontalOptions="Start" VerticalOptions="End" Aspect="AspectFit" Margin="20,0,0,0"/>
 
-      <utils:AdsLayout x:Name="advertisementLayout" Grid.Row="3"/>
+      <demos_elements:AdsView x:Name="Ads" Grid.Row="3"/>
    </Grid>
-</ContentPage>
+</popup:PopupPage>

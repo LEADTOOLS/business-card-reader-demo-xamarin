@@ -1,269 +1,284 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="BCReaderDemo.PreviewBusinessCardPage"
-             xmlns:local="clr-namespace:BCReaderDemo"
-             xmlns:utils="clr-namespace:BCReaderDemo.Utils"
-             xmlns:controls="clr-namespace:CarouselView.FormsPlugin.Abstractions;assembly=CarouselView.FormsPlugin.Abstractions"
-             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
-             ios:Page.UseSafeArea="True"
-             BackgroundColor="{x:Static local:CustomColors.PagesBackgroundColor}"
-             NavigationPage.HasNavigationBar="False"
-             NavigationPage.HasBackButton="False">
-   <ContentPage.Padding>
-      <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" Default="0, 0, 0, 0" />
-   </ContentPage.Padding>
+<popup:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 x:Class="BCReaderDemo.PreviewBusinessCardPage"
+                 xmlns:local="clr-namespace:BCReaderDemo"
+                 xmlns:utils="clr-namespace:BCReaderDemo.Utils"
+                 xmlns:demos_elements="clr-namespace:Leadtools.Demos.UI.Elements;assembly=Leadtools.Demos.Xamarin"
+                 xmlns:controls="clr-namespace:CarouselView.FormsPlugin.Abstractions;assembly=CarouselView.FormsPlugin.Abstractions"
+                 xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+                 ios:Page.UseSafeArea="True"
+                 xmlns:page="clr-namespace:Leadtools.Demos.UI.Page;assembly=Leadtools.Demos.Xamarin"
+                 xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+                 xmlns:popup="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+                 BackgroundColor="{x:Static local:CustomColors.PagesBackgroundColor}">
+   <popup:PopupPage.Animation>
+      <animations:MoveAnimation EasingIn="{Static page:CustomPageAnimation.QuintOut}"
+                                EasingOut="{Static page:CustomPageAnimation.QuintIn}"
+                                />
+   </popup:PopupPage.Animation>
 
-   <ContentPage.Content>
-      <Grid BackgroundColor="{x:Static local:CustomColors.PagesBackgroundColor}">
-         <Grid x:Name="mainGrid" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" ColumnSpacing="0" RowSpacing="0">
-            <Grid.ColumnDefinitions>
-               <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+   <popup:PopupPage.Padding>
+      <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" Default="0, 0, 0, 0" />
+   </popup:PopupPage.Padding>
+
+   <Grid BackgroundColor="{x:Static local:CustomColors.PagesBackgroundColor}">
+      <Grid x:Name="mainGrid" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" ColumnSpacing="0" RowSpacing="0">
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+         </Grid.ColumnDefinitions>
+         <Grid.RowDefinitions>
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="7*" />
+            <RowDefinition Height="{x:Static local:PlatformsConstants.AdRowHeight}"/>
+         </Grid.RowDefinitions>
+
+         <Grid Grid.Row="0">
+            <Grid.GestureRecognizers>
+               <TapGestureRecognizer Tapped="MainGrid_Tapped"/>
+            </Grid.GestureRecognizers>
+
+            <controls:CarouselViewControl x:Name="carouselView"
+                                       HorizontalOptions="FillAndExpand"
+                                       VerticalOptions="FillAndExpand"
+                                       Orientation="Horizontal"
+                                       AnimateTransition="True"
+                                       ShowIndicators="True"
+                                       CurrentPageIndicatorTintColor="{x:Static local:CustomColors.LinkBlueColor}"
+                                       IndicatorsTintColor="LightGray"
+                                       BackgroundColor="{x:Static local:CustomColors.PagesBackgroundColor}" >
+               <controls:CarouselViewControl.ItemsSource>
+                  <x:Array Type="{x:Type View}">
+                     <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <Image x:Name="baseFrontImageView" Aspect="AspectFit" Source="{Binding ContactItem.Picture}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
+
+                        <BoxView Color="Black" Opacity="0.6" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+                        <Grid>
+                           <Grid.RowDefinitions>
+                              <RowDefinition Height="15"/>
+                              <RowDefinition>
+                                 <RowDefinition.Height>
+                                    <OnIdiom x:TypeArguments="GridLength" Phone="60" Tablet="110"/>
+                                 </RowDefinition.Height>
+                              </RowDefinition>
+                              <RowDefinition Height="*"/>
+                              <RowDefinition Height="15"/>
+                           </Grid.RowDefinitions>
+                           <demos_elements:SvgImage x:Name="profileImageView" Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Center" Aspect="AspectFill" ResourceName="Icons/avatar.svg">
+                              <Image.WidthRequest>
+                                 <OnIdiom x:TypeArguments="x:Double" Phone="50" Tablet="100"/>
+                              </Image.WidthRequest>
+                              <Image.HeightRequest>
+                                 <OnIdiom x:TypeArguments="x:Double" Phone="50" Tablet="100"/>
+                              </Image.HeightRequest>
+                           </demos_elements:SvgImage>
+                           <StackLayout Grid.Row="2" HorizontalOptions="Center" VerticalOptions="Start" Orientation="Vertical" Margin="0,5,0,5">
+                              <StackLayout.Spacing>
+                                 <OnIdiom x:TypeArguments="x:Double" Phone="0" Tablet="5"/>
+                              </StackLayout.Spacing>
+                              <Label HorizontalOptions="Center" VerticalOptions="Center" TextColor="White" FontSize="Default" FontAttributes="Bold" Text="{Binding ContactItem.Name.Text}" LineBreakMode="TailTruncation"/>
+                              <Label HorizontalOptions="Center" VerticalOptions="Center" TextColor="White" FontSize="Micro" Text="{Binding ContactItem.Company.Text}" LineBreakMode="TailTruncation"/>
+                           </StackLayout>
+                        </Grid>
+                     </Grid>
+
+                     <Grid HorizontalOptions="Fill" VerticalOptions="Fill" >
+                        <Image x:Name="frontImageView" Aspect="AspectFit" Source="{Binding ContactItem.Picture}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+                     </Grid>
+
+                     <Grid x:Name="backImageContainer" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                           <Image x:Name="backImageView" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFit"/>
+                        </Grid>
+
+                        <Grid x:Name="addBackImageContainer" HorizontalOptions="Fill" VerticalOptions="Fill" BackgroundColor="White" RowSpacing="10">
+                           <Grid.RowDefinitions>
+                              <RowDefinition Height="15"/>
+                              <RowDefinition Height="*"/>
+                              <RowDefinition Height="*"/>
+                              <RowDefinition Height="*"/>
+                              <RowDefinition Height="*"/>
+                              <RowDefinition Height="15"/>
+                           </Grid.RowDefinitions>
+                           <demos_elements:SvgImage Grid.Row="1" Grid.RowSpan="2" Aspect="AspectFit" ResourceName="Icons/backside.svg" HorizontalOptions="Center" VerticalOptions="Center">
+                              <Image.Margin>
+                                 <OnIdiom x:TypeArguments="Thickness" Phone="0" Tablet="20"/>
+                              </Image.Margin>
+                           </demos_elements:SvgImage>
+                           <Label Grid.Row="3" TextColor="{x:Static local:CustomColors.DarkSharkonColor}" Text="Add Backside" FontSize="{x:Static local:PlatformsConstants.SmallFontSizeForPhonesOnly}" HorizontalOptions="Center" VerticalOptions="Start"/>
+                        </Grid>
+                     </Grid>
+                  </x:Array>
+               </controls:CarouselViewControl.ItemsSource>
+            </controls:CarouselViewControl>
+            <Grid WidthRequest="40" HeightRequest="50" HorizontalOptions="Start" VerticalOptions="Start">
+               <Label Text="Back" HorizontalOptions="Center" VerticalOptions="Center" FontSize="{x:Static local:PlatformsConstants.PageTitleFontSize}" TextColor="{x:Static local:CustomColors.PinkButtonColor}">
+                  <Label.Triggers>
+                     <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference carouselView}, Path=Position}" Value="0">
+                        <Setter Property="TextColor" Value="White" />
+                     </DataTrigger>
+                  </Label.Triggers>
+               </Label>
+               <Grid.GestureRecognizers>
+                  <TapGestureRecognizer Tapped="BackButton_Tapped"/>
+               </Grid.GestureRecognizers>
+            </Grid>
+            <Grid WidthRequest="40" HeightRequest="50" HorizontalOptions="End" VerticalOptions="Start">
+               <Label Text="Edit" HorizontalOptions="Center" VerticalOptions="Center" FontSize="{x:Static local:PlatformsConstants.PageTitleFontSize}" TextColor="{x:Static local:CustomColors.BlueButtonColor}">
+                  <Label.Triggers>
+                     <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference carouselView}, Path=Position}" Value="0">
+                        <Setter Property="TextColor" Value="White" />
+                     </DataTrigger>
+                  </Label.Triggers>
+               </Label>
+               <Grid.GestureRecognizers>
+                  <TapGestureRecognizer Tapped="EditButton_Tapped"/>
+               </Grid.GestureRecognizers>
+            </Grid>
+         </Grid>
+
+         <Grid Grid.Row="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="{x:Static local:CustomColors.PagesBackgroundColor}">
             <Grid.RowDefinitions>
-               <RowDefinition Height="3*" />
-               <RowDefinition Height="7*" />
-               <RowDefinition Height="{x:Static local:PlatformsConstants.AdRowHeight}"/>
+               <RowDefinition Height="80" />
+               <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0">
+            <Grid Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" HeightRequest="80">
+               <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="*"/>
+               </Grid.ColumnDefinitions>
                <Grid.GestureRecognizers>
                   <TapGestureRecognizer Tapped="MainGrid_Tapped"/>
                </Grid.GestureRecognizers>
 
-               <controls:CarouselViewControl x:Name="carouselView" 
-                                          HorizontalOptions="FillAndExpand" 
-                                          VerticalOptions="FillAndExpand" 
-                                          Orientation="Horizontal" 
-                                          AnimateTransition="True" 
-                                          ShowIndicators="True" 
-                                          CurrentPageIndicatorTintColor="{x:Static local:CustomColors.LinkBlueColor}" 
-                                          IndicatorsTintColor="LightGray" 
-                                          BackgroundColor="{x:Static local:CustomColors.PagesBackgroundColor}" >
-                  <controls:CarouselViewControl.ItemsSource>
-                     <x:Array Type="{x:Type View}">
-                        <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-                           <Image x:Name="baseFrontImageView" Aspect="AspectFit" Source="{Binding ContactItem.Picture}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
+               <StackLayout Grid.Column="0" Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Spacing="3">
+                  <demos_elements:SvgImage WidthRequest="40" HeightRequest="40" HorizontalOptions="Center" VerticalOptions="Start" ResourceName="Icons/add-to-contacts.svg" >
+                     <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="ContactButton_Tapped"/>
+                     </Image.GestureRecognizers>
+                  </demos_elements:SvgImage>
+                  <Label HorizontalOptions="Center" VerticalOptions="End" TextColor="{x:Static local:CustomColors.LinkBlueColor}" Text="CONTACT" FontSize="10" FontAttributes="Bold"/>
+               </StackLayout>
 
-                           <BoxView Color="Black" Opacity="0.6" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
-                           <Grid>
-                              <Grid.RowDefinitions>
-                                 <RowDefinition Height="15"/>
-                                 <RowDefinition>
-                                    <RowDefinition.Height>
-                                       <OnIdiom x:TypeArguments="GridLength" Phone="60" Tablet="110"/>
-                                    </RowDefinition.Height>
-                                 </RowDefinition>
-                                 <RowDefinition Height="*"/>
-                                 <RowDefinition Height="15"/>
-                              </Grid.RowDefinitions>
-                              <Image x:Name="profileImageView" Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Center" Aspect="AspectFill" Source="profile_placeholder.png">
-                                 <Image.WidthRequest>
-                                    <OnIdiom x:TypeArguments="x:Double" Phone="50" Tablet="100"/>
-                                 </Image.WidthRequest>
-                                 <Image.HeightRequest>
-                                    <OnIdiom x:TypeArguments="x:Double" Phone="50" Tablet="100"/>
-                                 </Image.HeightRequest>
-                              </Image>
-                              <StackLayout Grid.Row="2" HorizontalOptions="Center" VerticalOptions="Start" Orientation="Vertical" Margin="0,5,0,5">
-                                 <StackLayout.Spacing>
-                                    <OnIdiom x:TypeArguments="x:Double" Phone="0" Tablet="5"/>
-                                 </StackLayout.Spacing>
-                                 <Label HorizontalOptions="Center" VerticalOptions="Center" TextColor="White" FontSize="Default" FontAttributes="Bold" Text="{Binding ContactItem.Name.Text}" LineBreakMode="TailTruncation"/>
-                                 <Label HorizontalOptions="Center" VerticalOptions="Center" TextColor="White" FontSize="Micro" Text="{Binding ContactItem.Company.Text}" LineBreakMode="TailTruncation"/>
-                              </StackLayout>
-                           </Grid>
-                        </Grid>
+               <StackLayout Grid.Column="1" Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Spacing="3">
+                  <demos_elements:SvgImage WidthRequest="40" HeightRequest="40" HorizontalOptions="Center" VerticalOptions="Start" ResourceName="Icons/share-ico.svg" >
+                     <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="ShareButton_Tapped"/>
+                     </Image.GestureRecognizers>
+                  </demos_elements:SvgImage>
+                  <Label HorizontalOptions="Center" VerticalOptions="End" TextColor="{x:Static local:CustomColors.LinkBlueColor}" Text="SHARE" FontSize="10" FontAttributes="Bold"/>
+               </StackLayout>
 
-                        <Grid HorizontalOptions="Fill" VerticalOptions="Fill" >
-                           <Image x:Name="frontImageView" Aspect="AspectFit" Source="{Binding ContactItem.Picture}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
-                        </Grid>
-
-                        <Grid x:Name="backImageContainer" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-                           <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-                              <Image x:Name="backImageView" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFit"/>
-                           </Grid>
-
-                           <Grid x:Name="addBackImageContainer" HorizontalOptions="Fill" VerticalOptions="Fill" BackgroundColor="White" RowSpacing="10">
-                              <Grid.RowDefinitions>
-                                 <RowDefinition Height="15"/>
-                                 <RowDefinition Height="*"/>
-                                 <RowDefinition Height="*"/>
-                                 <RowDefinition Height="*"/>
-                                 <RowDefinition Height="*"/>
-                                 <RowDefinition Height="15"/>
-                              </Grid.RowDefinitions>
-                              <Image Grid.Row="1" Grid.RowSpan="2" Aspect="AspectFit" Source="backside.png" HorizontalOptions="Center" VerticalOptions="Center">
-                                 <Image.Margin>
-                                    <OnIdiom x:TypeArguments="Thickness" Phone="0" Tablet="20"/>
-                                 </Image.Margin>
-                              </Image>
-                              <Label Grid.Row="3" TextColor="{x:Static local:CustomColors.DarkSharkonColor}" Text="Add Backside" FontSize="{x:Static local:PlatformsConstants.SmallFontSizeForPhonesOnly}" HorizontalOptions="Center" VerticalOptions="Start"/>
-                           </Grid>
-                        </Grid>
-                     </x:Array>
-                  </controls:CarouselViewControl.ItemsSource>
-               </controls:CarouselViewControl>
-               <Grid WidthRequest="40" HeightRequest="50" HorizontalOptions="Start" VerticalOptions="Start">
-                  <Label Text="Back" HorizontalOptions="Center" VerticalOptions="Center" FontSize="{x:Static local:PlatformsConstants.PageTitleFontSize}" TextColor="{x:Static local:CustomColors.PinkButtonColor}">
-                     <Label.Triggers>
-                        <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference carouselView}, Path=Position}" Value="0">
-                           <Setter Property="TextColor" Value="White" />
-                        </DataTrigger>
-                     </Label.Triggers>
-                  </Label>
-                  <Grid.GestureRecognizers>
-                     <TapGestureRecognizer Tapped="BackButton_Tapped"/>
-                  </Grid.GestureRecognizers>
-               </Grid>
-               <Grid WidthRequest="40" HeightRequest="50" HorizontalOptions="End" VerticalOptions="Start">
-                  <Label Text="Edit" HorizontalOptions="Center" VerticalOptions="Center" FontSize="{x:Static local:PlatformsConstants.PageTitleFontSize}" TextColor="{x:Static local:CustomColors.BlueButtonColor}">
-                     <Label.Triggers>
-                        <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference carouselView}, Path=Position}" Value="0">
-                           <Setter Property="TextColor" Value="White" />
-                        </DataTrigger>
-                     </Label.Triggers>
-                  </Label>
-                  <Grid.GestureRecognizers>
-                     <TapGestureRecognizer Tapped="EditButton_Tapped"/>
-                  </Grid.GestureRecognizers>
-               </Grid>
+               <StackLayout Grid.Column="2" Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Spacing="3">
+                  <demos_elements:SvgImage WidthRequest="40" HeightRequest="40" HorizontalOptions="Center" VerticalOptions="Start" ResourceName="Icons/tools-ico.svg" >
+                     <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="EditButton_Tapped"/>
+                     </Image.GestureRecognizers>
+                  </demos_elements:SvgImage>
+                  <Label HorizontalOptions="Center" VerticalOptions="End" TextColor="{x:Static local:CustomColors.LinkBlueColor}" Text="EDIT" FontSize="10" FontAttributes="Bold"/>
+               </StackLayout>
             </Grid>
 
-            <Grid Grid.Row="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="{x:Static local:CustomColors.PagesBackgroundColor}">
-               <Grid.RowDefinitions>
-                  <RowDefinition Height="80" />
-                  <RowDefinition Height="*" />
-               </Grid.RowDefinitions>
+            <Grid Grid.Row="1">
+               <demos_elements:CustomListView x:Name="ContactListView"
+                                              HorizontalOptions="FillAndExpand"
+                                              VerticalOptions="FillAndExpand"
+                                              RowHeight="60"
+                                              SeparatorVisibility="None"
+                                              IsLongPressEnabled="True"
+                                              ShowSelection="False"
+                                              ItemTapped="ContactListView_ItemTapped"
+                                              Clicked="ContactListView_Clicked"
+                                              BackgroundColor="{x:Static local:CustomColors.PagesBackgroundColor}">
+                  <demos_elements:CustomListView.ItemTemplate>
+                     <DataTemplate>
+                        <demos_elements:CustomViewCell>
+                           <Frame Padding="2" Margin="0, 4, 0, 0" VerticalOptions="Center" HeightRequest="60" CornerRadius="5" HasShadow="False">
+                              <Grid VerticalOptions="Center">
+                                 <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                 </Grid.RowDefinitions>
+                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="9*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                 </Grid.ColumnDefinitions>
+                                 <StackLayout Grid.Row="0" Grid.Column="0" Margin="10, 0, 0, 0" Orientation="Vertical" Spacing="3" VerticalOptions="Center">
+                                    <Label Text="{Binding Key}" HorizontalOptions="Start" FontSize="{x:Static local:PlatformsConstants.TableViewFieldLabelFontSize}" FontAttributes="Bold" TextColor="{x:Static local:CustomColors.LightSharkonColor}" />
+                                    <Label Text="{Binding Value}" HorizontalOptions="Start" LineBreakMode="TailTruncation" FontSize="{x:Static local:PlatformsConstants.TableViewFieldEntryFontSize}" TextColor="{x:Static local:CustomColors.DarkSharkonColor}" />
+                                 </StackLayout>
+                                 <ContentView Grid.Column="1" IsVisible="{Binding ShowActionsButton}">
+                                    <demos_elements:SvgImage ResourceName="Icons/more-options.svg" Margin="0,0,10,0" HorizontalOptions="End" VerticalOptions="Center" WidthRequest="20" HeightRequest="60" IsVisible="{Binding ShowActionsButton}" InputTransparent="False" IsEnabled="False">
+                                       <Image.Triggers>
+                                          <DataTrigger TargetType="Image" Binding="{Binding Source={x:Reference actionsGrid}, Path=IsVisible}" Value="True">
+                                             <Setter Property="IsVisible" Value="False"/>
+                                             <Setter Property="IsEnabled" Value="False"/>
+                                          </DataTrigger>
+                                       </Image.Triggers>
+                                    </demos_elements:SvgImage>
+                                    <ContentView.GestureRecognizers>
+                                       <TapGestureRecognizer Tapped="PhoneQuickActionsButton_Tapped"/>
+                                    </ContentView.GestureRecognizers>
+                                 </ContentView>
 
-               <Grid Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" HeightRequest="80">
-                  <Grid.ColumnDefinitions>
-                     <ColumnDefinition Width="*"/>
-                     <ColumnDefinition Width="*"/>
-                     <ColumnDefinition Width="*"/>
-                  </Grid.ColumnDefinitions>
-                  <Grid.GestureRecognizers>
-                     <TapGestureRecognizer Tapped="MainGrid_Tapped"/>
-                  </Grid.GestureRecognizers>
-
-                  <StackLayout Grid.Column="0" Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Spacing="3">
-                     <Image WidthRequest="40" HeightRequest="40" HorizontalOptions="Center" VerticalOptions="Start" Source="contact.png" >
-                        <Image.GestureRecognizers>
-                           <TapGestureRecognizer Tapped="ContactButton_Tapped"/>
-                        </Image.GestureRecognizers>
-                     </Image>
-                     <Label HorizontalOptions="Center" VerticalOptions="End" TextColor="{x:Static local:CustomColors.LinkBlueColor}" Text="CONTACT" FontSize="10" FontAttributes="Bold"/>
-                  </StackLayout>
-
-                  <StackLayout Grid.Column="1" Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Spacing="3">
-                     <Image WidthRequest="40" HeightRequest="40" HorizontalOptions="Center" VerticalOptions="Start" Source="share.png" >
-                        <Image.GestureRecognizers>
-                           <TapGestureRecognizer Tapped="ShareButton_Tapped"/>
-                        </Image.GestureRecognizers>
-                     </Image>
-                     <Label HorizontalOptions="Center" VerticalOptions="End" TextColor="{x:Static local:CustomColors.LinkBlueColor}" Text="SHARE" FontSize="10" FontAttributes="Bold"/>
-                  </StackLayout>
-
-                  <StackLayout Grid.Column="2" Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Spacing="3">
-                     <Image WidthRequest="40" HeightRequest="40" HorizontalOptions="Center" VerticalOptions="Start" Source="edit.png" >
-                        <Image.GestureRecognizers>
-                           <TapGestureRecognizer Tapped="EditButton_Tapped"/>
-                        </Image.GestureRecognizers>
-                     </Image>
-                     <Label HorizontalOptions="Center" VerticalOptions="End" TextColor="{x:Static local:CustomColors.LinkBlueColor}" Text="EDIT" FontSize="10" FontAttributes="Bold"/>
-                  </StackLayout>
-               </Grid>
-
-               <Grid Grid.Row="1">
-                  <utils:ListViewWithLongPressGesture x:Name="ContactListView" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" RowHeight="60" SeparatorVisibility="None" ItemTapped="ContactListView_ItemTapped" Clicked="ContactListView_Clicked" BackgroundColor="{x:Static local:CustomColors.PagesBackgroundColor}">
-                     <ListView.ItemTemplate>
-                        <DataTemplate>
-                           <ViewCell>
-                              <Frame Padding="2" Margin="0, 4, 0, 0" VerticalOptions="Center" HeightRequest="60" CornerRadius="5" HasShadow="False">
-                                 <Grid VerticalOptions="Center">
-                                    <Grid.RowDefinitions>
-                                       <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
+                                 <!--Actions grid for phone numbers-->
+                                 <Grid x:Name="actionsGrid" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" IsVisible="{Binding ShowQuickActions}" ColumnSpacing="0" BackgroundColor="Transparent" InputTransparent="False">
                                     <Grid.ColumnDefinitions>
-                                       <ColumnDefinition Width="9*"/>
+                                       <ColumnDefinition Width="*"/>
                                        <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <StackLayout Grid.Row="0" Grid.Column="0" Margin="10, 0, 0, 0" Orientation="Vertical" Spacing="3" VerticalOptions="Center">
-                                       <Label Text="{Binding Key}" HorizontalOptions="Start" FontSize="{x:Static local:PlatformsConstants.TableViewFieldLabelFontSize}" FontAttributes="Bold" TextColor="{x:Static local:CustomColors.LightSharkonColor}" />
-                                       <Label Text="{Binding Value}" HorizontalOptions="Start" LineBreakMode="TailTruncation" FontSize="{x:Static local:PlatformsConstants.TableViewFieldEntryFontSize}" TextColor="{x:Static local:CustomColors.DarkSharkonColor}" />
-                                    </StackLayout>
-                                    <ContentView Grid.Column="1" IsVisible="{Binding ShowActionsButton}">
-                                       <Image Source="quick_actions.png" Margin="0,0,10,0" HorizontalOptions="End" VerticalOptions="Center" WidthRequest="20" HeightRequest="60" IsVisible="{Binding ShowActionsButton}" InputTransparent="False" >
-                                          <Image.Triggers>
-                                             <DataTrigger TargetType="Image" Binding="{Binding Source={x:Reference actionsGrid}, Path=IsVisible}" Value="True">
-                                                <Setter Property="IsVisible" Value="False"/>
-                                                <Setter Property="IsEnabled" Value="False"/>
-                                             </DataTrigger>
-                                          </Image.Triggers>
-                                       </Image>
-                                       <ContentView.GestureRecognizers>
-                                          <TapGestureRecognizer Tapped="PhoneQuickActionsButton_Tapped"/>
-                                       </ContentView.GestureRecognizers>
-                                    </ContentView>
-
-                                    <!--Actions grid for phone numbers-->
-                                    <Grid x:Name="actionsGrid" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" IsVisible="{Binding ShowQuickActions}" ColumnSpacing="0" BackgroundColor="Transparent" InputTransparent="False">
+                                    <Grid.Triggers>
+                                       <Trigger TargetType="Grid" Property="Grid.IsVisible" Value="True">
+                                          <Trigger.EnterActions>
+                                             <local:FadeTriggerAction StartsFrom="1"/>
+                                          </Trigger.EnterActions>
+                                       </Trigger>
+                                    </Grid.Triggers>
+                                    <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="White" Opacity="0.6"/>
+                                    <Grid Grid.Row="0" Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" ColumnSpacing="10" BackgroundColor="Transparent" Margin="0,0,10,0">
                                        <Grid.ColumnDefinitions>
                                           <ColumnDefinition Width="*"/>
-                                          <ColumnDefinition Width="Auto"/>
+                                          <ColumnDefinition Width="*"/>
                                        </Grid.ColumnDefinitions>
-                                       <Grid.Triggers>
-                                          <Trigger TargetType="Grid" Property="Grid.IsVisible" Value="True">
-                                             <Trigger.EnterActions>
-                                                <local:FadeTriggerAction StartsFrom="1"/>
-                                             </Trigger.EnterActions>
-                                          </Trigger>
-                                       </Grid.Triggers>
-                                       <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="White" Opacity="0.6"/>
-                                       <Grid Grid.Row="0" Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" ColumnSpacing="10" BackgroundColor="Transparent" Margin="0,0,10,0">
-                                          <Grid.ColumnDefinitions>
-                                             <ColumnDefinition Width="*"/>
-                                             <ColumnDefinition Width="*"/>
-                                          </Grid.ColumnDefinitions>
-                                          <Image Grid.Column="0" Source="phone.png" WidthRequest="40" HeightRequest="40"  HorizontalOptions="Center" VerticalOptions="Center">
-                                             <Image.WidthRequest>
-                                                <OnIdiom x:TypeArguments="x:Double" Phone="30" Tablet="40"/>
-                                             </Image.WidthRequest>
-                                             <Image.HeightRequest>
-                                                <OnIdiom x:TypeArguments="x:Double" Phone="30" Tablet="40"/>
-                                             </Image.HeightRequest>
-                                             <Image.GestureRecognizers>
-                                                <TapGestureRecognizer Tapped="PhoneCallQuickActionsButton_Tapped"/>
-                                             </Image.GestureRecognizers>
-                                          </Image>
-                                          <Image Grid.Column="1" Source="message.png" WidthRequest="40" HeightRequest="40"  HorizontalOptions="Center" VerticalOptions="Center">
-                                             <Image.WidthRequest>
-                                                <OnIdiom x:TypeArguments="x:Double" Phone="30" Tablet="40"/>
-                                             </Image.WidthRequest>
-                                             <Image.HeightRequest>
-                                                <OnIdiom x:TypeArguments="x:Double" Phone="30" Tablet="40"/>
-                                             </Image.HeightRequest>
-                                             <Image.GestureRecognizers>
-                                                <TapGestureRecognizer Tapped="MessageQuickActionsButton_Tapped"/>
-                                             </Image.GestureRecognizers>
-                                          </Image>
-                                       </Grid>
+                                       <demos_elements:SvgImage Grid.Column="0" ResourceName="Icons/phone-ico.svg" WidthRequest="40" HeightRequest="40"  HorizontalOptions="Center" VerticalOptions="Center">
+                                          <Image.WidthRequest>
+                                             <OnIdiom x:TypeArguments="x:Double" Phone="30" Tablet="40"/>
+                                          </Image.WidthRequest>
+                                          <Image.HeightRequest>
+                                             <OnIdiom x:TypeArguments="x:Double" Phone="30" Tablet="40"/>
+                                          </Image.HeightRequest>
+                                          <Image.GestureRecognizers>
+                                             <TapGestureRecognizer Tapped="PhoneCallQuickActionsButton_Tapped"/>
+                                          </Image.GestureRecognizers>
+                                       </demos_elements:SvgImage>
+                                       <demos_elements:SvgImage Grid.Column="1" ResourceName="Icons/message-ico.svg" WidthRequest="40" HeightRequest="40"  HorizontalOptions="Center" VerticalOptions="Center">
+                                          <Image.WidthRequest>
+                                             <OnIdiom x:TypeArguments="x:Double" Phone="30" Tablet="40"/>
+                                          </Image.WidthRequest>
+                                          <Image.HeightRequest>
+                                             <OnIdiom x:TypeArguments="x:Double" Phone="30" Tablet="40"/>
+                                          </Image.HeightRequest>
+                                          <Image.GestureRecognizers>
+                                             <TapGestureRecognizer Tapped="MessageQuickActionsButton_Tapped"/>
+                                          </Image.GestureRecognizers>
+                                       </demos_elements:SvgImage>
                                     </Grid>
                                  </Grid>
-                              </Frame>
-                           </ViewCell>
-                        </DataTemplate>
-                     </ListView.ItemTemplate>
-                  </utils:ListViewWithLongPressGesture>
-               </Grid>
+                              </Grid>
+                           </Frame>
+                        </demos_elements:CustomViewCell>
+                     </DataTemplate>
+                  </demos_elements:CustomListView.ItemTemplate>
+               </demos_elements:CustomListView>
             </Grid>
-
-            <ContentView x:Name="notificationMessageView" Grid.Row="1" IsVisible="False" BackgroundColor="Gray" Padding="20,5,20,5" VerticalOptions="End" HorizontalOptions="Center" utils:RoundCornersEffect.CornerRadius="10" Margin="0,0,0,10">
-               <Label x:Name="notificationMessageLabel" TextColor="Black" BackgroundColor="Transparent" FontSize="{x:Static local:PlatformsConstants.FontSizeForPhonesOnly}"/>
-            </ContentView>
-
-            <utils:AdsLayout x:Name="advertisementLayout" Grid.Row="2"/>
          </Grid>
+
+         <ContentView x:Name="notificationMessageView" Grid.Row="1" IsVisible="False" BackgroundColor="Gray" Padding="20,5,20,5" VerticalOptions="End" HorizontalOptions="Center" demos_elements:RoundCornersEffect.CornerRadius="10" Margin="0,0,0,10">
+            <Label x:Name="notificationMessageLabel" TextColor="Black" BackgroundColor="Transparent" FontSize="{x:Static local:PlatformsConstants.FontSizeForPhonesOnly}"/>
+         </ContentView>
+
+         <demos_elements:AdsView x:Name="Ads" Grid.Row="2"/>
       </Grid>
-   </ContentPage.Content>
-</ContentPage>
+   </Grid>
+</popup:PopupPage>

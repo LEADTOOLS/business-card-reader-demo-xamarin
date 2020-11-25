@@ -1,5 +1,5 @@
 ﻿// *************************************************************
-// Copyright (c) 1991-2019 LEAD Technologies, Inc.              
+// Copyright (c) 1991-2020 LEAD Technologies, Inc.              
 // All Rights Reserved.                                         
 // *************************************************************
 using Android.App;
@@ -8,13 +8,13 @@ using Android.OS;
 
 namespace BCReaderDemo.Droid
 {
-   [Activity(Label = "LEAD BCR", Theme = "@style/Theme.Splash", ScreenOrientation = ScreenOrientation.Portrait, MainLauncher = true, NoHistory = true)]
+   [Activity(Label = "LEAD BCR", Theme = "@style/Theme.Splash", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, ScreenOrientation = ScreenOrientation.SensorPortrait, MainLauncher = true, NoHistory = true)]
    public class SplashActivity : Activity
    {
       protected override void OnCreate(Bundle savedInstanceState)
       {
          base.OnCreate(savedInstanceState);
-         this.StartActivity(typeof(MainActivity));
+         StartActivity(typeof(MainActivity));
       }
    }
 }

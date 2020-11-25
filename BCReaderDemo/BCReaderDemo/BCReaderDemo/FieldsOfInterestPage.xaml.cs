@@ -1,26 +1,31 @@
 ﻿// *************************************************************
-// Copyright (c) 1991-2019 LEAD Technologies, Inc.              
+// Copyright (c) 1991-2020 LEAD Technologies, Inc.              
 // All Rights Reserved.                                         
 // *************************************************************
 using BCReaderDemo.Utils;
+using Leadtools.Demos.UI.Elements;
+using Rg.Plugins.Popup.Pages;
+using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace BCReaderDemo
 {
    [XamlCompilation(XamlCompilationOptions.Compile)]
-   public partial class FieldsOfInterestPage : ContentPage
+   public partial class FieldsOfInterestPage : PopupPage
    {
-      private System.Timers.Timer _adsHiddenTimer = null;
-            private System.Timers.Timer _adsVisibleTimer = null;
       private ObservableCollection<SettingsFields> FieldsOfInterest { get; set; }
 
       public FieldsOfInterestPage()
       {
          InitializeComponent();
+#if __IOS__
+         HasSystemPadding = false;
+#endif
 
          FieldsOfInterest = new ObservableCollection<SettingsFields>
          {
@@ -39,52 +44,25 @@ namespace BCReaderDemo
 
          // Resize list views to fit its contents
          fieldsOfInterestListView.HeightRequest = FieldsOfInterest.Count * (fieldsOfInterestListView.RowHeight + 1);
-
-         _adsHiddenTimer = new System.Timers.Timer(HomePage.AD_HIDDEN_DURATION);
-         _adsHiddenTimer.AutoReset = true;
-         _adsHiddenTimer.Elapsed += (sender, e) =>
-         {
-            _adsHiddenTimer.Enabled = false;
-            _adsHiddenTimer.Stop();
-            _adsVisibleTimer = AdHelper.ShowAdvertisement(advertisementLayout);
-            _adsVisibleTimer.Elapsed += (sender1, e1) =>
-            {
-               _adsVisibleTimer.Enabled = false;
-               _adsVisibleTimer = null;
-               _adsHiddenTimer.Enabled = true;
-               _adsHiddenTimer.Start();
-            };
-         };
       }
 
-      protected override void OnAppearing()
+      protected override async void OnAppearing()
       {
          base.OnAppearing();
 
-         if (_adsHiddenTimer != null && (_adsVisibleTimer == null || (_adsVisibleTimer != null && !_adsVisibleTimer.Enabled)))
-         {
-            _adsHiddenTimer.Enabled = false;
-            _adsHiddenTimer.Stop();
-            _adsVisibleTimer = AdHelper.ShowAdvertisement(advertisementLayout);
-            _adsVisibleTimer.Elapsed += (sender1, e1) =>
-            {
-               _adsVisibleTimer.Enabled = false;
-               _adsVisibleTimer = null;
-               _adsHiddenTimer.Enabled = true;
-               _adsHiddenTimer.Start();
-            };
-         }
+         // Delay a bit, so the ad doesn't appear immediately
+         await Task.Delay(1000);
+
+         // Start the ads
+         Ads.Start();
       }
 
       protected override void OnDisappearing()
       {
          base.OnDisappearing();
 
-         if (_adsHiddenTimer != null)
-         {
-            _adsHiddenTimer.Stop();
-            _adsHiddenTimer.Enabled = false;
-         }
+         // Stop the ads
+         Ads.Stop();
       }
 
       private void ListViewItemSwitch_Toggled(object sender, ToggledEventArgs e)
@@ -148,14 +126,14 @@ namespace BCReaderDemo
 
       private Switch GetListViewItemSwitch(ListView lv, int index)
       {
-         StackLayout stackLayout = (lv.TemplatedItems[index] as ViewCell).View as StackLayout;
+         StackLayout stackLayout = (lv.TemplatedItems[index] as CustomViewCell).View as StackLayout;
          Switch switchControl = stackLayout.Children.OfType<Switch>().FirstOrDefault();
          return switchControl;
       }
 
       private async void BackButton_Tapped(object sender, EventArgs e)
       {
-         await HomePage.Instance.Navigation.PopAsync();
+         await PopupNavigation.Instance.PopAsync();
       }
    }
 }

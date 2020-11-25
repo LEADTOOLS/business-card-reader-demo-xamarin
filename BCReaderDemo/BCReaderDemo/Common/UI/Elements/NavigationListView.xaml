@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<elements:CustomListView xmlns="http://xamarin.com/schemas/2014/forms"
+                         xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                         xmlns:demos="clr-namespace:Leadtools.Demos"
+                         xmlns:elements="clr-namespace:Leadtools.Demos.UI.Elements"
+                         xmlns:utils="clr-namespace:Leadtools.Demos.Utils"
+                         x:Class="Leadtools.Demos.UI.Elements.NavigationListView">
+
+   <elements:CustomListView.ItemTemplate>
+      <DataTemplate>
+         <elements:CustomViewCell>
+            <Grid ColumnSpacing="0" Padding="{utils:GlobalMargin '1, 0.66'}">
+               <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="15*" />
+                  <ColumnDefinition Width="*" />
+               </Grid.ColumnDefinitions>
+               <Grid.RowDefinitions>
+                  <RowDefinition Height="*" />
+               </Grid.RowDefinitions>
+
+               <Label Grid.Column="0" Grid.Row="0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"
+                      FontFamily="{Static demos:DemoUtilities.FontFamily}"
+                      FontSize="{Static utils:FontSize.SmallFontSize}" Text="{Binding ., Mode=OneTime}"
+                      TextColor="#57687F"
+                      />
+               <!-- Disable image to pass-through touch events -->
+               <elements:SvgImage Grid.Column="1" Grid.Row="0" IsEnabled="False" 
+                                  HeightRequest="{utils:GlobalMargin 0.66}" WidthRequest="{utils:GlobalMargin 0.5}"
+                                  ResourceName="Icons/menu-indicator.svg"
+                                  />
+            </Grid>
+         </elements:CustomViewCell>
+      </DataTemplate>
+   </elements:CustomListView.ItemTemplate>
+</elements:CustomListView>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 55.7 55.77">
+  <title>selected-language</title>
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="icons">
+      <path style="fill:#56a7fd;" d="M27.85,5.29a22.6,22.6,0,0,1,.86,45.18h-.86a22.59,22.59,0,0,1,0-45.18M30.33,0h0ZM27.85,0a27.88,27.88,0,0,0,0,55.76h1A27.89,27.89,0,0,0,27.85,0Zm0,0h0Zm1,55.76h-.22c1.65,0,2.83,0,.22,0Zm-.22,0c-2.3,0-5.52,0-.73,0Z" />
+      <path style="fill:#56a7fd;" d="M27.85,12.34h0a15.54,15.54,0,0,0,0,31.08c4.79,0-4.79,0,0,0a15.55,15.55,0,0,0,0-31.09Z" />
+    </g>
+  </g>
+</svg>

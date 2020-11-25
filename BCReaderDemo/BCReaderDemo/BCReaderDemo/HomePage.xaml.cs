@@ -1,5 +1,5 @@
 ﻿// *************************************************************
-// Copyright (c) 1991-2019 LEAD Technologies, Inc.              
+// Copyright (c) 1991-2020 LEAD Technologies, Inc.              
 // All Rights Reserved.                                         
 // *************************************************************
 #if __ANDROID__
@@ -8,7 +8,6 @@ using Android.Content.Res;
 #if __IOS__
 using Foundation;
 #endif
-using Leadtools;
 using Leadtools.Forms.Commands;
 using Leadtools.Ocr;
 using System;
@@ -24,7 +23,10 @@ using BCReaderDemo.Utils;
 using Xamarin.Forms.Xaml;
 using Leadtools.Barcode;
 using Rg.Plugins.Popup.Services;
-using System.Net.Http;
+using Leadtools.Demos.UI.Elements;
+using Leadtools.Demos.Utils;
+using Leadtools.Demos;
+using Rg.Plugins.Popup.Pages;
 
 namespace BCReaderDemo
 {
@@ -36,10 +38,6 @@ namespace BCReaderDemo
       public static string FONTS_DIR;
       public static string THUMBS_DIR;
       public static string PROFILE_PICS_DIR;
-      public static string ADS_EMBEDDED_FILE_PATH;
-      public static string ADS_DOWNLOADED_FILE_PATH;
-      public static int AD_HIDDEN_DURATION = 10000;   // 10 seconds
-      public static int AD_VISIBLE_DURATION = 15000;  // 15 seconds
       public IOcrEngine _ocrEngine;
       public static bool IsLoading = false;
       public static string FacebookUrl = "https://www.facebook.com/LEADTOOLS";
@@ -47,17 +45,9 @@ namespace BCReaderDemo
       public static string TwitterUrl = "https://twitter.com/LEADTOOLS";
       public static string YoutubeUrl = "https://youtube.com/user/leadtools";
       public static string _appUrlOnAppStore = "https://www.leadtools.com/apps/bcr";
-      public static string _adsUrlPath = "https://www.leadtools.com/content/ad_content/ads.json";
-      public static string _adsLastCheckFilePath;
-      public static HttpClient _httpClient;
-      public static List<string> _ads;
-      public static int _lastShownAdIndex;
-      private System.Timers.Timer _adsHiddenTimer = null;
-      private System.Timers.Timer _adsVisibleTimer = null;
-      private static BusinessCardReader _bcReader;
       public static ObservableCollection<ContactModel> ContactCollection { get; set; }
       public static ObservableCollection<Grouping<string, ContactModel>> ContactsGrouped { get; set; }
-      public static BusinessCardReader BcReader { get => _bcReader; set => _bcReader = value; }
+      public static BusinessCardReader BcReader;
 
       public ListView MainContactsList
       {
@@ -123,58 +113,29 @@ namespace BCReaderDemo
          {
             IsLoading = true;
 
-            if (SetLicense())
+            // Set license
+            if (!LicenseManagerUtility.SetLicense(this))
+               return;
+
+            GetAppDirectory();
+
+            BcReader = new BusinessCardReader(null, new BarcodeEngine());
+
+            Task.Run(() =>
             {
-               GetAppDirectory();
+               CopyDependencies(APP_DIR);
+               StartOcrEngine();
+            });
 
-               _adsLastCheckFilePath = Path.Combine(APP_DIR, "LastCheckDate.txt");
-               _httpClient = new HttpClient();
-               _ads = new List<string>();
-               _lastShownAdIndex = 0;
+            CurrentAppData = new AppData();
+            CurrentAppData.Load(Path.Combine(APP_DIR, AppData.DATA_FILE_NAME));
+            CurrentAppData.PropertyChanged += CurrentAppData_PropertyChanged;
 
-               Task.Run(() =>
-               {
-                  CopyDependencies(APP_DIR);
-                  StartOcrEngine();
+            //init collection and bind the list source to it
+            LoadContactList();
 
-                  Task task = AdHelper.PopulateAds();
-                  task.ContinueWith((t1) =>
-                  {
-                     _adsHiddenTimer = new System.Timers.Timer(HomePage.AD_HIDDEN_DURATION);
-                     _adsHiddenTimer.AutoReset = true;
-                     _adsHiddenTimer.Elapsed += (sender, e) =>
-                     {
-                        _adsHiddenTimer.Enabled = false;
-                        _adsHiddenTimer.Stop();
-                        _adsVisibleTimer = AdHelper.ShowAdvertisement(advertisementLayout);
-                        _adsVisibleTimer.Elapsed += (sender1, e1) =>
-                        {
-                           _adsVisibleTimer.Enabled = false;
-                           _adsVisibleTimer = null;
-                           _adsHiddenTimer.Enabled = true;
-                           _adsHiddenTimer.Start();
-                        };
-                     };
-
-                     _adsVisibleTimer = AdHelper.ShowAdvertisement(advertisementLayout);
-                     _adsVisibleTimer.Elapsed += (sender1, e1) =>
-                     {
-                        _adsHiddenTimer.Enabled = true;
-                        _adsHiddenTimer.Start();
-                     };
-                  });
-               });
-
-               CurrentAppData = new AppData();
-               CurrentAppData.Load(Path.Combine(APP_DIR, AppData.DATA_FILE_NAME));
-               CurrentAppData.PropertyChanged += CurrentAppData_PropertyChanged;
-
-               //init collection and bind the list source to it
-               LoadContactList();
-
-               RefreshListView();
-               DependencyService.Get<Permissions.IPermissions>().VerifyPermissionsAsync(Permissions.Permission.Camera);
-            }
+            RefreshListView();
+            DependencyService.Get<IPermissions>().VerifyPermissionsAsync(false, PermissionType.Camera);
          }
          finally
          {
@@ -182,34 +143,30 @@ namespace BCReaderDemo
          }
       }
 
-      protected override void OnAppearing()
+      public async void OnStart()
       {
-         base.OnAppearing();
+         Initialize();
 
-         if (_adsHiddenTimer != null && (_adsVisibleTimer == null || (_adsVisibleTimer != null && !_adsVisibleTimer.Enabled)))
-         {
-            _adsHiddenTimer.Enabled = false;
-            _adsHiddenTimer.Stop();
-            _adsVisibleTimer = AdHelper.ShowAdvertisement(advertisementLayout);
-            _adsVisibleTimer.Elapsed += (sender1, e1) =>
-            {
-               _adsVisibleTimer.Enabled = false;
-               _adsVisibleTimer = null;
-               _adsHiddenTimer.Enabled = true;
-               _adsHiddenTimer.Start();
-            };
-         }
+         // Initialize ads
+         await AdsView.Init();
+
+         // Delay so the ad doesn't appear immediately
+         await Task.Delay(1000);
+
+         // Start ads
+         Ads.Start();
       }
 
-      protected override void OnDisappearing()
+      public void OnSleep()
       {
-         base.OnDisappearing();
+         // Stop ads
+         Ads.Stop();
+      }
 
-         if (_adsHiddenTimer != null)
-         {
-            _adsHiddenTimer.Stop();
-            _adsHiddenTimer.Enabled = false;
-         }
+      public void OnResume()
+      {
+         // Start ads again
+         Ads.Start();
       }
 
       private bool doubleBackToExitPressedTwice = false;
@@ -253,7 +210,7 @@ namespace BCReaderDemo
       {
          HideQuickActionControls();
          GroupsPage page = new GroupsPage();
-         await Navigation.PushAsync(page);
+         await PopupNavigation.Instance.PushAsync(page);
       }
 
       private void CurrentAppData_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -264,15 +221,15 @@ namespace BCReaderDemo
          }
          else if(e.PropertyName == nameof(AppData.RecognizeQRCode))
          {
-            _bcReader.RecognizeQRCode = CurrentAppData.RecognizeQRCode;
+            BcReader.RecognizeQRCode = CurrentAppData.RecognizeQRCode;
          }
          else if(e.PropertyName == nameof(AppData.EnableBarcodeDoublePass))
          {
-            _bcReader.EnableQRDoublePass = CurrentAppData.EnableBarcodeDoublePass;
+            BcReader.EnableQRDoublePass = CurrentAppData.EnableBarcodeDoublePass;
          }
          else if(e.PropertyName == nameof(AppData.EnableBarcodePreprocessing))
          {
-            _bcReader.EnableQRPreprocessing = CurrentAppData.EnableBarcodePreprocessing;
+            BcReader.EnableQRPreprocessing = CurrentAppData.EnableBarcodePreprocessing;
          }
       }
 
@@ -373,7 +330,7 @@ namespace BCReaderDemo
          return task.Task.Result;
       }
 
-      private void StartOcrEngine()
+      private async void StartOcrEngine()
       {
          string OCR_RUNTIME_DIR = "";
 
@@ -386,7 +343,11 @@ namespace BCReaderDemo
 #endif
          try
          {
+#if LEADTOOLS_V21_OR_LATER
+            _ocrEngine = OcrEngineManager.CreateEngine(OcrEngineType.LEAD);
+#else
             _ocrEngine = OcrEngineManager.CreateEngine(OcrEngineType.LEAD, false);
+#endif // #if LEADTOOLS_V21_OR_LATER
             _ocrEngine.Startup(null, null, null, OCR_RUNTIME_DIR);
             IOcrSettingManager settingsManager = _ocrEngine.SettingManager;
 
@@ -405,16 +366,15 @@ namespace BCReaderDemo
             if (_ocrEngine.SettingManager.IsSettingNameSupported("Recognition.Fonts.RecognizeFontAttributes"))
                _ocrEngine.SettingManager.SetBooleanValue("Recognition.Fonts.RecognizeFontAttributes", false);
 
-            _bcReader = new BusinessCardReader(_ocrEngine, new BarcodeEngine());
-
-            _bcReader.RecognizeQRCode = CurrentAppData.RecognizeQRCode;
-            _bcReader.EnableQRDoublePass = true;
-            _bcReader.EnableQRPreprocessing = true;
+            BcReader.OcrEngine = _ocrEngine;
+            BcReader.RecognizeQRCode = CurrentAppData.RecognizeQRCode;
+            BcReader.EnableQRDoublePass = true;
+            BcReader.EnableQRPreprocessing = true;
 
          }
          catch (Exception ex)
          {
-            Console.WriteLine(ex.Message);
+            await DisplayAlert("Error", $"Error starting OCR engine: {ex.Message}", "OK");
          }
       }
 
@@ -450,74 +410,16 @@ namespace BCReaderDemo
                }
             }
 
-            if (File.Exists(ADS_EMBEDDED_FILE_PATH))
-               File.Delete(ADS_EMBEDDED_FILE_PATH);
-
-            using(var stream = Droid.MainActivity.Instance.Assets.Open("embedded_ads.json", Access.Buffer))
-            {
-               using (FileStream outStream = new FileStream(ADS_EMBEDDED_FILE_PATH, FileMode.CreateNew))
-               {
-                  stream.CopyTo(outStream);
-               }
-            }
-
             DROID_RUNTIME = runtimeDir;
             FONTS_DIR = fontsDir;
-#endif
-#if __IOS__
+#elif __IOS__
             FONTS_DIR = Path.Combine(NSBundle.MainBundle.BundlePath, "content/Resources/LEADTOOLS/ShadowFonts");
-
-            if (File.Exists(ADS_EMBEDDED_FILE_PATH))
-               File.Delete(ADS_EMBEDDED_FILE_PATH);
-
-            var assembly = this.GetType().Assembly;
-            var embeddedAdsFilePath = assembly.GetManifestResourceNames().Where(x => x.EndsWith("embedded_ads.json", StringComparison.CurrentCultureIgnoreCase)).Single();
-            if (!string.IsNullOrWhiteSpace(embeddedAdsFilePath))
-            {
-               var inStream = assembly.GetManifestResourceStream(embeddedAdsFilePath);
-               if (inStream != null)
-               {
-                  using (FileStream outStream = new FileStream(ADS_EMBEDDED_FILE_PATH, FileMode.CreateNew))
-                  {
-                     inStream.CopyTo(outStream);
-                  }
-               }
-            }
 #endif
          }
          catch(Exception ex)
          {
             Console.WriteLine(ex.Message);
          }
-      }
-
-
-      bool SetLicense()
-      {
-         RasterSupport.Initialize(this);
-         RasterSupport.StartupBuffers(0XFF);
-         if (RasterSupport.KernelExpired)
-         {
-            try
-            {
-               // TODO: Replace this with your License File contents
-               string licString = "[License]\n" + "License = <doc><ver>2.0</ver><code>PASTE YOUR LICENSE CONTENTS HERE</code></doc>";
-               string developerKey = "PASTE YOUR DEVELOPER KEY HERE";
-               byte[] licBytes = System.Text.Encoding.UTF8.GetBytes(licString);
-               RasterSupport.SetLicense(licBytes, developerKey);
-            }
-            catch (Exception ex)
-            {
-               Console.Write(ex.Message);
-            }
-         }
-         if (RasterSupport.KernelExpired)
-         {
-            string msg = "Your license file is missing, invalid or expired. LEADTOOLS will not function. Please contact LEAD Sales for information on obtaining a valid license. This application will now exit";
-            Device.BeginInvokeOnMainThread(() => { ShowError(msg, "ERROR", true); });
-            return false;
-         }
-         return true;
       }
 
       private async void ActionsButton_Tapped(object sender, EventArgs e)
@@ -541,8 +443,8 @@ namespace BCReaderDemo
 
       public async void RetakeBusinessCard()
       {
-         var results = await DependencyService.Get<Permissions.IPermissions>().VerifyPermissionsAsync(Permissions.Permission.Camera);
-         if (results == null || results[Permissions.Permission.Camera] != Permissions.PermissionStatus.Granted)
+         var results = await DependencyService.Get<IPermissions>().VerifyPermissionsAsync(false, PermissionType.Camera);
+         if (results == null || results[PermissionType.Camera] != PermissionStatus.Granted)
             return;
 
          HomePage.BcReader.RecognizeQRCode =  HomePage.CurrentAppData.RecognizeQRCode;
@@ -560,25 +462,25 @@ namespace BCReaderDemo
       {
          HideQuickActionControls();
          var page = new SettingsPage();
-         await Navigation.PushAsync(page, true);
+         await PopupNavigation.Instance.PushAsync(page, true);
       }
 
-      public async void PushCameraPage(Page page)
+      public async void PushCameraPage(PopupPage page)
       {
-         await Navigation.PushAsync(page, true);
+         await PopupNavigation.Instance.PushAsync(page);
       }
 
       public async void NavigateToHomePage()
       {
-         await Navigation.PopToRootAsync();
+         await PopupNavigation.Instance.PopAllAsync();
       }
 
       public async void PopCameraPage()
       {
          if(Device.IsInvokeRequired)
-            Device.BeginInvokeOnMainThread(async () => { await Navigation.PopAsync(true); });
+            Device.BeginInvokeOnMainThread(async () => { await PopupNavigation.Instance.PopAsync(); });
          else
-            await Navigation.PopAsync(true);
+            await PopupNavigation.Instance.PopAsync();
       }
 
       public void DetailsPage_ContactSaved(object sender, ContactSavedEventArgs e)
@@ -671,7 +573,7 @@ namespace BCReaderDemo
          var index = ContactCollection.IndexOf(item);
          PreviewBusinessCardPage page = new PreviewBusinessCardPage(item, index);
          page.PageClosing += PreviewBusinessCardPage_PageClosing;
-         await Navigation.PushAsync(page);
+         await PopupNavigation.Instance.PushAsync(page);
       }
 
       private void PreviewBusinessCardPage_PageClosing(object sender, EventArgs e)
@@ -694,8 +596,7 @@ namespace BCReaderDemo
          Java.IO.File droidProfilePicsDir = new Java.IO.File($@"{APP_DIR}/ProfilePictures");
          if (!droidProfilePicsDir.Exists()) droidProfilePicsDir.Mkdir();
          PROFILE_PICS_DIR = droidProfilePicsDir.AbsolutePath;
-#else
-#if __IOS__
+#elif __IOS__
          var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
          var appDir = System.IO.Path.Combine(documents, "BCReaderDemo");
          if (!Directory.Exists(appDir)) Directory.CreateDirectory(appDir);
@@ -709,11 +610,7 @@ namespace BCReaderDemo
          if (!NSFileManager.DefaultManager.FileExists(profilePicsDir))
             NSFileManager.DefaultManager.CreateDirectory(profilePicsDir, false, null);
          PROFILE_PICS_DIR = profilePicsDir;
-#endif
-#endif
-
-         ADS_EMBEDDED_FILE_PATH = Path.Combine(APP_DIR, "embedded_ads.json");
-         ADS_DOWNLOADED_FILE_PATH = Path.Combine(APP_DIR, Path.GetFileName(_adsUrlPath));
+#endif // #if __ANDROID__
       }
 
       public static void ShowMessage(ContentView notificationMessageView, string message = "")
@@ -752,7 +649,7 @@ namespace BCReaderDemo
                Grid actionsGrid = itemGrid.Children[1] as Grid;
                if (actionsGrid != null)
                {
-                  actionsGrid.TranslationX = App.DisplayScreenWidth;
+                  actionsGrid.TranslationX = DemoUtilities.DisplayWidth;
                   actionsGrid.TranslateTo(-1, 0);
                }
             }
@@ -799,11 +696,12 @@ namespace BCReaderDemo
          }
       }
 
-      private async void ContactsList_ItemLongPressed(object sender, ContactSavedEventArgs e)
+      private async void ContactsList_ItemLongPressed(object sender, LongPressedEventArgs e)
       {
-         var page = new SelectCardsPage(Utils.PredefinedActions.All, null, e.Contact, false, mainSearchBar.Text);
+         ContactModel contact = (e.Item != null) ? e.Item as ContactModel : ContactsGrouped[e.Section][e.Row];
+         var page = new SelectCardsPage(Utils.PredefinedActions.All, null, contact, false, mainSearchBar.Text);
          page.PageClosing += SelectCardsPage_PageClosing;
-         await Navigation.PushAsync(page);
+         await PopupNavigation.Instance.PushAsync(page);
       }
 
       private void ContactsList_Clicked(object sender, EventArgs e)

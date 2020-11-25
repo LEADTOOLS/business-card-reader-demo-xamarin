@@ -1,9 +1,10 @@
 // *************************************************************
-// Copyright (c) 1991-2019 LEAD Technologies, Inc.              
+// Copyright (c) 1991-2020 LEAD Technologies, Inc.              
 // All Rights Reserved.                                         
 // *************************************************************
 using CarouselView.FormsPlugin.iOS;
 using Foundation;
+using Leadtools.Demos;
 using UIKit;
 
 namespace BCReaderDemo.iOS
@@ -30,19 +31,14 @@ namespace BCReaderDemo.iOS
          Rg.Plugins.Popup.Popup.Init();
 
          global::Xamarin.Forms.Forms.Init();
+
+         // Initialize the shared components
+         Leadtools.Demos.iOS.Assembly.Use();
+
          CarouselViewRenderer.Init();
-         App.DisplayScreenWidth = (double)UIScreen.MainScreen.Bounds.Width;
-         App.DisplayScreenHeight = (double)UIScreen.MainScreen.Bounds.Height;
-         App.DisplayScaleFactor = (double)UIScreen.MainScreen.Scale;
          LoadApplication(new App());
-         bool ret = base.FinishedLaunching(app, options);
 
-         if (UIApplication.SharedApplication.KeyWindow != null)
-         {
-            App.DeviceSafeAreaBottom = UIApplication.SharedApplication.KeyWindow.SafeAreaInsets.Bottom;
-         }
-
-         return ret;
+         return base.FinishedLaunching(app, options);
       }
    }
 }

@@ -1,5 +1,5 @@
 ﻿// *************************************************************
-// Copyright (c) 1991-2019 LEAD Technologies, Inc.              
+// Copyright (c) 1991-2020 LEAD Technologies, Inc.              
 // All Rights Reserved.                                         
 // *************************************************************
 using System;
@@ -51,14 +51,14 @@ namespace BCReaderDemo.Models
          {
             _isSelected = value;
             if (_isSelected)
-               Icon = "checked.png";
+               Icon = "Icons/radio-selected.svg";
             else
-               Icon = "unchecked.png";
+               Icon = "Icons/radio-unselected.svg";
             NotifyPropertyChanged();
          }
       }
 
-      private string _icon = "unchecked.png";
+      private string _icon = "Icons/radio-unselected.svg";
       public string Icon
       {
          get => _icon;

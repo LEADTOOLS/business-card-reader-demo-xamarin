@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<page:CustomPage xmlns="http://xamarin.com/schemas/2014/forms"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:demos="clr-namespace:Leadtools.Demos;assembly=Leadtools.Demos.Xamarin"
+                 xmlns:elements="clr-namespace:Leadtools.Demos.UI.Elements;assembly=Leadtools.Demos.Xamarin"
+                 xmlns:page="clr-namespace:Leadtools.Demos.UI.Page;assembly=Leadtools.Demos.Xamarin"
+                 xmlns:utils="clr-namespace:Leadtools.Demos.Utils;assembly=Leadtools.Demos.Xamarin"
+                 x:Class="Leadtools.Demos.Document.UI.Pages.Ocr.OcrSettingsPage"
+                 ControlTemplate="{StaticResource CustomPageTemplate}">
+
+   <page:CustomPage.Resources>
+      <x:String x:Key="BackButtonResourceName">delete.svg</x:String>
+      <x:String x:Key="TitleText">Settings</x:String>
+      <x:String x:Key="TitleExtraButtonText">ABOUT</x:String>
+      <x:Boolean x:Key="IsTitleExtraButtonVisible">True</x:Boolean>
+   </page:CustomPage.Resources>
+
+   <ScrollView>
+      <StackLayout>
+         <StackLayout.Resources>
+            <Style TargetType="Grid">
+               <Setter Property="ColumnSpacing" Value="0" />
+               <Setter Property="Padding" Value="{utils:GlobalMargin '1, 0.125'}" />
+               <Setter Property="VerticalOptions" Value="Start" />
+               <Setter Property="ColumnDefinitions">
+                  <Setter.Value>
+                     <ColumnDefinitionCollection>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                     </ColumnDefinitionCollection>
+                  </Setter.Value>
+               </Setter>
+               <Setter Property="RowDefinitions">
+                  <Setter.Value>
+                     <RowDefinitionCollection>
+                        <RowDefinition Height="*" />
+                     </RowDefinitionCollection>
+                  </Setter.Value>
+               </Setter>
+            </Style>
+            <Style TargetType="Label">
+               <Setter Property="Grid.Column" Value="0" />
+               <Setter Property="Grid.Row" Value="0" />
+               <Setter Property="FontFamily" Value="{Static demos:DemoUtilities.FontFamily}" />
+               <Setter Property="FontSize" Value="{Static utils:FontSizeExtension.SmallFontSize}" />
+               <Setter Property="HorizontalOptions" Value="Start" />
+               <Setter Property="HorizontalTextAlignment" Value="Start" />
+               <Setter Property="TextColor" Value="#57687F" />
+               <Setter Property="VerticalOptions" Value="Center" />
+               <Setter Property="VerticalTextAlignment" Value="Center" />
+            </Style>
+            <Style TargetType="elements:CustomSwitch">
+               <Setter Property="Grid.Column" Value="1" />
+               <Setter Property="Grid.Row" Value="0" />
+               <Setter Property="IsEnabled" Value="False" />
+               <Setter Property="HeightRequest" Value="{utils:GlobalMargin 0.6}" />
+               <Setter Property="HorizontalOptions" Value="End" />
+               <Setter Property="VerticalOptions" Value="Center" />
+               <Setter Property="WidthRequest" Value="{utils:GlobalMargin 1.1}" />
+            </Style>
+         </StackLayout.Resources>
+
+         <Grid>
+            <Grid.GestureRecognizers>
+               <TapGestureRecognizer Tapped="Grid_Tapped" />
+            </Grid.GestureRecognizers>
+
+            <Label Text="Detect Graphics and Colors" />
+            <elements:CustomSwitch IsToggled="{Binding DetectGraphicsAndColors}" />
+         </Grid>
+         <Grid>
+            <Grid.GestureRecognizers>
+               <TapGestureRecognizer Tapped="Grid_Tapped" />
+            </Grid.GestureRecognizers>
+
+            <Label Text="Detect Inverted Regions" />
+            <elements:CustomSwitch IsToggled="{Binding DetectInvertedRegions}" />
+         </Grid>
+         <Grid>
+            <Grid.GestureRecognizers>
+               <TapGestureRecognizer Tapped="Grid_Tapped" />
+            </Grid.GestureRecognizers>
+
+            <Label Text="Detect Tables" />
+            <elements:CustomSwitch IsToggled="{Binding DetectTables}" />
+         </Grid>
+         <Grid IsVisible="{Binding ShowIntelligentSelectAreaSetting}">
+            <Grid.GestureRecognizers>
+               <TapGestureRecognizer Tapped="Grid_Tapped" />
+            </Grid.GestureRecognizers>
+
+            <Label Text="Intelligent Select Area" />
+            <elements:CustomSwitch IsToggled="{Binding IntelligentSelectArea}" />
+         </Grid>
+         <Grid>
+            <Grid.GestureRecognizers>
+               <TapGestureRecognizer Tapped="Grid_Tapped" />
+            </Grid.GestureRecognizers>
+
+            <Label Text="Auto Invert Images" />
+            <elements:CustomSwitch IsToggled="{Binding AutoInvertImages}" />
+         </Grid>
+         <Grid>
+            <Grid.GestureRecognizers>
+               <TapGestureRecognizer Tapped="Grid_Tapped" />
+            </Grid.GestureRecognizers>
+
+            <Label Text="Auto Rotate Images" />
+            <elements:CustomSwitch IsToggled="{Binding AutoRotateImages}" />
+         </Grid>
+         <Grid>
+            <Grid.GestureRecognizers>
+               <TapGestureRecognizer Tapped="Grid_Tapped" />
+            </Grid.GestureRecognizers>
+
+            <Label Text="Discard Noisy Zones" />
+            <elements:CustomSwitch IsToggled="{Binding DiscardNoisyZones}" />
+         </Grid>
+         <Grid IsVisible="{Binding Show3DDeskewSetting}">
+            <Grid.GestureRecognizers>
+               <TapGestureRecognizer Tapped="Grid_Tapped" />
+            </Grid.GestureRecognizers>
+
+            <Label Text="Enable 3D Deskew After Capture" />
+            <elements:CustomSwitch IsToggled="{Binding Enable3DDeskewAfterCapture}" />
+         </Grid>
+
+         <BoxView VerticalOptions="Start" Margin="{utils:GlobalMargin '0, 0.25'}" HeightRequest="2" BackgroundColor="#E5E8ED"/>
+
+         <Grid x:Name="LanguagesLabelContainer">
+            <Grid.GestureRecognizers>
+               <TapGestureRecognizer Tapped="Languages_Tapped" />
+            </Grid.GestureRecognizers>
+
+            <Label Text="Languages" />
+            <Label x:Name="LanguagesLabel" Grid.Column="1" HorizontalOptions="End" HorizontalTextAlignment="End" FontAttributes="Bold" TextColor="#56A7FD" LineBreakMode="TailTruncation" MaxLines="1"/>
+         </Grid>
+         <Grid x:Name="OutputFormatLabelContainer">
+            <Grid.GestureRecognizers>
+               <TapGestureRecognizer Tapped="OutputFormatLabel_Tapped" />
+            </Grid.GestureRecognizers>
+
+            <Label Text="Output Format" />
+            <Label x:Name="OutputFormatLabel" Grid.Column="1" HorizontalOptions="End" HorizontalTextAlignment="End" FontAttributes="Bold" TextColor="#FE7272"/>
+         </Grid>
+      </StackLayout>
+   </ScrollView>
+</page:CustomPage>

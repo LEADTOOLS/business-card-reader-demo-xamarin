@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Grid xmlns="http://xamarin.com/schemas/2014/forms"
+      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+      xmlns:demos="clr-namespace:Leadtools.Demos;assembly=Leadtools.Demos.Xamarin"
+      xmlns:elements="clr-namespace:Leadtools.Demos.UI.Elements;assembly=Leadtools.Demos.Xamarin"
+      xmlns:utils="clr-namespace:Leadtools.Demos.Utils;assembly=Leadtools.Demos.Xamarin"
+      HorizontalOptions="Start"
+      VerticalOptions="Start"
+      Padding="{utils:GlobalMargin '0.25,'}"
+      x:Class="Leadtools.Demos.Document.UI.Elements.DocumentItem"
+      x:Name="This">
+   <Frame WidthRequest="1" IsClippedToBounds="True" Margin="0" Padding="3" BackgroundColor="Transparent">
+      <Frame.CornerRadius>
+         <OnPlatform x:TypeArguments="x:Single" iOS="5" Android="5" WinPhone="0"/>
+      </Frame.CornerRadius>
+      <Frame.Triggers>
+         <MultiTrigger TargetType="Frame">
+            <MultiTrigger.Conditions>
+               <BindingCondition Binding="{Binding Source={Reference This}, Path=Parent.IsNoneSelectionMode}" Value="False" />
+            </MultiTrigger.Conditions>
+            <Setter Property="BackgroundColor" Value="{Binding Source={Reference This}, Path=ItemData.ItemBorderColor}" />
+         </MultiTrigger>
+      </Frame.Triggers>
+      <Grid x:Name="MainItemGrid" RowSpacing="0" ColumnSpacing="0" Padding="0" Margin="0" elements:RoundCornersEffect.CornerRadius="3" 
+            elements:MultiGesturesEffect.LongPressedCommand="{Binding ItemLongPressedCommand, Source={Reference This}}" elements:MultiGesturesEffect.LongPressedCommandParameter="{Binding ItemData, Source={Reference This}}"
+            elements:MultiGesturesEffect.TappedCommand="{Binding ItemTappedCommand, Source={Reference This}}" elements:MultiGesturesEffect.TappedCommandParameter="{Binding ItemData, Source={Reference This}}">
+         <Grid.Effects>
+            <elements:MultiGesturesEffect/>
+         </Grid.Effects>
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+         </Grid.ColumnDefinitions>
+         <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+         </Grid.RowDefinitions>
+
+         <Image Grid.Row="0" Grid.Column="0" IsEnabled="False" Source="{Binding Source={Reference This}, Path=ItemData.DocumentThumbnailPath}" Aspect="Fill"/>
+
+         <elements:SvgImage Grid.Row="0" Grid.Column="0" Margin="{utils:GlobalMargin '0.5,0.5,0,0'}" HorizontalOptions="Start" VerticalOptions="Start" IsEnabled="False" 
+                            ResourceName="{Binding Source={Reference This}, Path=ItemData.DocumentFormatResourceName}" Aspect="AspectFit" HeightRequest="{utils:GlobalMargin 0.7}"
+                            IsVisible="{Binding Source={Reference This}, Path=ItemData.DocumentFormat, Converter={StaticResource DocumentFormatToIsVisibleConverter}}"/>
+
+         <StackLayout Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Spacing="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="White" Padding="10,5,0,10">
+            <StackLayout Orientation="Vertical" IsEnabled="False" Spacing="0" HorizontalOptions="StartAndExpand" VerticalOptions="FillAndExpand">
+               <Label HorizontalOptions="Start" FontFamily="{Static demos:DemoUtilities.FontFamily}" FontSize="{Static utils:FontSize.SmallFontSize}" Text="{Binding Source={Reference This}, Path=ItemData.Title}" TextColor="#57687F" LineBreakMode="TailTruncation"/>
+               <Label HorizontalOptions="Start" FontFamily="{Static demos:DemoUtilities.FontFamily}" FontSize="{Static utils:FontSize.MicroFontSize}" Text="{Binding Source={Reference This}, Path=ItemData.FormattedDate}" TextColor="#72849E" LineBreakMode="TailTruncation"/>
+            </StackLayout>
+
+            <ContentView HorizontalOptions="End" VerticalOptions="FillAndExpand" WidthRequest="{utils:GlobalMargin 1.5}" IsVisible="{Binding Source={Reference This}, Path=Parent.ShowDocumentQuickActionsButton}">
+               <elements:SvgImage ResourceName="Icons/more-options.svg" HorizontalOptions="Center" VerticalOptions="Center" WidthRequest="{utils:GlobalMargin 0.5}" HeightRequest="{utils:GlobalMargin 0.5}" IsEnabled="False"/>
+               <ContentView.GestureRecognizers>
+                  <TapGestureRecognizer Tapped="DocumentQuickActionsButton_Tapped"/>
+               </ContentView.GestureRecognizers>
+            </ContentView>
+         </StackLayout>
+      </Grid>
+   </Frame>
+</Grid>

@@ -4,20 +4,14 @@
              x:Class="BCReaderDemo.HomePage"
              xmlns:local="clr-namespace:BCReaderDemo"
              xmlns:utils="clr-namespace:BCReaderDemo.Utils"
+             xmlns:demos_elements="clr-namespace:Leadtools.Demos.UI.Elements;assembly=Leadtools.Demos.Xamarin"
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
              ios:Page.UseSafeArea="True"
              BackgroundColor="{x:Static local:CustomColors.PagesBackgroundColor}"
-             NavigationPage.HasNavigationBar="False"
-             NavigationPage.HasBackButton="False"
              x:Name="homePage">
    <ContentPage.Padding>
       <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" Default="0, 0, 0, 0" />
    </ContentPage.Padding>
-   <ContentPage.Resources>
-      <ResourceDictionary>
-         <local:NullStringConverter x:Key="NullStringConverter" />
-      </ResourceDictionary>
-   </ContentPage.Resources>
 
    <Grid x:Name="mainLayout" BackgroundColor="{x:Static local:CustomColors.PagesBackgroundColor}">
       <Grid RowSpacing="0">
@@ -43,7 +37,7 @@
                <TapGestureRecognizer Tapped="MainGrid_Tapped"/>
             </Grid.GestureRecognizers>
 
-            <Image Grid.Column="0" Source="leadtools_logo.png" Margin="10,0,0,0" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="70" Aspect="AspectFit"/>
+            <demos_elements:SvgImage Grid.Column="0" ResourceName="leadtools-logo.svg" Margin="10,0,0,0" HorizontalOptions="Start" VerticalOptions="Center" WidthRequest="70" Aspect="AspectFit"/>
 
             <StackLayout Grid.Column="1" Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center" Spacing="0">
                <Label Text="Saved Cards " TextColor="{x:Static local:CustomColors.DarkSharkonColor}" FontSize="{x:Static local:PlatformsConstants.PageTitleFontSize}" FontAttributes="Bold"/>
@@ -57,33 +51,34 @@
             </Grid>
          </Grid>
 
-         <utils:CustomSearchBar Grid.Row="1" x:Name="mainSearchBar" BackgroundColor="Transparent" Placeholder = "Search" HeightRequest="30" Margin="10,0,10,0" VerticalOptions="Center" TextChanged="SearchBarTextChanged" Clicked="MainGrid_Tapped"/>
+         <demos_elements:CustomSearchBar Grid.Row="1" x:Name="mainSearchBar" BackgroundColor="Transparent" Placeholder = "Search" HeightRequest="30" Margin="10,0,10,0" VerticalOptions="Center" PlaceholderColor="{x:Static local:CustomColors.SearchBarPlaceHolderInactiveTextColor}" BorderColor="{x:Static local:CustomColors.LightSilverColor}" TextColor="{x:Static local:CustomColors.SearchBarTextColor}" TextChanged="SearchBarTextChanged" Clicked="MainGrid_Tapped"/>
 
          <Grid Grid.Row="2" Grid.RowSpan="2" Margin="20,0,0,0">
-            <utils:ListViewWithLongPressGesture
-               x:Name="ContactsList"
-               SeparatorColor="{x:Static local:CustomColors.LightSharkonColor}"
-               SeparatorVisibility="None"
-               IsGroupingEnabled="True"
-               GroupDisplayBinding="{Binding Key}"
-               HasUnevenRows="True"
-               ItemTapped="ContactsList_Tapped"
-               ItemLongPressed="ContactsList_ItemLongPressed"
-               Clicked="ContactsList_Clicked"
-               BackgroundColor="Transparent">
-               <ListView.GroupHeaderTemplate>
+            <demos_elements:CustomListView x:Name="ContactsList"
+                                           SeparatorColor="{x:Static local:CustomColors.LightSharkonColor}"
+                                           SeparatorVisibility="None"
+                                           IsGroupingEnabled="True"
+                                           IsLongPressEnabled="True"
+                                           GroupDisplayBinding="{Binding Key}"
+                                           ShowSelection="False"
+                                           HasUnevenRows="True"
+                                           ItemTapped="ContactsList_Tapped"
+                                           ItemLongPressed="ContactsList_ItemLongPressed"
+                                           Clicked="ContactsList_Clicked"
+                                           BackgroundColor="Transparent">
+               <demos_elements:CustomListView.GroupHeaderTemplate>
                   <DataTemplate>
-                     <ViewCell Height="25">
+                     <demos_elements:CustomViewCell Height="25">
                         <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0,5,0,0">
                            <Label Text="{Binding Key}" TextColor="{x:Static local:CustomColors.SettingsLabelsColor}" FontSize="{x:Static local:PlatformsConstants.ListViewGroupHeaderFontSize}" FontAttributes="Bold" HorizontalOptions="Start" VerticalOptions="Center" Margin="5,0,0,0"/>
                         </Grid>
-                     </ViewCell>
+                     </demos_elements:CustomViewCell>
                   </DataTemplate>
-               </ListView.GroupHeaderTemplate>
+               </demos_elements:CustomListView.GroupHeaderTemplate>
 
-               <ListView.ItemTemplate>
+               <demos_elements:CustomListView.ItemTemplate>
                   <DataTemplate>
-                     <ViewCell Height="{x:Static local:PlatformsConstants.CardsPageListViewItemHeight}">
+                     <demos_elements:CustomViewCell Height="{x:Static local:PlatformsConstants.CardsPageListViewItemHeight}">
                         <!-- ListView cell data template main grid -->
                         <Grid ColumnSpacing="10">
                            <Grid.ColumnDefinitions>
@@ -95,13 +90,13 @@
                               <RowDefinition Height="*"/>
                            </Grid.RowDefinitions>
 
-                           <Image Grid.Column="0" Source="{Binding Thumbnail}" HorizontalOptions="Start" VerticalOptions="Center" Aspect="Fill" WidthRequest="{x:Static local:PlatformsConstants.CardThumbnailWidth}" HeightRequest="{x:Static local:PlatformsConstants.CardThumbnailHeight}" utils:RoundCornersEffect.CornerRadius="3" />
+                           <Image Grid.Column="0" Source="{Binding Thumbnail}" HorizontalOptions="Start" VerticalOptions="Center" Aspect="Fill" WidthRequest="{x:Static local:PlatformsConstants.CardThumbnailWidth}" HeightRequest="{x:Static local:PlatformsConstants.CardThumbnailHeight}" demos_elements:RoundCornersEffect.CornerRadius="3" />
                            <StackLayout Grid.Column="1" VerticalOptions="Center" Orientation="Vertical" Spacing="5" Margin="0,0,20,0" HeightRequest="40">
-                              <Label Text="{Binding Name.Text, Converter={StaticResource NullStringConverter}}" FontSize="{x:Static local:PlatformsConstants.CardHolderNameLabelFontSize}" FontAttributes="Bold" TextColor="{x:Static local:CustomColors.DarkSharkonColor}" LineBreakMode="TailTruncation" VerticalOptions="Start"/>
+                              <Label Text="{Binding Name.Text, Converter={StaticResource NullStringConverter}, ConverterParameter=[Unknown]}" FontSize="{x:Static local:PlatformsConstants.CardHolderNameLabelFontSize}" FontAttributes="Bold" TextColor="{x:Static local:CustomColors.DarkSharkonColor}" LineBreakMode="TailTruncation" VerticalOptions="Start"/>
                               <Label Text="{Binding Company.Text}" FontSize="{x:Static local:PlatformsConstants.CardHolderCompanyLabelFontSize}" TextColor="{x:Static local:CustomColors.DarkSharkonColor}" LineBreakMode="TailTruncation" VerticalOptions="End"/>
                            </StackLayout>
                            <Grid Grid.Column="2" WidthRequest="40" VerticalOptions="FillAndExpand">
-                              <Image Source="quick_actions.png" Margin="0,0,10,0" HorizontalOptions="End" VerticalOptions="FillAndExpand" WidthRequest="20"/>
+                              <demos_elements:SvgImage ResourceName="Icons/more-options.svg" Margin="0,0,10,0" HorizontalOptions="End" VerticalOptions="FillAndExpand" WidthRequest="20" IsEnabled="False"/>
                               <Grid.GestureRecognizers>
                                  <TapGestureRecognizer Tapped="CardQuickActionsButton_Tapped"/>
                               </Grid.GestureRecognizers>
@@ -130,7 +125,7 @@
                                     <ColumnDefinition Width="*"/>
                                  </Grid.ColumnDefinitions>
 
-                                 <Image Grid.Column="0" Source="phone.png"    HorizontalOptions="Center" VerticalOptions="Center">
+                                 <demos_elements:SvgImage Grid.Column="0" ResourceName="Icons/phone-ico.svg"    HorizontalOptions="Center" VerticalOptions="Center">
                                     <Image.WidthRequest>
                                        <OnIdiom x:TypeArguments="x:Double" Phone="30" Tablet="40"/>
                                     </Image.WidthRequest>
@@ -140,8 +135,8 @@
                                     <Image.GestureRecognizers>
                                        <TapGestureRecognizer Tapped="PhoneCallQuickActionsButton_Tapped"/>
                                     </Image.GestureRecognizers>
-                                 </Image>
-                                 <Image Grid.Column="1" Source="email.png"    HorizontalOptions="Center" VerticalOptions="Center">
+                                 </demos_elements:SvgImage>
+                                 <demos_elements:SvgImage Grid.Column="1" ResourceName="Icons/mail-ico.svg"    HorizontalOptions="Center" VerticalOptions="Center">
                                     <Image.WidthRequest>
                                        <OnIdiom x:TypeArguments="x:Double" Phone="30" Tablet="40"/>
                                     </Image.WidthRequest>
@@ -151,8 +146,8 @@
                                     <Image.GestureRecognizers>
                                        <TapGestureRecognizer Tapped="EmailQuickActionsButton_Tapped"/>
                                     </Image.GestureRecognizers>
-                                 </Image>
-                                 <Image Grid.Column="2" Source="share.png"    HorizontalOptions="Center" VerticalOptions="Center">
+                                 </demos_elements:SvgImage>
+                                 <demos_elements:SvgImage Grid.Column="2" ResourceName="Icons/share-ico.svg"    HorizontalOptions="Center" VerticalOptions="Center">
                                     <Image.WidthRequest>
                                        <OnIdiom x:TypeArguments="x:Double" Phone="30" Tablet="40"/>
                                     </Image.WidthRequest>
@@ -162,8 +157,8 @@
                                     <Image.GestureRecognizers>
                                        <TapGestureRecognizer Tapped="ShareQuickActionsButton_Tapped"/>
                                     </Image.GestureRecognizers>
-                                 </Image>
-                                 <Image Grid.Column="3" Source="delete.png"   HorizontalOptions="Center" VerticalOptions="Center">
+                                 </demos_elements:SvgImage>
+                                 <demos_elements:SvgImage Grid.Column="3" ResourceName="Icons/del-icon-1.svg"   HorizontalOptions="Center" VerticalOptions="Center">
                                     <Image.WidthRequest>
                                        <OnIdiom x:TypeArguments="x:Double" Phone="30" Tablet="40"/>
                                     </Image.WidthRequest>
@@ -173,16 +168,16 @@
                                     <Image.GestureRecognizers>
                                        <TapGestureRecognizer Tapped="DeleteQuickActionsButton_Tapped"/>
                                     </Image.GestureRecognizers>
-                                 </Image>
+                                 </demos_elements:SvgImage>
                               </Grid>
                            </Grid>
                         </Grid>
-                     </ViewCell>
+                     </demos_elements:CustomViewCell>
                   </DataTemplate>
-               </ListView.ItemTemplate>
-            </utils:ListViewWithLongPressGesture>
+               </demos_elements:CustomListView.ItemTemplate>
+            </demos_elements:CustomListView>
 
-            <ContentView x:Name="notificationMessageView" IsVisible="False" BackgroundColor="Gray" Padding="20,5,20,5" VerticalOptions="End" HorizontalOptions="Center" utils:RoundCornersEffect.CornerRadius="10" Margin="0,0,0,20">
+            <ContentView x:Name="notificationMessageView" IsVisible="False" BackgroundColor="Gray" Padding="20,5,20,5" VerticalOptions="End" HorizontalOptions="Center" demos_elements:RoundCornersEffect.CornerRadius="10" Margin="0,0,0,20">
                <Label x:Name="notificationMessageLabel" TextColor="Black" BackgroundColor="Transparent" FontSize="Default"/>
             </ContentView>
          </Grid>
@@ -198,12 +193,12 @@
                <RowDefinition Height="9.4*"/>
                <RowDefinition Height="0.3*"/>
             </Grid.RowDefinitions>
-            <Image x:Name="ActionsButton"    Grid.Column="0" Grid.Row="1" Source="actions.png"  HorizontalOptions="Center" VerticalOptions="Center" BackgroundColor="Transparent"/>
-            <Image x:Name="CameraButton"     Grid.Column="1" Grid.Row="0" Source="camera.png"   HorizontalOptions="Center" VerticalOptions="Center" BackgroundColor="Transparent" Grid.RowSpan="3"/>
-            <Image x:Name="SettingsButton"   Grid.Column="2" Grid.Row="1" Source="settings.png" HorizontalOptions="Center" VerticalOptions="Center" BackgroundColor="Transparent"/>
+            <demos_elements:SvgImage x:Name="ActionsButton"    Grid.Column="0" Grid.Row="1" ResourceName="Icons/settings-ico-1.svg"  HorizontalOptions="Center" VerticalOptions="Center" BackgroundColor="Transparent"/>
+            <demos_elements:SvgImage x:Name="CameraButton"     Grid.Column="1" Grid.Row="0" ResourceName="Icons/camera-ico-1.svg"   HorizontalOptions="Center" VerticalOptions="Center" BackgroundColor="Transparent" Grid.RowSpan="3"/>
+            <demos_elements:SvgImage x:Name="SettingsButton"   Grid.Column="2" Grid.Row="1" ResourceName="Icons/settings-ico-2.svg" HorizontalOptions="Center" VerticalOptions="Center" BackgroundColor="Transparent"/>
          </Grid>
 
-         <utils:AdsLayout x:Name="advertisementLayout" Grid.Row="5"/>
+         <demos_elements:AdsView x:Name="Ads" Grid.Row="5"/>
       </Grid>
 
       <Grid x:Name="overlayGrid" BackgroundColor="{x:Static local:CustomColors.DimmedPageBackgroundColor}" Opacity="0.6" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" IsVisible="False"/>
